@@ -1,6 +1,10 @@
 Function Documentation:
 
 =======================
+=  PRIVATE FUNCTIONS  =
+=======================
+
+=======================
 Error Handler
 
 twitch::generateError($errNo, $errStr, $return = null)
@@ -45,3 +49,14 @@ RETURN:
  @return $result - [mixed] The raw return of the resulting query or the numerical status
  
 This function handles all GET style cURL commands.  Is flexible enough to handle all of the calls passed to it and will be able to accept an new parameters in the coming future.  Can be set to return the HTTPD status with the $returnStatus variable.  $options overrides all defaults, allowing future functions to change how the queries run.
+
+=======================
+POST style cURL operator
+
+twitch::cURL_post($url, array $post = array(), array $options = array(), $returnStatus = false)
+
+PARAMS:
+ $url - [string] URL supplied for the connection
+ $post - [array] All supplied data used to define what data to post
+ $options - [array] Set options for the cURL session
+ $returnStatus - [bool] Sets the function to return the numerical status instead of the raw result

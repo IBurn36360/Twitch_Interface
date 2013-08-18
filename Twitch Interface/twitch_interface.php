@@ -30,7 +30,7 @@ $twitch_clientUrl = '';
 // Did our user forget any of their credentials?
 if (($twitch_clientKey === '' || null) || ($twitch_clientSecret === '' || null) || ($twitch_clientUrl === '' || null))
 {
-    trigger_error('Please enter your Kraken API credentials into the main file on lines 15, 16 and 17');
+    trigger_error('Please enter your Kraken API credentials into the main file on lines 26, 27 and 28');
 }
 
 // This holds many of the limitation settings for performing calls, stored as an array for ease of calling [Keyed]
