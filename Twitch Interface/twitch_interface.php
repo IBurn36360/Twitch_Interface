@@ -133,7 +133,7 @@ class twitch
      * 
      * @return User defined return
      */ 
-    public function cURL_generateError($errNo, $errStr, $return = null)
+    private function generateError($errNo, $errStr, $return = null)
     {
         // Enter your output format code here
         
@@ -148,7 +148,7 @@ class twitch
      * 
      * @return User defined return
      */ 
-    private function cURL_generateOutput($function, $errStr, $outputLevel = 5)
+    private function generateOutput($function, $errStr, $outputLevel = 5)
     {
         global $twitch_configuration;
         
@@ -188,12 +188,12 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::cURL_generateOutput($functionName, 'Header row => ' . $row, 4);
+            self::generateOutput($functionName, 'Header row => ' . $row, 4);
         }
         
         $cURL_URL = rtrim($url . '?' . http_build_query($get), '?');
         
-        self::cURL_generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
+        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
         
         $defaults = array(
             CURLOPT_URL => $cURL_URL, 
@@ -208,30 +208,30 @@ class twitch
         
         if (empty($options))
         {
-            self::cURL_generateOutput($functionName, 'No additional options set', 4);
+            self::generateOutput($functionName, 'No additional options set', 4);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::cURL_generateOutput($functionName, 'Options set as an array', 4);
+            self::generateOutput($functionName, 'Options set as an array', 4);
             curl_setopt_array($handle, ($options + $defaults));
         } else { // nope, set them one at a time
             foreach (($defaults + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::cURL_generateOutput($functionName, 'Options set as individual values', 4);
+                self::generateOutput($functionName, 'Options set as individual values', 4);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::cURL_generateOutput($functionName, 'Command GET => URL: ' . $cURL_URL, 2);
+        self::generateOutput($functionName, 'Command GET => URL: ' . $cURL_URL, 2);
         
         if ((gettype($get) == 'array') && !empty($get))
         {
             foreach($get as $k => $v)
             {
-                self::cURL_generateOutput($functionName, 'GET option: ' . $k . '=>' . $v, 4);
+                self::generateOutput($functionName, 'GET option: ' . $k . '=>' . $v, 4);
             }
         }
         
@@ -243,26 +243,26 @@ class twitch
         {
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            self::cURL_generateError($errNo, $errStr, $result);
+            self::generateError($errNo, $errStr, $result);
         }
         
         curl_close($handle);
         
-        self::cURL_generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 2);
-        self::cURL_generateOutput($functionName, 'Raw Return: ' . $result, 5);
+        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 2);
+        self::generateOutput($functionName, 'Raw Return: ' . $result, 5);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($url, $get, $options, $debug, $header, $cURL_URL, $defaults, $key, $opt, $k, $v, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::cURL_generateOutput($functionName, 'Returning HTTPD status', 4);
+            self::generateOutput($functionName, 'Returning HTTPD status', 4);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::cURL_generateOutput($functionName, 'Returning result', 4);
+            self::generateOutput($functionName, 'Returning result', 4);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -298,10 +298,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::cURL_generateOutput($functionName, 'Header row => ' . $row, 4);
+            self::generateOutput($functionName, 'Header row => ' . $row, 4);
         }
         
-        self::cURL_generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
+        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
         
         // Custom build the post fields
         foreach ($post as $field => $value)
@@ -328,40 +328,40 @@ class twitch
         
         if (empty($options))
         {
-            self::cURL_generateOutput($functionName, 'No additional options set', 4);
+            self::generateOutput($functionName, 'No additional options set', 4);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::cURL_generateOutput($functionName, 'Options set as an array', 4);
+            self::generateOutput($functionName, 'Options set as an array', 4);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::cURL_generateOutput($functionName, 'Options set as individual values', 4);
+                self::generateOutput($functionName, 'Options set as individual values', 4);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::cURL_generateOutput($functionName, 'command POST => URL: ' . $url, 4);
+        self::generateOutput($functionName, 'command POST => URL: ' . $url, 4);
         
         
         foreach ($post as $param => $val)
         {
             if (($param == 'client_id') || ($param == 'client_secret'))
             {
-                self::cURL_generateOutput($functionName, 'Information removed from output.  PARAM: ' . $param, 4);
+                self::generateOutput($functionName, 'Information removed from output.  PARAM: ' . $param, 4);
             } else {
                 if (is_array($val))
                 {
                     foreach ($val as $key => $value)
                     {
-                        self::cURL_generateOutput($functionName, 'POST option: [' . $param . '] ' . $key . '=>' . $value, 4);
+                        self::generateOutput($functionName, 'POST option: [' . $param . '] ' . $key . '=>' . $value, 4);
                     }
                 } else {
-                    self::cURL_generateOutput($functionName, 'POST option: ' . $param . '=>' . $val, 4);
+                    self::generateOutput($functionName, 'POST option: ' . $param . '=>' . $val, 4);
                 }
             }
         }
@@ -375,7 +375,7 @@ class twitch
         {
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            self::cURL_generateError($errNo, $errStr, $result); 
+            self::generateError($errNo, $errStr, $result); 
             
             return null;
         }
@@ -387,21 +387,21 @@ class twitch
         
         curl_close($handle);
         
-        self::cURL_generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 4);
-        self::cURL_generateOutput($functionName, 'Raw Return: ' . $result, 4);
+        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 4);
+        self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($url, $post, $options, $debug, $postfields, $header, $field, $value, $postfields, $default, $errStr, $errNo, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::cURL_generateOutput($functionName, 'Returning HTTPD status', 4);
+            self::generateOutput($functionName, 'Returning HTTPD status', 4);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::cURL_generateOutput($functionName, 'Returning result', 4);
+            self::generateOutput($functionName, 'Returning result', 4);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -436,10 +436,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::cURL_generateOutput($functionName, 'Header row => ' . $row, 4);
+            self::generateOutput($functionName, 'Header row => ' . $row, 4);
         }
         
-        self::cURL_generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
+        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
         
         // Custom build the post fields
         $postfields = (is_array($put)) ? http_build_query($put) : $put;
@@ -461,40 +461,40 @@ class twitch
         
         if (empty($options))
         {
-            self::cURL_generateOutput($functionName, 'No additional options set', 4);
+            self::generateOutput($functionName, 'No additional options set', 4);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::cURL_generateOutput($functionName, 'Options set as an array', 4);
+            self::generateOutput($functionName, 'Options set as an array', 4);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::cURL_generateOutput($functionName, 'Options set as individual values', 4);
+                self::generateOutput($functionName, 'Options set as individual values', 4);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::cURL_generateOutput($functionName, 'command PUT => URL: ' . $url, 4);
+        self::generateOutput($functionName, 'command PUT => URL: ' . $url, 4);
         
         
         foreach ($put as $param => $val)
         {
             if (($param == 'client_id') || ($param == 'client_secret'))
             {
-                self::cURL_generateOutput($functionName, 'Information removed from output.  PARAM: ' . $param, 4);
+                self::generateOutput($functionName, 'Information removed from output.  PARAM: ' . $param, 4);
             } else {
                 if (is_array($val))
                 {
                     foreach ($val as $key => $value)
                     {
-                        self::cURL_generateOutput($functionName, 'PUT option: [' . $param . '] ' . $key . '=>' . $value, 4);
+                        self::generateOutput($functionName, 'PUT option: [' . $param . '] ' . $key . '=>' . $value, 4);
                     }
                 } else {
-                    self::cURL_generateOutput($functionName, 'PUT option: ' . $param . '=>' . $val, 4);
+                    self::generateOutput($functionName, 'PUT option: ' . $param . '=>' . $val, 4);
                 }
             }
         }
@@ -507,7 +507,7 @@ class twitch
         { 
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            self::cURL_generateError($errNo, $errStr, $result); 
+            self::generateError($errNo, $errStr, $result); 
         }
         
         if ($httpdStatus == 422)
@@ -517,21 +517,21 @@ class twitch
         
         curl_close($handle);
         
-        self::cURL_generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 4);
-        self::cURL_generateOutput($functionName, 'Raw Return: ' . $result, 4);
+        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 4);
+        self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($url, $put, $options, $debug, $postfields, $header, $field, $value, $postfields, $default, $errStr, $errNo, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::cURL_generateOutput($functionName, 'Returning HTTPD status', 4);
+            self::generateOutput($functionName, 'Returning HTTPD status', 4);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::cURL_generateOutput($functionName, 'Returning result', 4);
+            self::generateOutput($functionName, 'Returning result', 4);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -565,10 +565,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::cURL_generateOutput($functionName, 'Header row => ' . $row, 4);
+            self::generateOutput($functionName, 'Header row => ' . $row, 4);
         }
         
-        self::cURL_generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
+        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
         
         $default = array(
             CURLOPT_URL => $url,
@@ -585,12 +585,12 @@ class twitch
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::cURL_generateOutput($functionName, 'Options set as an array', 4);
+            self::generateOutput($functionName, 'Options set as an array', 4);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::cURL_generateOutput($functionName, 'Options set as individual values', 4);
+                self::generateOutput($functionName, 'Options set as individual values', 4);
                 curl_setopt($handle, $key, $opt);
             }
         }
@@ -601,20 +601,20 @@ class twitch
         curl_close($handle); 
         ob_end_clean();
         
-        self::cURL_generateOutput($functionName, 'Status returned: ' . $httpdStatus, 4);   
+        self::generateOutput($functionName, 'Status returned: ' . $httpdStatus, 4);   
 
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);        
+        self::generateOutput($functionName, 'Cleaning memory', 4);        
         unset($url, $post, $options, $header, $handle, $default, $key, $opt, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::cURL_generateOutput($functionName, 'Returning HTTPD status', 4);
+            self::generateOutput($functionName, 'Returning HTTPD status', 4);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::cURL_generateOutput($functionName, 'Returning result', 4);
+            self::generateOutput($functionName, 'Returning result', 4);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -651,8 +651,8 @@ class twitch
         global $twitch_configuration;
         $functionName = 'ITERATION-' . $functionName;
         
-        self::cURL_generateOutput($functionName, 'Calculating parameters', 4); 
-        self::cURL_generateOutput($functionName, 'Limit recieved as: ' . $limit, 4);
+        self::generateOutput($functionName, 'Calculating parameters', 4); 
+        self::generateOutput($functionName, 'Limit recieved as: ' . $limit, 4);
         
         // Check to make sure limit is an int
         if ((gettype($limit) != 'integer') && (gettype($limit) != 'double') && (gettype($limit) != 'float'))
@@ -670,8 +670,8 @@ class twitch
             }
         }
         
-        self::cURL_generateOutput($functionName, 'Limit set to: ' . $limit, 4);
-        self::cURL_generateOutput($functionName, 'Offset recieved as: ' . $offset, 4);
+        self::generateOutput($functionName, 'Limit set to: ' . $limit, 4);
+        self::generateOutput($functionName, 'Offset recieved as: ' . $offset, 4);
         
         // Perform the same check on the offset
         if ((gettype($offset) != 'integer') && (gettype($offset) != 'double') && (gettype($offset) != 'float'))
@@ -688,7 +688,7 @@ class twitch
             }
         }
         
-        self::cURL_generateOutput($functionName, 'Offset set to: ' . $offset, 4);
+        self::generateOutput($functionName, 'Offset set to: ' . $offset, 4);
         
         // Init some vars
         $limit ++; // Account for the _links object in the first return      
@@ -709,10 +709,10 @@ class twitch
         if ($toDo > $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']])
         {
             $startingLimit = $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']];
-            self::cURL_generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
+            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
         } else {
             $startingLimit = $toDo;
-            self::cURL_generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
+            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
         }
         
         // Build our GET array for the first iteration, these values will always be supplied
@@ -723,17 +723,17 @@ class twitch
         if ($authKey != null) 
         {
             $get['oauth_token'] = $authKey;
-            self::cURL_generateOutput($functionName, 'Auth Key added to GET array', 3);
+            self::generateOutput($functionName, 'Auth Key added to GET array', 3);
         }
         if ($hls != null)
         {
             $get['hls'] = $hls;
-            self::cURL_generateOutput($functionName, 'HLS added to GET array', 3);            
+            self::generateOutput($functionName, 'HLS added to GET array', 3);            
         }
         if ($direction != null)
         {
             $get['direction'] = $direction;
-            self::cURL_generateOutput($functionName, 'Direction added to GET array', 3);   
+            self::generateOutput($functionName, 'Direction added to GET array', 3);   
         }
         if ($channels != null)
         {
@@ -743,32 +743,32 @@ class twitch
                 $channelBlock = rtrim($channelBlock, ','); 
                 $get['channel'] = $channelBlock;
             }
-            self::cURL_generateOutput($functionName, 'Channels added to GET array', 3);
+            self::generateOutput($functionName, 'Channels added to GET array', 3);
         }
         if ($embedable != null)
         {
             $get['embedable'] = $embedable;
-            self::cURL_generateOutput($functionName, 'Embedable added to GET array', 3);
+            self::generateOutput($functionName, 'Embedable added to GET array', 3);
         }
         if ($client_id != null)
         {
             $get['client_id'] = $client_id;
-            self::cURL_generateOutput($functionName, 'Client ID added to GET array', 3);
+            self::generateOutput($functionName, 'Client ID added to GET array', 3);
         }
         if ($broadcasts != null)
         {
             $get['broadcasts'] = $broadcasts;
-            self::cURL_generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+            self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
         }
         if ($period != null)
         {
             $get['period'] = $period;
-            self::cURL_generateOutput($functionName, 'Period added to GET array', 3);
+            self::generateOutput($functionName, 'Period added to GET array', 3);
         }
         if ($game != null)
         {
             $get['game'] = $game;
-            self::cURL_generateOutput($functionName, 'Game added to GET array', 3);
+            self::generateOutput($functionName, 'Game added to GET array', 3);
         }
         
         // Build our cURL query and store the array
@@ -784,14 +784,14 @@ class twitch
         
         $toDo -= $currentReturnRows;
         
-        self::cURL_generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
-        self::cURL_generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
-        self::cURL_generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
+        self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
+        self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
+        self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
         
         // Iterate until we have everything grabbed we want to have
         while (($currentReturnRows == $startingLimit) && ($toDo > 0))
         {
-            self::cURL_generateOutput($functionName, 'Returns to grab: ' . $toDo, 4);
+            self::generateOutput($functionName, 'Returns to grab: ' . $toDo, 4);
             
             if ($arrayKey != null)
             {
@@ -826,23 +826,23 @@ class twitch
             // Have we gotten everything we requested?
             if ($toDo <= 0)
             {
-                self::cURL_generateOutput($functionName, 'All items requested returned, breaking iteration', 4);
+                self::generateOutput($functionName, 'All items requested returned, breaking iteration', 4);
                 break;
             }
             
-            self::cURL_generateOutput($functionName, 'Current counter: ' . $currentReturns, 4);
-            self::cURL_generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 4);
+            self::generateOutput($functionName, 'Current counter: ' . $currentReturns, 4);
+            self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 4);
             
             // Are we no longer getting data? (Some fancy math here)
             if (($counter - (1 * ($iterations - 1))) != $expectedReturns)
             {
-                self::cURL_generateOutput($functionName, 'Expected number of returns not met, breaking', 4);
+                self::generateOutput($functionName, 'Expected number of returns not met, breaking', 4);
                 break;
             }
             
             $toDo -= $grabbedRows;
             
-            self::cURL_generateOutput($functionName, 'Calculating new Parameters', 4);
+            self::generateOutput($functionName, 'Calculating new Parameters', 4);
             
             // Check how many we have left
             if (($limit <= $toDo) && ($limit != -1))
@@ -854,17 +854,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::cURL_generateOutput($functionName, 'Auth Key added to GET array', 3);
+                    self::generateOutput($functionName, 'Auth Key added to GET array', 3);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::cURL_generateOutput($functionName, 'HLS added to GET array', 3);            
+                    self::generateOutput($functionName, 'HLS added to GET array', 3);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::cURL_generateOutput($functionName, 'Direction added to GET array', 3);   
+                    self::generateOutput($functionName, 'Direction added to GET array', 3);   
                 }
                 if ($channels != null)
                 {
@@ -874,32 +874,32 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::cURL_generateOutput($functionName, 'Channels added to GET array', 3);
+                    self::generateOutput($functionName, 'Channels added to GET array', 3);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::cURL_generateOutput($functionName, 'Embedable added to GET array', 3);
+                    self::generateOutput($functionName, 'Embedable added to GET array', 3);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::cURL_generateOutput($functionName, 'Client ID added to GET array', 3);
+                    self::generateOutput($functionName, 'Client ID added to GET array', 3);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::cURL_generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::cURL_generateOutput($functionName, 'Period added to GET array', 3);
+                    self::generateOutput($functionName, 'Period added to GET array', 3);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::cURL_generateOutput($functionName, 'Game added to GET array', 3);
+                    self::generateOutput($functionName, 'Game added to GET array', 3);
                 }
             } else {
                 $get = array('limit' => $grabbedRows + $startingLimit,
@@ -909,17 +909,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::cURL_generateOutput($functionName, 'Auth Key added to GET array', 3);
+                    self::generateOutput($functionName, 'Auth Key added to GET array', 3);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::cURL_generateOutput($functionName, 'HLS added to GET array', 3);            
+                    self::generateOutput($functionName, 'HLS added to GET array', 3);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::cURL_generateOutput($functionName, 'Direction added to GET array', 3);   
+                    self::generateOutput($functionName, 'Direction added to GET array', 3);   
                 }
                 if ($channels != null)
                 {
@@ -929,36 +929,36 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::cURL_generateOutput($functionName, 'Channels added to GET array', 3);
+                    self::generateOutput($functionName, 'Channels added to GET array', 3);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::cURL_generateOutput($functionName, 'Embedable added to GET array', 3);
+                    self::generateOutput($functionName, 'Embedable added to GET array', 3);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::cURL_generateOutput($functionName, 'Client ID added to GET array', 3);
+                    self::generateOutput($functionName, 'Client ID added to GET array', 3);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::cURL_generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::cURL_generateOutput($functionName, 'Period added to GET array', 3);
+                    self::generateOutput($functionName, 'Period added to GET array', 3);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::cURL_generateOutput($functionName, 'Game added to GET array', 3);
+                    self::generateOutput($functionName, 'Game added to GET array', 3);
                 }                
             }
             
-            self::cURL_generateOutput($functionName, 'New query built, passing to GET:', 4);
+            self::generateOutput($functionName, 'New query built, passing to GET:', 4);
             
             // Run a new query
             $return = json_decode(self::cURL_get($url, $get, $options), true);
@@ -966,12 +966,12 @@ class twitch
             $toDo ++; // increment this to account for the _links object
             $iterations ++;
             
-            self::cURL_generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
-            self::cURL_generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 4);
-            self::cURL_generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
+            self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
+            self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 4);
+            self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
         }
         
-        self::cURL_generateOutput($functionName, 'Exited Iteration', 4);
+        self::generateOutput($functionName, 'Exited Iteration', 4);
         
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
@@ -989,10 +989,10 @@ class twitch
             }
         }
         
-        self::cURL_generateOutput($functionName, 'Total returned rows: ' . $counter, 4);
+        self::generateOutput($functionName, 'Total returned rows: ' . $counter, 4);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($functionName, $url, $options, $limit, $offset, $arrayKey, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns);
         
         if (empty($object))
@@ -1034,8 +1034,8 @@ class twitch
         global $twitch_configuration;
         $functionName = 'ITERATION-' . $functionName;
         
-        self::cURL_generateOutput($functionName, 'Calculating parameters', 4);
-        self::cURL_generateOutput($functionName, 'Limit recieved as: ' . $limit, 4);
+        self::generateOutput($functionName, 'Calculating parameters', 4);
+        self::generateOutput($functionName, 'Limit recieved as: ' . $limit, 4);
         
         // Check to make sure limit is an int
         if ((gettype($limit) != 'integer') && (gettype($limit) != 'double') && (gettype($limit) != 'float'))
@@ -1053,8 +1053,8 @@ class twitch
             }
         }
         
-        self::cURL_generateOutput($functionName, 'Limit set to: ' . $limit, 4);
-        self::cURL_generateOutput($functionName, 'Offset recieved as: ' . $offset, 4);
+        self::generateOutput($functionName, 'Limit set to: ' . $limit, 4);
+        self::generateOutput($functionName, 'Offset recieved as: ' . $offset, 4);
         
         // Perform the same check on the offset
         if ((gettype($offset) != 'integer') && (gettype($offset) != 'double') && (gettype($offset) != 'float'))
@@ -1071,7 +1071,7 @@ class twitch
             }
         }
         
-        self::cURL_generateOutput($functionName, 'Offset set to: ' . $offset, 4);
+        self::generateOutput($functionName, 'Offset set to: ' . $offset, 4);
         
         // Init some vars
         $limit ++; // Account for the _links object in the first return     
@@ -1091,10 +1091,10 @@ class twitch
         if ($toDo > $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']])
         {
             $startingLimit = $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']];
-            self::cURL_generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
+            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
         } else {
             $startingLimit = $toDo;
-            self::cURL_generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
+            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
         }
         
         // Build our GET array for the first iteration, these values will always be supplied
@@ -1105,17 +1105,17 @@ class twitch
         if ($authKey != null) 
         {
             $get['oauth_token'] = $authKey;
-            self::cURL_generateOutput($functionName, 'Auth Key added to GET array', 3);
+            self::generateOutput($functionName, 'Auth Key added to GET array', 3);
         }
         if ($hls != null)
         {
             $get['hls'] = $hls;
-            self::cURL_generateOutput($functionName, 'HLS added to GET array', 3);            
+            self::generateOutput($functionName, 'HLS added to GET array', 3);            
         }
         if ($direction != null)
         {
             $get['direction'] = $direction;
-            self::cURL_generateOutput($functionName, 'Direction added to GET array', 3);   
+            self::generateOutput($functionName, 'Direction added to GET array', 3);   
         }
         if ($channels != null)
         {
@@ -1125,32 +1125,32 @@ class twitch
                 $channelBlock = rtrim($channelBlock, ','); 
                 $get['channel'] = $channelBlock;
             }
-            self::cURL_generateOutput($functionName, 'Channels added to GET array', 3);
+            self::generateOutput($functionName, 'Channels added to GET array', 3);
         }
         if ($embedable != null)
         {
             $get['embedable'] = $embedable;
-            self::cURL_generateOutput($functionName, 'Embedable added to GET array', 3);
+            self::generateOutput($functionName, 'Embedable added to GET array', 3);
         }
         if ($client_id != null)
         {
             $get['client_id'] = $client_id;
-            self::cURL_generateOutput($functionName, 'Client ID added to GET array', 3);
+            self::generateOutput($functionName, 'Client ID added to GET array', 3);
         }
         if ($broadcasts != null)
         {
             $get['broadcasts'] = $broadcasts;
-            self::cURL_generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+            self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
         }
         if ($period != null)
         {
             $get['period'] = $period;
-            self::cURL_generateOutput($functionName, 'Period added to GET array', 3);
+            self::generateOutput($functionName, 'Period added to GET array', 3);
         }
         if ($game != null)
         {
             $get['game'] = $game;
-            self::cURL_generateOutput($functionName, 'Game added to GET array', 3);
+            self::generateOutput($functionName, 'Game added to GET array', 3);
         }
         
         // Build our cURL query and store the array
@@ -1159,9 +1159,9 @@ class twitch
         // How many returns did we get?
         $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
         
-        self::cURL_generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
-        self::cURL_generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
-        self::cURL_generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
+        self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
+        self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
+        self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
         
         // Iterate until we have everything grabbed we want to have
         while (($currentReturnRows == $startingLimit) && ($toDo > 0))
@@ -1194,23 +1194,23 @@ class twitch
             // Have we gotten everything we requested?
             if ($toDo <= 0)
             {
-                self::cURL_generateOutput($functionName, 'All items requested returned, breaking iteration', 4);
+                self::generateOutput($functionName, 'All items requested returned, breaking iteration', 4);
                 break;
             }
             
-            self::cURL_generateOutput($functionName, 'Current counter: ' . $currentReturns, 4);
-            self::cURL_generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 4);
+            self::generateOutput($functionName, 'Current counter: ' . $currentReturns, 4);
+            self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 4);
             
             // Are we no longer getting data? (Some fancy math here)
             if (($counter - (1 * ($iterations - 1))) != $expectedReturns)
             {
-                self::cURL_generateOutput($functionName, 'Expected number of returns not met, breaking', 4);
+                self::generateOutput($functionName, 'Expected number of returns not met, breaking', 4);
                 break;
             }
             
             $toDo -= $grabbedRows;
             
-            self::cURL_generateOutput($functionName, 'Calculating new Parameters', 4);
+            self::generateOutput($functionName, 'Calculating new Parameters', 4);
             
             // Check how many we have left
             if (($limit <= $toDo) && ($limit != -1))
@@ -1222,17 +1222,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::cURL_generateOutput($functionName, 'Auth Key added to GET array', 3);
+                    self::generateOutput($functionName, 'Auth Key added to GET array', 3);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::cURL_generateOutput($functionName, 'HLS added to GET array', 3);            
+                    self::generateOutput($functionName, 'HLS added to GET array', 3);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::cURL_generateOutput($functionName, 'Direction added to GET array', 3);   
+                    self::generateOutput($functionName, 'Direction added to GET array', 3);   
                 }
                 if ($channels != null)
                 {
@@ -1242,32 +1242,32 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::cURL_generateOutput($functionName, 'Channels added to GET array', 3);
+                    self::generateOutput($functionName, 'Channels added to GET array', 3);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::cURL_generateOutput($functionName, 'Embedable added to GET array', 3);
+                    self::generateOutput($functionName, 'Embedable added to GET array', 3);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::cURL_generateOutput($functionName, 'Client ID added to GET array', 3);
+                    self::generateOutput($functionName, 'Client ID added to GET array', 3);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::cURL_generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::cURL_generateOutput($functionName, 'Period added to GET array', 3);
+                    self::generateOutput($functionName, 'Period added to GET array', 3);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::cURL_generateOutput($functionName, 'Game added to GET array', 3);
+                    self::generateOutput($functionName, 'Game added to GET array', 3);
                 }
             } else {
                 $get = array('limit' => $grabbedRows + $startingLimit,
@@ -1277,17 +1277,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::cURL_generateOutput($functionName, 'Auth Key added to GET array', 3);
+                    self::generateOutput($functionName, 'Auth Key added to GET array', 3);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::cURL_generateOutput($functionName, 'HLS added to GET array', 3);            
+                    self::generateOutput($functionName, 'HLS added to GET array', 3);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::cURL_generateOutput($functionName, 'Direction added to GET array', 3);   
+                    self::generateOutput($functionName, 'Direction added to GET array', 3);   
                 }
                 if ($channels != null)
                 {
@@ -1297,36 +1297,36 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::cURL_generateOutput($functionName, 'Channels added to GET array', 3);
+                    self::generateOutput($functionName, 'Channels added to GET array', 3);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::cURL_generateOutput($functionName, 'Embedable added to GET array', 3);
+                    self::generateOutput($functionName, 'Embedable added to GET array', 3);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::cURL_generateOutput($functionName, 'Client ID added to GET array', 3);
+                    self::generateOutput($functionName, 'Client ID added to GET array', 3);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::cURL_generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::cURL_generateOutput($functionName, 'Period added to GET array', 3);
+                    self::generateOutput($functionName, 'Period added to GET array', 3);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::cURL_generateOutput($functionName, 'Game added to GET array', 3);
+                    self::generateOutput($functionName, 'Game added to GET array', 3);
                 }                
             }
             
-            self::cURL_generateOutput($functionName, 'New query built, passing to GET:', 4);
+            self::generateOutput($functionName, 'New query built, passing to GET:', 4);
             
             // Run a new query
             $return = json_decode(self::cURL_get($url, $get, $options, false), true);
@@ -1334,12 +1334,12 @@ class twitch
             $toDo ++;
             $iterations ++;
             
-            self::cURL_generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
-            self::cURL_generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 4);
-            self::cURL_generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
+            self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
+            self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 4);
+            self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
         }
         
-        self::cURL_generateOutput($functionName, 'Exited Iteration', 4);
+        self::generateOutput($functionName, 'Exited Iteration', 4);
         
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
@@ -1357,10 +1357,10 @@ class twitch
             }
         }
         
-        self::cURL_generateOutput($functionName, 'Total returned rows: ' . $counter, 4);
+        self::generateOutput($functionName, 'Total returned rows: ' . $counter, 4);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($functionName, $url, $options, $limit, $offset, $arrayKey, $arrayKey2, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns);
         
         if (empty($object))
@@ -1384,7 +1384,7 @@ class twitch
         global $twitch_clientKey, $twitch_clientSecret, $twitch_clientUrl;
         
         $functionName = 'Generate_Auth';
-        self::cURL_generateOutput($functionName, 'Generating auth token', 4);
+        self::generateOutput($functionName, 'Generating auth token', 4);
         
         $url = 'https://api.twitch.tv/kraken/oauth2/token';
         $post = array(
@@ -1400,10 +1400,10 @@ class twitch
         
         $authKey = $result['access_token'];
         $grants = $result['scope'];
-        self::cURL_generateOutput($functionName, 'Access token returned: ' . $authKey, 4);
+        self::generateOutput($functionName, 'Access token returned: ' . $authKey, 4);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($code, $functionName, $url, $post, $options, $result);
         
         return array($authKey, $grants);
@@ -1423,7 +1423,7 @@ class twitch
         $scopes = '';
         $functionName = 'Request_Auth';
         
-        self::cURL_generateOutput($functionName, 'Generating redirect URL', 4);
+        self::generateOutput($functionName, 'Generating redirect URL', 4);
         
         foreach ($grantType as $scope)
         {
@@ -1439,7 +1439,7 @@ class twitch
             'scope=' . $scopes;
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($grantType, $scopes, $functionName, $scope);
         
         return $urlRedirect;
@@ -1480,7 +1480,7 @@ class twitch
         $functionName = 'GET_BLOCKED';
         $requiredAuth = 'user_blocks_read';
         
-        self::cURL_generateOutput($functionName, 'Attempting to pull a complete list of blocked users for the channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Attempting to pull a complete list of blocked users for the channel: ' . $chan, 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1506,12 +1506,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -1523,7 +1523,7 @@ class twitch
         
         $usernamesObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'blocks', $authKey);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($usernamesObject), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($usernamesObject), 5);
         
         // Set the array
         foreach ($usernamesObject as $user)
@@ -1535,11 +1535,11 @@ class twitch
         // Was anything returned?  If not, put some output
         if (empty($usernames))
         {
-            self::cURL_generateOutput($functionName, 'No blocked users returned for channel: ' . $chan, 4);
+            self::generateOutput($functionName, 'No blocked users returned for channel: ' . $chan, 4);
         }
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($return, $options, $url, $get, $limit, $usernamesObject, $key, $k, $value, $v, $functionName);
         
         // Return out our unkeyed or empty array
@@ -1563,7 +1563,7 @@ class twitch
         $functionName = 'ADD_BLOCKED';
         $requiredAuth = 'user_blocks_edit';
         
-        self::cURL_generateOutput($functionName, 'Attempting to add ' . $username . ' to ' . $chan . '\'s list of blocked users', 4);
+        self::generateOutput($functionName, 'Attempting to add ' . $username . ' to ' . $chan . '\'s list of blocked users', 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1589,12 +1589,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -1607,15 +1607,15 @@ class twitch
         // What did we get returned status wise?
         if ($result = 200)
         {
-            self::cURL_generateOutput($functionName, 'Successfully blocked channel ' . $username, 4);
+            self::generateOutput($functionName, 'Successfully blocked channel ' . $username, 4);
             $success = true;
         } else {
-            self::cURL_generateOutput($functionName, 'Unsuccessfully blocked channel ' . $username, 4);
+            self::generateOutput($functionName, 'Unsuccessfully blocked channel ' . $username, 4);
             $success = false;
         }
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $username, $authKey, $code, $result, $functionName, $requiredAuth, $auth, $authSuccessful, $type, $url, $options, $post);
         
         // Post handles successs, so pass the info on
@@ -1639,7 +1639,7 @@ class twitch
         $functionName = 'REMOVE_BLOCKED';
         $requiredAuth = 'user_blocks_edit';
         
-        self::cURL_generateOutput($functionName, 'Attempting to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
+        self::generateOutput($functionName, 'Attempting to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1665,12 +1665,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -1682,19 +1682,19 @@ class twitch
             
         $success = self::cURL_delete($url, $post, $options);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($success), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($success), 5);
         
         if ($success == '204')
         {
-            self::cURL_generateOutput($functionName, 'Successfully removed ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
+            self::generateOutput($functionName, 'Successfully removed ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
         } else if ($success == '422') {
-            self::cURL_generateOutput($functionName, 'Service unavailable or delete failed', 4);
+            self::generateOutput($functionName, 'Service unavailable or delete failed', 4);
         } else {
-            self::cURL_generateOutput($functionName, 'Failed to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
+            self::generateOutput($functionName, 'Failed to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
         }
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $username, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         // Bascally we either deleted or they were never there
@@ -1716,14 +1716,14 @@ class twitch
         $get = array();
         $options = array();
         
-        self::cURL_generateOutput($functionName, 'Grabbing channel object for ' . $chan, 4);
+        self::generateOutput($functionName, 'Grabbing channel object for ' . $chan, 4);
         
         $object = json_decode(self::cURL_get($url, $get, $options, false), true);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $functionName, $url, $get, $options);
         
         return $object;
@@ -1767,16 +1767,16 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
-        self::cURL_generateOutput($functionName, 'Grabbing channel object using authorzation key ' . $authKey, 4);
+        self::generateOutput($functionName, 'Grabbing channel object using authorzation key ' . $authKey, 4);
         
         $url = 'https://api.twitch.tv/kraken/channel';
         $get = array('oauth_token' => $authKey);
@@ -1784,10 +1784,10 @@ class twitch
 
         $object = json_decode(self::cURL_get($url, $get, $options, false), true);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($authKey, $code, $auth, $authSuccessful, $type, $url, $get, $options);        
         
         return $object;
@@ -1811,7 +1811,7 @@ class twitch
         $functionName = 'GET_EDITORS';
         $requiredAuth = 'channel_read';
         
-        self::cURL_generateOutput($functionName, 'Grabbing editors for ' . $chan . '\'s channel', 4);
+        self::generateOutput($functionName, 'Grabbing editors for ' . $chan . '\'s channel', 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1837,12 +1837,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -1854,7 +1854,7 @@ class twitch
             
         $editorsObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'users', $authKey);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($editorsObject), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($editorsObject), 5);
         
         foreach ($editorsObject as $editor)
         {
@@ -1864,11 +1864,11 @@ class twitch
         // Was anything returned?  If not, put some output
         if (empty($editors))
         {
-            self::cURL_generateOutput($functionName, 'No editors returned for channel: ' . $chan, 4);
+            self::generateOutput($functionName, 'No editors returned for channel: ' . $chan, 4);
         }
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $limit, $offset, $authKey, $code, $auth, $authSuccessful, $type, $functionName, $url, $options, $counter, $editor, $editorsObject);
         
         return $editors;
@@ -1891,7 +1891,7 @@ class twitch
         $requiredAuth = 'channel_editor';
         $functionName = 'UPDATE_CHANNEL';
         
-        self::cURL_generateOutput($functionName, 'Updating Channel object', 4);
+        self::generateOutput($functionName, 'Updating Channel object', 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1917,12 +1917,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -1934,28 +1934,28 @@ class twitch
         
         if ($title != null || '')
         {
-            self::cURL_generateOutput($functionName, 'New title added to array: ' . $title, 4);
+            self::generateOutput($functionName, 'New title added to array: ' . $title, 4);
             $updatedObjects['channel']['status'] = $title;
         } 
         
         if ($game  != null || '')
         {
-            self::cURL_generateOutput($functionName, 'New game added to array: ' . $game, 4);
+            self::generateOutput($functionName, 'New game added to array: ' . $game, 4);
             $updatedObjects['channel']['game'] = $game;
         } 
         
         if ($delay != null || '')
         {
-            self::cURL_generateOutput($functionName, 'New Stream Delay added to array: ' . $delay, 4);
+            self::generateOutput($functionName, 'New Stream Delay added to array: ' . $delay, 4);
             $updatedObjects['channel']['delay'] = $delay;
         } 
         
         $result = self::cURL_put($url, $updatedObjects, $options, false);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $authKey, $code, $title, $game, $delay, $auth, $authSuccessful, $type, $url, $updatedObjects, $options, $functionName);        
         
         return $result;
@@ -1975,9 +1975,9 @@ class twitch
         $requiredAuth = 'channel_stream';
         $functionName = 'RESET_STREAM_KEY';
         
-        self::cURL_generateOutput($functionName, 'Resetting stream key for channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Resetting stream key for channel: ' . $chan, 4);
         
-        self::cURL_generateOutput($functionName, 'Resetting Stream Key', 4);
+        self::generateOutput($functionName, 'Resetting Stream Key', 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2003,12 +2003,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -2018,10 +2018,10 @@ class twitch
         
         $result = self::cURL_delete($url, $post, $options, false, true);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
         
         //clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2066,21 +2066,21 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
-        self::cURL_generateOutput($functionName, 'Commercial time recieved as: ' . $length, 4);
+        self::generateOutput($functionName, 'Commercial time recieved as: ' . $length, 4);
         
         // Check the length to see if it is valid
         if (($length != 30) && ($length != 60) && ($length != 90))
         {
-            self::cURL_generateOutput($functionName, 'Commercial time invalid, set to 30 seconds', 4);
+            self::generateOutput($functionName, 'Commercial time invalid, set to 30 seconds', 4);
             $length = 30;
         }
         
@@ -2093,17 +2093,17 @@ class twitch
         
         $result = self::cURL_post($url, $post, $options, false);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
         
         if ($result)
         {
-            self::cURL_generateOutput($functionName, 'Commercial successfully started', 4);
+            self::generateOutput($functionName, 'Commercial successfully started', 4);
         } else {
-            self::cURL_generateOutput($functionName, 'Commercial unable to be started', 4);
+            self::generateOutput($functionName, 'Commercial unable to be started', 4);
         }
         
         //clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $authKey, $code, $length, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2123,7 +2123,7 @@ class twitch
         
         $functionName = 'GET_EMOTICONS_GLOBAL';
         
-        self::cURL_generateOutput($functionName, 'Grabbing global Twitch emoticons', 4);
+        self::generateOutput($functionName, 'Grabbing global Twitch emoticons', 4);
         
         $url = 'https://api.twitch.tv/kraken/chat/emoticons';
         $options = array();
@@ -2131,9 +2131,9 @@ class twitch
         
         $objects = self::get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($objects), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($objects), 5);
         
-        self::cURL_generateOutput($functionName, 'Setting Keys', 4);
+        self::generateOutput($functionName, 'Setting Keys', 4);
         
         // Set keys
         foreach ($objects as $row)
@@ -2143,7 +2143,7 @@ class twitch
         }
         
         // clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($limit, $offset, $url, $options, $functionName, $objects, $row, $k);
         
         return $object;
@@ -2164,7 +2164,7 @@ class twitch
         
         $functionName = 'GET_EMOTICONS';
         
-        self::cURL_generateOutput($functionName, 'Grabbing emoticons for channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Grabbing emoticons for channel: ' . $chan, 4);
         
         $url = 'https://api.twitch.tv/kraken/chat/' . $chan . '/emoticons';
         $options = array();
@@ -2172,9 +2172,9 @@ class twitch
         
         $objects = self::get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($objects), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($objects), 5);
         
-        self::cURL_generateOutput($functionName, 'Setting Keys', 4);
+        self::generateOutput($functionName, 'Setting Keys', 4);
         
         // Set keys
         foreach ($objects as $row)
@@ -2184,7 +2184,7 @@ class twitch
         }
         
         // clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $limit, $offset, $functionName, $url, $options, $objects, $k, $row);
         
         return $object;
@@ -2203,7 +2203,7 @@ class twitch
     {        
         $functionName = 'GET_BADGES';
         
-        self::cURL_generateOutput($functionName, 'Grabbing badges for channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Grabbing badges for channel: ' . $chan, 4);
         
         $url = 'https://api.twitch.tv/kraken/chat/' . $chan . '/badges';
         $options = array();
@@ -2211,10 +2211,10 @@ class twitch
         
         $object = json_decode(self::cURL_get($url, $get, $options, false), true);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
         
         // clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $url, $options, $get, $functionName);        
         
         return $object;                
@@ -2236,7 +2236,7 @@ class twitch
         
         $functionName = 'GET_FOLLOWERS';
         
-        self::cURL_generateOutput($functionName, 'Getting the list of channels followed by channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Getting the list of channels followed by channel: ' . $chan, 4);
         
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/follows';
         $options = array();
@@ -2245,7 +2245,7 @@ class twitch
              
         $followersObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($followersObject), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($followersObject), 5);
         
         foreach ($followersObject as $follower)
         {
@@ -2254,7 +2254,7 @@ class twitch
         }
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $limit, $offset, $sorting, $follower, $followersObject, $functionName, $key);
         
         // Return out our array
@@ -2276,7 +2276,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_FOLLOWS';
         
-        self::cURL_generateOutput($functionName, 'Getting the list of channels following channel: ' . $username, 4);
+        self::generateOutput($functionName, 'Getting the list of channels following channel: ' . $username, 4);
         
         // Init some vars       
         $channels = array();
@@ -2286,7 +2286,7 @@ class twitch
         // Build our cURL query and store the array
         $channelsObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($channelsObject), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($channelsObject), 5);
         
         foreach ($channelsObject as $channel)
         {
@@ -2295,7 +2295,7 @@ class twitch
         }
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($username, $limit, $offset, $sorting, $channelsObject, $channel, $url, $options, $key, $functionName);
         
         // Return out our unkeyed array
@@ -2317,7 +2317,7 @@ class twitch
         $functionName = 'FOLLOW_CHANNEL';
         $requiredAuth = 'user_follows_edit';
         
-        self::cURL_generateOutput($functionName, 'Attempting to have channel ' . $user . ' follow the user ' . $chan, 4);      
+        self::generateOutput($functionName, 'Attempting to have channel ' . $user . ' follow the user ' . $chan, 4);      
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2343,12 +2343,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -2358,16 +2358,16 @@ class twitch
         
         $result = self::cURL_put($url, $post, $options, false);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
         
         if ($result['status'] == 404)
         {
-            self::cURL_generateOutput($functionName, 'Unable to follow channel.  Channel not found', 4);
+            self::generateOutput($functionName, 'Unable to follow channel.  Channel not found', 4);
             $result = false;
         }
 
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($user, $chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2388,7 +2388,7 @@ class twitch
         $functionName = 'UNFOLLOW_CHANNEL';
         $requiredAuth = 'user_follows_edit';
         
-        self::cURL_generateOutput($functionName, 'Attempting have channel ' . $user . ' unfollow channel ' . $chan, 4);
+        self::generateOutput($functionName, 'Attempting have channel ' . $user . ' unfollow channel ' . $chan, 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2414,12 +2414,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -2429,19 +2429,19 @@ class twitch
         
         $result = self::cURL_delete($url, $delete, $options, false);
         
-        self::cURL_generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($user, $chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $delete);
         
         if ($result['status'] == 404)
         {
-            self::cURL_generateOutput($functionName, 'Successfully unfollowed channel', 4);
+            self::generateOutput($functionName, 'Successfully unfollowed channel', 4);
             unset($functionName);
             return true;
         } else {
-            self::cURL_generateOutput($functionName, 'Unsuccessfully unfollowed channel', 4);
+            self::generateOutput($functionName, 'Unsuccessfully unfollowed channel', 4);
             unset($functionName);
             return false;
         }
@@ -2461,7 +2461,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_LARGEST_GAME';
         
-        self::cURL_generateOutput($functionName, 'Attempting to get a list of the channels currently live to limit sorted by viewer count', 4);
+        self::generateOutput($functionName, 'Attempting to get a list of the channels currently live to limit sorted by viewer count', 4);
         
         // Init some vars       
         $gamesObject = array();
@@ -2479,7 +2479,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($limit, $offset, $hls, $url, $options, $gamesObject, $key, $game, $functionName);
         
         return $games;
@@ -2498,7 +2498,7 @@ class twitch
         global $twitch_configuration;
 
         $functionName = 'SEARCH_GAME';
-        self::cURL_generateOutput($functionName, 'Searching all game catagories for the string: ' . $query, 4);
+        self::generateOutput($functionName, 'Searching all game catagories for the string: ' . $query, 4);
         
         $url = 'https://api.twitch.tv/kraken/search/games';
         $get = array(
@@ -2524,7 +2524,7 @@ class twitch
         }
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($query, $live, $url, $get, $options, $result, $k, $key, $value, $game, $functionName);
     
         return $object;
@@ -2541,7 +2541,7 @@ class twitch
     {
         $functionName = 'GET_STREAM_OBJECT';
         
-        self::cURL_generateOutput($functionName, 'Getting the stream object for channel ' . $chan, 4);
+        self::generateOutput($functionName, 'Getting the stream object for channel ' . $chan, 4);
         
         $url = 'https://api.twitch.tv/kraken/streams/' . $chan;
         $get = array();
@@ -2557,7 +2557,7 @@ class twitch
         }
         
         // Clean up
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $url, $get, $result, $functionName);
         
         return $object;
@@ -2607,7 +2607,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($game, $channels, $limit, $offset, $embedable, $hls, $client_id, $url, $options, $streamsObject, $key, $k, $value, $v, $objKey, $functionName);
         
         return $streams;              
@@ -2627,7 +2627,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_FEATURED';
         
-        self::cURL_generateOutput($functionName, 'Getting all featured streamers to limit', 4);
+        self::generateOutput($functionName, 'Getting all featured streamers to limit', 4);
         
         // Init some vars
         $featured = array();          
@@ -2648,7 +2648,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($limit, $offset, $embedable, $hls, $url, $options, $featuredObject, $key, $value, $k, $functionName);
         
         return $featured;           
@@ -2665,7 +2665,7 @@ class twitch
     {
         $functionName = 'GET_STATISTICS';
         
-        self::cURL_generateOutput($functionName, 'Getting current statistics for Twitch', 4);
+        self::generateOutput($functionName, 'Getting current statistics for Twitch', 4);
         
         $statistics = array();
         $url = 'https://api.twitch.tv/kraken/streams/summary';
@@ -2681,7 +2681,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($hls, $url, $get, $options, $result, $key, $value, $functionName);
         
         return $statistics;        
@@ -2698,7 +2698,7 @@ class twitch
     {
         $functionName = 'GET_VIDEO-ID';
         
-        self::cURL_generateOutput($functionName, 'Getting the video object for the video with the ID: ' . $id, 4);
+        self::generateOutput($functionName, 'Getting the video object for the video with the ID: ' . $id, 4);
         
         // init some vars
         $object = array();
@@ -2715,7 +2715,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($id, $functionName, $url, $get, $options, $result);
         
         return $object;             
@@ -2736,7 +2736,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_VIDEO-CHANNEL';
         
-        self::cURL_generateOutput($functionName, 'Getting the vido objects for channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Getting the vido objects for channel: ' . $chan, 4);
         
         // Init some vars
         $videoObjects = array();     
@@ -2755,7 +2755,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $limit, $offset, $boradcastsOnly, $functionName, $video, $videos, $key, $options, $url);
         
         return $videoObjects;                  
@@ -2780,7 +2780,7 @@ class twitch
         $requiredAuth = 'user_read';
         $functionName = 'GET_VIDEO-FOLLOWED';
         
-        self::cURL_generateOutput($functionName, 'Grabbing all video objects for the channels using the code: ' . $code, 4);
+        self::generateOutput($functionName, 'Grabbing all video objects for the channels using the code: ' . $code, 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2806,12 +2806,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -2832,7 +2832,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($limit, $offset, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $videos, $video, $url, $options, $key);
         
         return $videosObject;      
@@ -2856,7 +2856,7 @@ class twitch
         
         $functionName = 'GET_TOP_VIDEOS';
         
-        elf::cURL_generateOutput($functionName, 'Grabbing all of the top videos to limit', 4);
+        elf::generateOutput($functionName, 'Grabbing all of the top videos to limit', 4);
         
         // check the period to make sure it is valid
         if (($period != 'week') && ($period != 'month') && ($period != 'all'))
@@ -2881,7 +2881,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($game, $limit, $offset, $period, $functionName, $video, $videos, $key, $url, $options);
         
         return $videosObject;         
@@ -2906,7 +2906,7 @@ class twitch
         $requiredAuth = 'channel_subscriptions';
         $functionName = 'GET_SUBSCRIBERS';
         
-        self::cURL_generateOutput($functionName, 'Getting the list of subcribers to channel: ' . $chan, 4);      
+        self::generateOutput($functionName, 'Getting the list of subcribers to channel: ' . $chan, 4);      
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2932,12 +2932,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -2964,7 +2964,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($chan, $limit, $offset, $direction, $authKey, $code, $requiredAuth, $authKey, $auth, $authSuccessful, $type, $subscriber, $subscribersObject, $key, $url, $options);
         
         return $subscribers;
@@ -2985,7 +2985,7 @@ class twitch
         $requiredAuth = 'channel_subscriptions';
         $functionName = 'CHECK_SUBSCRIPTION';
         
-        self::cURL_generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 4);
+        self::generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -3011,12 +3011,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -3030,15 +3030,15 @@ class twitch
         // Check the return
         if (!empty($subscribed))
         {
-            self::cURL_generateOutput($functionName, 'User ' . $user . ' is subscribed to channel ' . $chan, 4);
+            self::generateOutput($functionName, 'User ' . $user . ' is subscribed to channel ' . $chan, 4);
             $subscribed = true;
         } else {
-            self::cURL_generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan . ' or system was unavailable', 4);
+            self::generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan . ' or system was unavailable', 4);
             $subscribed = false;
         }
         
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 4);
         unset($user, $chan, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $url, $options, $get);
         
         return $subscribed;
@@ -3057,7 +3057,7 @@ class twitch
         global $twitch_configuration;        
         $functionName = 'GET_TEAMS';
         
-        self::cURL_generateOutput($functionName, 'Grabbing all available teams objects', 4);
+        self::generateOutput($functionName, 'Grabbing all available teams objects', 4);
         
         // Init some vars       
         $teams = array();        
@@ -3075,7 +3075,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::cURL_generateOutput($functionName, 'Cleaning Memory', 4);
+        self::generateOutput($functionName, 'Cleaning Memory', 4);
         unset($limit, $offset, $teamsObject, $team, $url, $options, $key);
         
         return $teams;
@@ -3091,7 +3091,7 @@ class twitch
     public function getTeam($team)
     {
         $functionName = 'GET_USEROBJECT';
-        self::cURL_generateOutput($functionName, 'Attempting to get the team object for user: ' . $team, 4);
+        self::generateOutput($functionName, 'Attempting to get the team object for user: ' . $team, 4);
         
         $url = 'https://api.twitch.tv/kraken/teams/' . $team;
         $options = array();
@@ -3101,7 +3101,7 @@ class twitch
         $teamObject = json_decode(self::cURL_get($url, $get, $options, false), true);
 
         //clean up
-        self::cURL_generateOutput($functionName, 'Cleaning Memory', 4);
+        self::generateOutput($functionName, 'Cleaning Memory', 4);
         unset($team, $url, $options, $get, $functionName);
         
         return $teamObject;
@@ -3117,7 +3117,7 @@ class twitch
     public function getUserObject($user)
     {
         $functionName = 'GET_USEROBJECT';
-        self::cURL_generateOutput($functionName, 'Attempting to get the user object for user: ' . $user, 4);
+        self::generateOutput($functionName, 'Attempting to get the user object for user: ' . $user, 4);
         
         $url = 'https://api.twitch.tv/kraken/users/' . $user;
         $options = array();
@@ -3125,10 +3125,10 @@ class twitch
         
         // Build our cURL query and store the array
         $userObject = json_decode(self::cURL_get($url, $get, $options, false), true);
-        self::cURL_generateOutput($functionName, 'Raw return: ' . $userObject, 4);
+        self::generateOutput($functionName, 'Raw return: ' . $userObject, 4);
         
         //clean up
-        self::cURL_generateOutput($functionName, 'Cleaning Memory', 4);
+        self::generateOutput($functionName, 'Cleaning Memory', 4);
         unset($user, $url, $options, $get, $functionName);
         
         return $userObject;          
@@ -3148,7 +3148,7 @@ class twitch
         $functionName = 'GET_USEROBJECT-AUTH';
         $requiredAuth = 'user_read';
         
-        self::cURL_generateOutput($functionName, 'Attempting to get the authenticated user object for user: ' . $user, 4);
+        self::generateOutput($functionName, 'Attempting to get the authenticated user object for user: ' . $user, 4);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -3174,12 +3174,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::cURL_generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::cURL_generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 4);
             $authKey = $auth[0];
         }
         
@@ -3189,10 +3189,10 @@ class twitch
         
         // Build our cURL query and store the array
         $userObject = json_decode(self::cURL_get($url, $get, $options, false), true);
-        self::cURL_generateOutput($functionName, 'Raw return: ' . $userObject, 4);
+        self::generateOutput($functionName, 'Raw return: ' . $userObject, 4);
         
         //clean up
-        self::cURL_generateOutput($functionName, 'Cleaning Memory', 4);
+        self::generateOutput($functionName, 'Cleaning Memory', 4);
         unset($user, $url, $options, $get, $authKey, $auth, $authSuccessful, $type, $functionName, $code);
         
         return $userObject;
