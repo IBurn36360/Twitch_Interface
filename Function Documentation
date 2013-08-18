@@ -1,6 +1,6 @@
 Function Documentation:
 
-=======================
+<hr />
 Error Handler
 
 twitch::generateError($errNo, $errStr, $return = null)
