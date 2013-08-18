@@ -1,8 +1,19 @@
 <?php
 /**
- * This is a universal API for connecting to Twitch.tv's Kraken V3
+ * This Twitch Interface is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * requires cURL and some form of JSON utilities to be installed on the server
+ * This Twitch Interface is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * A copy of the GNU GPLV3 license can be found at http://www.gnu.org/licenses/
+ * or can be found in the folder distributed with the software.
+ * 
+ * Author: Anthony 'IBurn36360' Diaz - 2013
  */
 
 // Make sure we meet our dependency requirements
