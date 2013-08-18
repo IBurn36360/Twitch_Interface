@@ -1,3 +1,47 @@
 Function Documentation:
-================
 
+=======================
+Error Handler
+
+twitch::generateError($errNo, $errStr, $return = null)
+
+PARAMS:
+ $errNo - [int] Error number of the error tossed
+ $errStr - [str] Error string returned for the error tossed
+ $return - [mixed] The return provided to the query
+ 
+RETURN: 
+ @return User defined return
+ 
+This function is designed to handle errors, mostly status 0 returns from Twitch.  This is, by default, an empty function.  In order to enable output, put in your handler for your output in the function.  All error output defaults to here.
+
+=======================
+Output Handler
+
+twitch::generateOutput($function, $errStr, $outputLevel = 5)
+
+PARAMS:
+ $function - [string] String name of the function or alias being called
+ $errStr - [string] debug output to be passed
+ $outputLevel - [int] The level of the output passed, used in output suppression, Default level of output is 5 (Lowest)
+ 
+RETURN
+ @return User defined return
+ 
+ This function is designed to handle all of the output from functions.  This includes all status and step messages from the functions, including all raw returns from Twitch.  The debug suppression level allows you to determine what kind of output gets passed to your output function.  This is, by default, an empty function.  In order to enable output, put in your handler for your output in the function.
+ 
+=======================
+GET style cURL operator
+
+twitch::cURL_get($url, array $get = array(), array $options = array(), $returnStatus = false)
+
+PARAMS:
+ $url - [string] URL supplied for the connection
+ $get - [array]  All supplied data used to define what data to get
+ $options - [array] Set options for the cURL session
+ $returnStatus - [bool] Sets the function to return the numerical status instead of the raw result
+ 
+RETURN:
+ @return $result - [mixed] The raw return of the resulting query or the numerical status
+ 
+This function handles all GET style cURL commands.  Is flexible enough to handle all of the calls passed to it and will be able to accept an new parameters in the coming future.  Can be set to return the HTTPD status with the $returnStatus variable.  $options overrides all defaults, allowing future functions to change how the queries run.
