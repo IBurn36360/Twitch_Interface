@@ -25,3 +25,5 @@ License
 TL`DR
 ===============
 You can do whatever you want with this piece of software, including modifying it and using it in any way, shape or form.  The only requirement is that you keep the credit and the license in the header of the file itself and that you not, in any circumstances redistribute the file in question for the safety of any people who wish to use this software.  If you wish to have other people use this software, it is best that you give them the link to this particular git for the latest version of this software and to allow them to find all of the information relating to this piece of software.
+
+For any information about the interface, please visit the wiki
