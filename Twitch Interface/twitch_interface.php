@@ -1383,7 +1383,6 @@ class twitch
     /**
      * Generate an Auth key for our session to use if we don't have one, requires a client key and secret for auth
      * 
-     * @param $grantType - [mixed]  Either the string of type to grant access for or the array of access types
      * @param $code      - [string] String of auth code used to grant authorization
      * 
      * @return array($authKey, $grants) - Array return: $authKey is the token returned, $grants is an array of all granted permissions
