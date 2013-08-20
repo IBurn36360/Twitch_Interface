@@ -701,8 +701,7 @@ class twitch
         
         self::generateOutput($functionName, 'Offset set to: ' . $offset, 4);
         
-        // Init some vars
-        $limit ++; // Account for the _links object in the first return      
+        // Init some vars  
         $grabbedRows = 0;
         $toDo = 0;
         $currentReturnRows = 0;
@@ -713,7 +712,7 @@ class twitch
         {
             $toDo = 100000000; // Set to an arbritrarily large number so that we can itterate forever if need be
         } else {
-            $toDo = $limit; // We have a finite amount of iterations to do
+            $toDo = $limit + 1; // We have a finite amount of iterations to do, account for the _links object in the first return
         }
         
         // Calculate the starting limit
@@ -1085,7 +1084,6 @@ class twitch
         self::generateOutput($functionName, 'Offset set to: ' . $offset, 4);
         
         // Init some vars
-        $limit ++; // Account for the _links object in the first return     
         $grabbedRows = 0;
         $currentReturnRows = 0;
         $counter = 0;
@@ -1095,7 +1093,7 @@ class twitch
         {
             $toDo = 100000000; // Set to an arbritrarily large number so that we can itterate forever if need be
         } else {
-            $toDo = $limit; // We have a finite amount of iterations to do
+            $toDo = $limit + 1; // We have a finite amount of iterations to do, account for the _links object in the first return
         }
         
         // Calculate the starting limit
