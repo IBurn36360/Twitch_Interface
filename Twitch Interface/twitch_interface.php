@@ -510,7 +510,6 @@ class twitch
             }
         }
         
-        
         $result = curl_exec($handle);
         $httpdStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         
@@ -851,6 +850,11 @@ class twitch
             }
             
             $toDo -= $grabbedRows;
+            
+            if ($toDo == 1)
+            {
+                $toDo = 2; // Catch this, it will drop one return
+            }
             
             self::generateOutput($functionName, 'Calculating new Parameters', 4);
             
@@ -1218,6 +1222,11 @@ class twitch
             }
             
             $toDo -= $grabbedRows;
+            
+            if ($toDo == 1)
+            {
+                $toDo = 2; // Catch this, it will drop one return
+            }
             
             self::generateOutput($functionName, 'Calculating new Parameters', 4);
             
