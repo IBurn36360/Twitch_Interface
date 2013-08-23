@@ -642,8 +642,8 @@ class twitch
      * 
      * -- OPTIONAL PARAMS --
      * The following params are all optional and are specific the the calling funciton.  Null disables the param from being passed
-     * @param $arrayKey - [string] The key to look into the array for for data
      * 
+     * @param $arrayKey - [string] The key to look into the array for for data
      * @param $authKey - [string] The OAuth token for the session of calls
      * @param $hls - [bool] Limit the calls to only streams using HLS
      * @param $direction - [string] The sorting direction
