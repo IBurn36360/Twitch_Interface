@@ -548,7 +548,7 @@ class twitch
     }
     
     /**
-     * This operates a POST style cURL command with the DELETE custom command option.  Will return success.
+     * This operates a POST style cURL command with the DELETE custom command option.
      * 
      * @param $url - [string] URL supplied for the connection
      * @param $post = [array]  All supplied data used to define what data to delete
