@@ -638,7 +638,7 @@ class twitch
      * @param $url - [string] The URL to iterate on
      * @param $options - [array] The array of options to use for the iteration
      * @param $limit - [int] The limit of the query
-     * @param $ofset - [int] The starting offset of the query
+     * @param $offset - [int] The starting offset of the query
      * 
      * -- OPTIONAL PARAMS --
      * The following params are all optional and are specific the the calling funciton.  Null disables the param from being passed
@@ -1025,7 +1025,7 @@ class twitch
      * @param $url - [string] The URL to iterate on
      * @param $options - [array] The array of options to use for the iteration
      * @param $limit - [int] The limit of the query
-     * @param $ofset - [int] The starting offset of the query
+     * @param $offset - [int] The starting offset of the query
      * @param $arrayKey - [string] The key to look into the array for for data
      * @param $arrayKey2 - [string] The second key to look into the array for for data
      * 
