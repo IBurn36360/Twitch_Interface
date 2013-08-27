@@ -1392,7 +1392,7 @@ class twitch
     /**
      * Generate an Auth key for our session to use if we don't have one, requires a client key and secret for auth
      * 
-     * @param $code      - [string] String of auth code used to grant authorization
+     * @param $code - [string] String of auth code used to grant authorization
      * 
      * @return array($authKey, $grants) - Array return: $authKey is the token returned, $grants is an array of all granted permissions
      */
@@ -1467,7 +1467,7 @@ class twitch
      * 
      * @param $url - [string] The redirect URL from Twitch's authentication servers
      * 
-     * @return $code - [string] The returned authentication code used in the GET and POST functions
+     * @return $code - [string] The returned authentication code used in authenticated calls
      */ 
     public function retrieveRedirectCode($url)
     {
@@ -1483,14 +1483,14 @@ class twitch
      * Set $authKey to null in that case.
      * 
      * @param $chan - [string] Channel name to grab blocked users list from
-     * @param $limit - [int] Limit of users to grab, if <= 0, will return all
-     * @param $ofset - [int] The starting offset of the query
+     * @param $limit - [int] Limit of users to grab, -1 is unlimited
+     * @param $offset - [int] The starting offset of the query
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
      * 
      * @return $blockedUsers - Unkeyed array of all blocked users to limit
      */ 
-    public function getBlockedUsers($chan, $limit, $offset, $authKey, $code)
+    public function getBlockedUsers($chan, $limit = -1, $offset = 0, $authKey, $code)
     {
         global $twitch_configuration;
         
@@ -1723,7 +1723,7 @@ class twitch
      * 
      * @param $chan - [string] Name of the channel to grab the object for
      * 
-     * @return $object - [array] Keyes array of all publically available channel data
+     * @return $object - [array] Keyed array of all publically available channel data
      */ 
     public function getChannelObject($chan)
     {
@@ -2242,7 +2242,7 @@ class twitch
      * 
      * @param $chan - [string] Channel name to get the followers for
      * @param $limit - [int] the limit of users
-     * @param $ofset - [int] The starting offset of the query
+     * @param $offset - [int] The starting offset of the query
      * @param $sorting - [string] Sorting direction, valid options are 'asc' and 'desc'
      * 
      * @return $follows - [array] An unkeyed array of all followers to limit
@@ -2283,7 +2283,7 @@ class twitch
      * 
      * @param $username - [string] Username to get the follows of
      * @param $limit - [int] the limit of users
-     * @param $ofset - [int] The starting offset of the query
+     * @param $offset - [int] The starting offset of the query
      * @param $sorting - [string] Sorting direction, valid options are 'asc' and 'desc'
      * 
      * @return $channels - [array] An unkeyed array of all followed channels to limit
