@@ -2927,7 +2927,7 @@ class twitch
      * 
      * @return $subscribers - [array] Unkeyed array of all subscribed users
      */ 
-    public function getChannelSubscribers($chan, $limit, $offset, $direction = 'asc', $authKey, $code)
+    public function getChannelSubscribers($chan, $limit = -1, $offset = 0, $direction = 'asc', $authKey, $code)
     {
         global $twitch_configuration;
         
