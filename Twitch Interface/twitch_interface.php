@@ -1992,7 +1992,7 @@ class twitch
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
      * 
-     * @return $result - Either a 204, which will return null for auth failiure
+     * @return $result - True on success, else false on failiure
      */ 
     public function resetStreamKey($chan, $authKey, $code)
     {   
@@ -2040,9 +2040,16 @@ class twitch
         $options = array();
         $post = array('oauth_token' => $authKey);
         
-        $result = self::cURL_delete($url, $post, $options, false, true);
+        $result = self::cURL_delete($url, $post, $options, true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Status return: ' . $result, 5);
+        
+        if ($result == 204)
+        {
+            $result = true;
+        } else {
+            $result = false;
+        }
         
         //clean up
         self::generateOutput($functionName, 'Cleaning memory', 4);
