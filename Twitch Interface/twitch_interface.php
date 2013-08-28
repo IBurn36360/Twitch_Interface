@@ -2145,7 +2145,7 @@ class twitch
      * 
      * @return $object - [array] Keyed array of all returned data for the emoticins, including the supplied regex match used to parse it
      */ 
-    public function chat_getEmoticons_Global($limit, $offset)
+    public function chat_getEmoticonsGlobal($limit, $offset)
     {
         global $twitch_configuration;
         
