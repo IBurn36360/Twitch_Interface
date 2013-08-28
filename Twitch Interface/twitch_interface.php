@@ -2122,11 +2122,11 @@ class twitch
             'length' => $length
         );
         
-        $result = self::cURL_post($url, $post, $options, false);
+        $result = self::cURL_post($url, $post, $options, true);
         
         self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
         
-        if ($result)
+        if ($result == 204)
         {
             self::generateOutput($functionName, 'Commercial successfully started', 4);
         } else {
