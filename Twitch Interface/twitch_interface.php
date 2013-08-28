@@ -391,15 +391,10 @@ class twitch
             return null;
         }
         
-        if ($httpdStatus == 422)
-        {
-            $result = false;
-        }
-        
         curl_close($handle);
         
         self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 4);
-        self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
+        self::generateOutput($functionName, 'Raw Return: ' . $result, 5);
         
         // Clean up
         self::generateOutput($functionName, 'Cleaning memory', 4);
@@ -2129,8 +2124,10 @@ class twitch
         if ($result == 204)
         {
             self::generateOutput($functionName, 'Commercial successfully started', 4);
+            $result = true;
         } else {
             self::generateOutput($functionName, 'Commercial unable to be started', 4);
+            $result = false;
         }
         
         //clean up
