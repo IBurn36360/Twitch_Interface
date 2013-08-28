@@ -2061,7 +2061,7 @@ class twitch
      * @param $code - [string] Code used to generate an Authentication key
      * @param $length - [int] Length of time for the commercial break.  Valid options are 30,60,90.
      * 
-     * @return $return - Either a 204 for success or a failiure status return
+     * @return $return - True on success, else false
      */ 
     public function startCommercial($chan, $authKey, $code, $length = 30)
     {
