@@ -2180,7 +2180,7 @@ class twitch
     /**
      * Grabs a list of call channel specific emoticons
      * 
-     * @param $user - [string] Channel name to grab emoticons for
+     * @param $user - [string] username to grab emoticons for
      * @param $limit - [int] The limit of objects to grab for the query
      * @param $offest - [int] The offset to start the query from
      * 
