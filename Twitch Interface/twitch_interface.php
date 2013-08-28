@@ -2180,21 +2180,21 @@ class twitch
     /**
      * Grabs a list of call channel specific emoticons
      * 
-     * @param $chan - [string] Channel name to grab emoticons for
+     * @param $user - [string] Channel name to grab emoticons for
      * @param $limit - [int] The limit of objects to grab for the query
      * @param $offest - [int] The offset to start the query from
      * 
      * @return $object - [array] Keyed array of all returned data for the emoticons
      */ 
-    public function chat_getEmoticons($chan, $limit, $offset)
+    public function chat_getEmoticons($user, $limit, $offset)
     {
         global $twitch_configuration;
         
         $functionName = 'GET_EMOTICONS';
         
-        self::generateOutput($functionName, 'Grabbing emoticons for channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Grabbing emoticons for channel: ' . $user, 4);
         
-        $url = 'https://api.twitch.tv/kraken/chat/' . $chan . '/emoticons';
+        $url = 'https://api.twitch.tv/kraken/chat/' . $user . '/emoticons';
         $options = array();
         $object = array();
         
@@ -2213,7 +2213,7 @@ class twitch
         
         // clean up
         self::generateOutput($functionName, 'Cleaning memory', 4);
-        unset($chan, $limit, $offset, $functionName, $url, $options, $objects, $k, $row);
+        unset($user, $limit, $offset, $functionName, $url, $options, $objects, $k, $row);
         
         return $object;
     }
