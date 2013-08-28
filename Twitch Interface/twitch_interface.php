@@ -2759,7 +2759,7 @@ class twitch
      * 
      * @return $videoObjects - [array] array of all returned video objects, Key is ID
      */ 
-    public function getVideo_Channel($chan, $limit, $offset, $boradcastsOnly = false)
+    public function getVideo_Channel($chan, $limit = -1, $offset = 0, $boradcastsOnly = false)
     {
         global $twitch_configuration;
         $functionName = 'GET_VIDEO-CHANNEL';
