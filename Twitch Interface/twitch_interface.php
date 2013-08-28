@@ -2801,7 +2801,7 @@ class twitch
      * 
      * @todo FIX THIS
      */ 
-    public function getVideo_Followed($limit, $offset, $authKey, $code)
+    public function getVideo_Followed($limit = -1, $offset = 0, $authKey, $code)
     {
         global $twitch_configuration;
         
