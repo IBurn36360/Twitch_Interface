@@ -1752,7 +1752,7 @@ class twitch
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
      * 
-     * @return $object - [array] Keyes array of all channel data
+     * @return $object - [array] Keyed array of all channel data
      */ 
     public function getChannelObject_Authd($authKey, $code)
     {
@@ -1814,14 +1814,14 @@ class twitch
      * Grabs a list of all editors supplied for the channel
      * 
      * @param $chan - [string] the string channel name to grab the editors for
-     * @param $limit - [int] The limit of returns for the query
+     * @param $limit - [int] Limit of users to grab, -1 is unlimited
      * @param $offset - [int] The initial offset of the query
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
      * 
      * @return $editors - [array] unkeyed array of all editor displayed names
      */ 
-    public function getEditors($chan, $limit, $offset, $authKey, $code, $functionName)
+    public function getEditors($chan, $limit = -1, $offset = 0, $authKey, $code)
     {
         global $twitch_configuration;
         
@@ -1967,9 +1967,16 @@ class twitch
             $updatedObjects['channel']['delay'] = $delay;
         } 
         
-        $result = self::cURL_put($url, $updatedObjects, $options, false);
+        $result = self::cURL_put($url, $updatedObjects, $options, true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Status return: ' . $result, 5);
+        
+        if (($result != 404) || ($result != 400))
+        {
+            $result = true;
+        } else {
+            $result = false;
+        }
         
         // Clean up
         self::generateOutput($functionName, 'Cleaning memory', 4);
