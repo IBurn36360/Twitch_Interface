@@ -2878,7 +2878,7 @@ class twitch
      * 
      * @todo FIX THIS
      */ 
-    public function getTopVideos($game = '', $limit, $offset, $period = 'week')
+    public function getTopVideos($game = '', $limit = -1, $offset = 0, $period = 'week')
     {
         global $twitch_configuration;
         
