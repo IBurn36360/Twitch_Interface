@@ -2484,7 +2484,7 @@ class twitch
      * 
      * @return $object - [array] A complete array of all channel objects in order based on the sorting rules
      */ 
-    public function getLargestGame($limit, $offset, $hls = false)
+    public function getLargestGame($limit = -1, $offset = 0, $hls = false)
     {
         global $twitch_configuration;
         $functionName = 'GET_LARGEST_GAME';
@@ -2605,7 +2605,7 @@ class twitch
      * 
      * @return $object - [array] All returned data for the query parameters
      */ 
-    public function getStreamsObjects($game = null, $channels = array(), $limit, $offset, $embedable = false, $hls = false, $client_id = null)
+    public function getStreamsObjects($game = null, $channels = array(), $limit = -1, $offset = 0, $embedable = false, $hls = false, $client_id = null)
     {
         global $twitch_configuration;
         
@@ -2650,7 +2650,7 @@ class twitch
      * 
      * @return $featuredObject - [array] Array of all stream objects for the query or false if the query fails
      */ 
-    public function getFeaturedStreams($limit, $offset, $embedable = false, $hls = false)
+    public function getFeaturedStreams($limit, $offset, $hls = false)
     {
         global $twitch_configuration;
         $functionName = 'GET_FEATURED';
