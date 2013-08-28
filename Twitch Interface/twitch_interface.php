@@ -3080,7 +3080,7 @@ class twitch
      * 
      * @return $teams - [array] Keyed array of all team objects.  Key is the team name
      */ 
-    public function getTeams($limit, $offset)
+    public function getTeams($limit = -1, $offset = 0)
     {
         global $twitch_configuration;        
         $functionName = 'GET_TEAMS';
