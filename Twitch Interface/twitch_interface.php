@@ -786,17 +786,30 @@ class twitch
             
             $grabbedRows += $currentReturnRows;
             
-            foreach ($return as $set)
+            if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
             {
-                foreach ($set as $key => $value)
+                foreach ($r as $key => $value)
                 {
                     if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
                         $object[$counter] = $value;
-                        $counter ++;                        
-                    }                    
+                        $counter ++;
+                    }
                 }
+            } else {
+                foreach ($return as $set)
+                {
+                    foreach ($set as $key => $value)
+                    {
+                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        {
+                            $object[$counter] = $value;
+                            $counter ++;                        
+                        }                    
+                    }
+                }                  
             }
+
             
             // Calculate our returns and our expected returns
             $expectedReturns = ($startingLimit * $iterations) - (1 * $iterations);
@@ -965,16 +978,28 @@ class twitch
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
         {
-            foreach ($return as $set)
+            if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
             {
-                foreach ($set as $key => $value)
+                foreach ($r as $key => $value)
                 {
                     if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
                         $object[$counter] = $value;
-                        $counter ++;                        
-                    }                    
+                        $counter ++;
+                    }
                 }
+            } else {
+                foreach ($return as $set)
+                {
+                    foreach ($set as $key => $value)
+                    {
+                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        {
+                            $object[$counter] = $value;
+                            $counter ++;                        
+                        }                    
+                    }
+                }                  
             }
         }
         
@@ -1158,16 +1183,28 @@ class twitch
             
             $grabbedRows += $currentReturnRows;
             
-            foreach ($return as $set)
+            if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
             {
-                foreach ($set as $key => $value)
+                foreach ($r as $key => $value)
                 {
                     if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
                         $object[$counter] = $value;
-                        $counter ++;                        
-                    }                    
+                        $counter ++;
+                    }
                 }
+            } else {
+                foreach ($return as $set)
+                {
+                    foreach ($set as $key => $value)
+                    {
+                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        {
+                            $object[$counter] = $value;
+                            $counter ++;                        
+                        }                    
+                    }
+                }                  
             }
             
             // Calculate our returns and our expected returns
@@ -1337,16 +1374,28 @@ class twitch
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
         {
-            foreach ($return as $set)
+            if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
             {
-                foreach ($set as $key => $value)
+                foreach ($r as $key => $value)
                 {
                     if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
                         $object[$counter] = $value;
-                        $counter ++;                        
-                    }                    
+                        $counter ++;
+                    }
                 }
+            } else {
+                foreach ($return as $set)
+                {
+                    foreach ($set as $key => $value)
+                    {
+                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        {
+                            $object[$counter] = $value;
+                            $counter ++;                        
+                        }                    
+                    }
+                }                  
             }
         }
         
@@ -2778,8 +2827,6 @@ class twitch
      * @param $code - [string] Code used to generate an Authentication key
      * 
      * @return $videosObject - [array] All video objects returned by the query, Key is ID
-     * 
-     * @todo FIX THIS
      */ 
     public function getVideo_Followed($limit = -1, $offset = 0, $authKey, $code)
     {
@@ -2855,8 +2902,6 @@ class twitch
      * @param $period - [string] set the period for the query, valid values are 'week', 'month', 'all'
      * 
      * @return $videosObject - [array] Array of all returned video objects, Key is ID
-     * 
-     * @todo FIX THIS
      */ 
     public function getTopVideos($game = '', $limit = -1, $offset = 0, $period = 'week')
     {
