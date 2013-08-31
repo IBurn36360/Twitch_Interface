@@ -2788,7 +2788,7 @@ class twitch
      * 
      * @return $videoObjects - [array] array of all returned video objects, Key is ID
      */ 
-    public function getVideo_Channel($chan, $limit = -1, $offset = 0, $boradcastsOnly = false)
+    public function getVideo_channel($chan, $limit = -1, $offset = 0, $boradcastsOnly = false)
     {
         global $twitch_configuration;
         $functionName = 'GET_VIDEO-CHANNEL';
@@ -2828,7 +2828,7 @@ class twitch
      * 
      * @return $videosObject - [array] All video objects returned by the query, Key is ID
      */ 
-    public function getVideo_Followed($limit = -1, $offset = 0, $authKey, $code)
+    public function getVideo_followed($limit = -1, $offset = 0, $authKey, $code)
     {
         global $twitch_configuration;
         
