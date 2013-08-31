@@ -477,22 +477,16 @@ class twitch
         
         self::generateOutput($functionName, 'command PUT => URL: ' . $url, 4);
         
-        
         foreach ($put as $param => $val)
         {
-            if (($param == 'client_id') || ($param == 'client_secret'))
+            if (is_array($val))
             {
-                self::generateOutput($functionName, 'Information removed from output.  PARAM: ' . $param, 4);
-            } else {
-                if (is_array($val))
+                foreach ($val as $key => $value)
                 {
-                    foreach ($val as $key => $value)
-                    {
-                        self::generateOutput($functionName, 'PUT option: [' . $param . '] ' . $key . '=>' . $value, 4);
-                    }
-                } else {
-                    self::generateOutput($functionName, 'PUT option: ' . $param . '=>' . $val, 4);
+                    self::generateOutput($functionName, 'PUT option: [' . $param . '] ' . $key . '=>' . $value, 4);
                 }
+            } else {
+                self::generateOutput($functionName, 'PUT option: ' . $param . '=>' . $val, 4);
             }
         }
         
@@ -505,12 +499,7 @@ class twitch
             $errNo = curl_errno($handle);
             self::generateError($errNo, $errStr, $result); 
         }
-        
-        if ($httpdStatus == 422)
-        {
-            $result = false;
-        }
-        
+
         curl_close($handle);
         
         self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 4);
