@@ -358,25 +358,18 @@ class twitch
         
         self::generateOutput($functionName, 'command POST => URL: ' . $url, 4);
         
-        
         foreach ($post as $param => $val)
         {
-            if (($param == 'client_id') || ($param == 'client_secret'))
+            if (is_array($val))
             {
-                self::generateOutput($functionName, 'Information removed from output.  PARAM: ' . $param, 4);
-            } else {
-                if (is_array($val))
+                foreach ($val as $key => $value)
                 {
-                    foreach ($val as $key => $value)
-                    {
-                        self::generateOutput($functionName, 'POST option: [' . $param . '] ' . $key . '=>' . $value, 4);
-                    }
-                } else {
-                    self::generateOutput($functionName, 'POST option: ' . $param . '=>' . $val, 4);
+                    self::generateOutput($functionName, 'POST option: [' . $param . '] ' . $key . '=>' . $value, 4);
                 }
+            } else {
+                self::generateOutput($functionName, 'POST option: ' . $param . '=>' . $val, 4);
             }
         }
-        
         
         $result = curl_exec($handle);
         $httpdStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
@@ -387,8 +380,6 @@ class twitch
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
             self::generateError($errNo, $errStr, $result); 
-            
-            return null;
         }
         
         curl_close($handle);
