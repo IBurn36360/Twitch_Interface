@@ -788,7 +788,7 @@ class twitch
             
             if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
             {
-                foreach ($r as $key => $value)
+                foreach ($return as $key => $value)
                 {
                     if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
@@ -980,7 +980,7 @@ class twitch
         {
             if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
             {
-                foreach ($r as $key => $value)
+                foreach ($return as $key => $value)
                 {
                     if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
@@ -1185,7 +1185,7 @@ class twitch
             
             if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
             {
-                foreach ($r as $key => $value)
+                foreach ($return as $key => $value)
                 {
                     if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
@@ -1376,7 +1376,7 @@ class twitch
         {
             if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
             {
-                foreach ($r as $key => $value)
+                foreach ($return as $key => $value)
                 {
                     if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
