@@ -42,6 +42,7 @@ $twitch_configuration = array(
     'API_VERSION'             => 3,                // This sets what API version to use.  Specifies that value in the header
     'TOKEN_SEND_METHOD'       => 'HEADER',         // This sets how any OAuth tokens are sent.  Valid options are 'HEADER' and 'QUERY'
     'DEBUG_SUPPRESSION_LEVEL' => 5,                // This sets the maximum debug level that gets to output, 5 sets all output to output
+    'RETRY_COUNTER'           => 3,                // This sets the number of retries the interface will do when faced with status 0 returns
     'CALL_LIMIT_DEFAULT'      => '25',
     'CALL_LIMIT_DOUBLE'       => '50',
     'CALL_LIMIT_MAX'          => '100');
@@ -775,6 +776,20 @@ class twitch
         // Iterate until we have everything grabbed we want to have
         while (($currentReturnRows == $startingLimit) && ($toDo > 0))
         {
+            // check to see if return was 0, this indicates a staus return
+            if ($return == 0)
+            {
+                for ($i = 1; $i <= $twitch_configuration['RETRY_COUNTER']; $i++)
+                {
+                    $return = json_decode(self::cURL_get($url, $get, $options), true);
+                    
+                    if ($return != 0)
+                    {
+                        break;
+                    }
+                }
+            }
+            
             self::generateOutput($functionName, 'Returns to grab: ' . $toDo, 4);
             
             if ($arrayKey != null)
@@ -1179,6 +1194,20 @@ class twitch
         // Iterate until we have everything grabbed we want to have
         while (($currentReturnRows == $startingLimit) && ($toDo > 0))
         {
+            // check to see if return was 0, this indicates a staus return
+            if ($return == 0)
+            {
+                for ($i = 1; $i <= $twitch_configuration['RETRY_COUNTER']; $i++)
+                {
+                    $return = json_decode(self::cURL_get($url, $get, $options), true);
+                    
+                    if ($return != 0)
+                    {
+                        break;
+                    }
+                }
+            }
+            
             $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
             
             $grabbedRows += $currentReturnRows;
