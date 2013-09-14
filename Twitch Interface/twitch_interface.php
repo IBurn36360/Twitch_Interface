@@ -758,6 +758,20 @@ class twitch
         
         // Build our cURL query and store the array
         $return = json_decode(self::cURL_get($url, $get, $options), true);
+
+        // check to see if return was 0, this indicates a staus return
+        if ($return == 0)
+        {
+            for ($i = 1; $i <= $twitch_configuration['RETRY_COUNTER']; $i++)
+            {
+                $return = json_decode(self::cURL_get($url, $get, $options), true);
+                
+                if ($return != 0)
+                {
+                    break;
+                }
+            }
+        }
         
         // How many returns did we get?
         if ($arrayKey != null)
@@ -1183,6 +1197,20 @@ class twitch
         
         // Build our cURL query and store the array
         $return = json_decode(self::cURL_get($url, $get, $options, false), true);
+
+        // check to see if return was 0, this indicates a staus return
+        if ($return == 0)
+        {
+            for ($i = 1; $i <= $twitch_configuration['RETRY_COUNTER']; $i++)
+            {
+                $return = json_decode(self::cURL_get($url, $get, $options), true);
+                
+                if ($return != 0)
+                {
+                    break;
+                }
+            }
+        }
         
         // How many returns did we get?
         $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
