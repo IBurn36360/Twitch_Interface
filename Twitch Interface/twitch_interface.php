@@ -844,7 +844,6 @@ class twitch
                     }
                 }                  
             }
-
             
             // Calculate our returns and our expected returns
             $expectedReturns = ($startingLimit * $iterations) - (1 * $iterations);
