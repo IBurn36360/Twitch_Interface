@@ -821,7 +821,7 @@ class twitch
             
             $grabbedRows += $currentReturnRows;
             
-            if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
+            if (($functionName == 'ITERATION-GET_VIDEO-FOLLOWED') || ($functionName == 'ITERATION-GET_TOP_VIDEOS')) 
             {
                 foreach ($return as $key => $value)
                 {
@@ -1011,8 +1011,8 @@ class twitch
         
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
-        {
-            if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
+        {            
+            if (($functionName == 'ITERATION-GET_VIDEO-FOLLOWED') || ($functionName == 'ITERATION-GET_TOP_VIDEOS')) 
             {
                 foreach ($return as $key => $value)
                 {
@@ -1245,7 +1245,7 @@ class twitch
             
             $grabbedRows += $currentReturnRows;
             
-            if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
+            if (($functionName == 'ITERATION-GET_VIDEO-FOLLOWED') || ($functionName == 'ITERATION-GET_TOP_VIDEOS')) 
             {
                 foreach ($return as $key => $value)
                 {
@@ -1436,7 +1436,7 @@ class twitch
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
         {
-            if (($functionName == 'GET_VIDEO-FOLLOWED') || ($functionName == 'GET_TOP_VIDEOS')) 
+            if (($functionName == 'ITERATION-GET_VIDEO-FOLLOWED') || ($functionName == 'ITERATION-GET_TOP_VIDEOS')) 
             {
                 foreach ($return as $key => $value)
                 {
