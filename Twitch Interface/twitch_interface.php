@@ -148,7 +148,7 @@ class twitch
     private function generateError($errNo, $errStr, $return = null)
     {
         // Enter your output format code here
-        
+        echo($errNo . ': ' . $errStr . '<br />');
     }
     
     /**
@@ -168,7 +168,7 @@ class twitch
         if ($twitch_configuration['DEBUG_SUPPRESSION_LEVEL'] > $outputLevel)
         {
             // Enter your output format code here
-            
+            echo($function . ' || ' . $errStr . '<br />');
         }
     }
     
@@ -2940,6 +2940,9 @@ class twitch
         
         // Build our cURL query and store the array
         $videos = self::get_iterated($functionName, $url, $options, $limit, $offset, 'videos', $authKey);
+        
+        $temp = gettype($videos);
+        echo('<br /><br />' . $temp . '<br /><br />');
         
         // Set our keys
         foreach ($videos as $video)
