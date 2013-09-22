@@ -2340,6 +2340,66 @@ class twitch
     }
     
     /**
+     * Generates an OAuth token for chat login
+     * 
+     * @param $authKey - [string] Authentication key used for the session
+     * @param $code - [string] Code used to generate an Authentication key
+     * 
+     * @return $chatToken - [string] complete login token for chat login
+     */
+     
+     public function chat_generateToken($authKey, $code)
+     {
+        $functionName = 'CHAT_GENERATE_TOKEN';
+        $requiredAuth = 'chat_login';
+        $prefix = 'oauth:';
+        
+        // Check our auth, we assume that the one provided will be ok
+        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        {
+            $auth = self::generateToken($code);
+            
+            $authSuccessful = false;
+            
+            // Were we returned an array of authenticated scopes?
+            if (is_array($auth[1]))
+            {
+                foreach ($auth[1] as $type)
+                {
+                    if ($type = $requiredAuth)
+                    {
+                        // We found the scope, we are good then
+                        $authSuccessful = true;
+                        break;
+                    }
+                }
+            }
+            
+            // Did we fail?
+            if (!$authSuccessful)
+            {
+                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                return null;
+            }
+            
+            // Assign our key
+            self::generateOutput($functionName, 'Required scope found in array', 4);
+            $authKey = $auth[0];
+        }
+        
+        self::generateOutput($functionName, 'Token generated, concating prefix', 3);
+        $chatToken = $prefix . $authKey;
+        
+        self::generateOutput($functionName, 'Prefix added, login credential made: ' . $chatToken, 5);
+        
+        // clean up
+        self::generateOutput($functionName, 'Cleaning memory', 4);
+        unset($authKey, $auth, $authSuccessful, $code, $requiredAuth, $functionName, $type);        
+        
+        return $chatToken;                
+     }
+    
+    /**
      * Gets a list of users that follow a given channel
      * 
      * @param $chan - [string] Channel name to get the followers for
