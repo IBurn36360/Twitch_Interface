@@ -194,6 +194,8 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET';
         
+        self::generateOutput($functionName, 'Starting GET query', 1);
+        
         // Specify the header
         if (array_key_exists('oauth_token', $get) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
@@ -207,12 +209,12 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::generateOutput($functionName, 'Header row => ' . $row, 4);
+            self::generateOutput($functionName, 'Header row => ' . $row, 3);
         }
         
         $cURL_URL = rtrim($url . '?' . http_build_query($get), '?');
         
-        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
+        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
         $defaults = array(
             CURLOPT_URL => $cURL_URL, 
@@ -227,30 +229,35 @@ class twitch
         
         if (empty($options))
         {
-            self::generateOutput($functionName, 'No additional options set', 4);
+            self::generateOutput($functionName, 'No additional options set', 3);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::generateOutput($functionName, 'Options set as an array', 4);
+            self::generateOutput($functionName, 'Options set as an array', 3);
             curl_setopt_array($handle, ($options + $defaults));
         } else { // nope, set them one at a time
             foreach (($defaults + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::generateOutput($functionName, 'Options set as individual values', 4);
+                self::generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
         self::generateOutput($functionName, 'Command GET => URL: ' . $cURL_URL, 2);
         
-        if ((gettype($get) == 'array') && !empty($get))
+        foreach ($get as $param => $val)
         {
-            foreach($get as $k => $v)
+            if (is_array($val))
             {
-                self::generateOutput($functionName, 'GET option: ' . $k . '=>' . $v, 4);
+                foreach ($val as $key => $value)
+                {
+                    self::generateOutput($functionName, 'GET option: [' . $param . '] ' . $key . '=>' . $value, 2);
+                }
+            } else {
+                self::generateOutput($functionName, 'GET option: ' . $param . '=>' . $val, 2);
             }
         }
         
@@ -273,21 +280,21 @@ class twitch
         
         curl_close($handle);
         
-        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 2);
-        self::generateOutput($functionName, 'Raw Return: ' . $result, 5);
+        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
+        self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($url, $get, $options, $debug, $header, $cURL_URL, $defaults, $key, $opt, $k, $v, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::generateOutput($functionName, 'Returning HTTPD status', 4);
+            self::generateOutput($functionName, 'Returning HTTPD status', 3);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::generateOutput($functionName, 'Returning result', 4);
+            self::generateOutput($functionName, 'Returning result', 3);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -310,6 +317,8 @@ class twitch
         $functionName = 'POST';
         $postfields = '';
         
+        self::generateOutput($functionName, 'Starting POST query', 1);
+        
         // Specify the header
         if (array_key_exists('oauth_token', $post) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
@@ -323,10 +332,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::generateOutput($functionName, 'Header row => ' . $row, 4);
+            self::generateOutput($functionName, 'Header row => ' . $row, 3);
         }
         
-        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
+        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
         // Custom build the post fields
         foreach ($post as $field => $value)
@@ -353,24 +362,24 @@ class twitch
         
         if (empty($options))
         {
-            self::generateOutput($functionName, 'No additional options set', 4);
+            self::generateOutput($functionName, 'No additional options set', 3);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::generateOutput($functionName, 'Options set as an array', 4);
+            self::generateOutput($functionName, 'Options set as an array', 3);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::generateOutput($functionName, 'Options set as individual values', 4);
+                self::generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::generateOutput($functionName, 'command POST => URL: ' . $url, 4);
+        self::generateOutput($functionName, 'command POST => URL: ' . $url, 2);
         
         foreach ($post as $param => $val)
         {
@@ -378,10 +387,10 @@ class twitch
             {
                 foreach ($val as $key => $value)
                 {
-                    self::generateOutput($functionName, 'POST option: [' . $param . '] ' . $key . '=>' . $value, 4);
+                    self::generateOutput($functionName, 'POST option: [' . $param . '] ' . $key . '=>' . $value, 2);
                 }
             } else {
-                self::generateOutput($functionName, 'POST option: ' . $param . '=>' . $val, 4);
+                self::generateOutput($functionName, 'POST option: ' . $param . '=>' . $val, 2);
             }
         }
         
@@ -398,21 +407,21 @@ class twitch
         
         curl_close($handle);
         
-        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 4);
-        self::generateOutput($functionName, 'Raw Return: ' . $result, 5);
+        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
+        self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($url, $post, $options, $debug, $postfields, $header, $field, $value, $postfields, $default, $errStr, $errNo, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::generateOutput($functionName, 'Returning HTTPD status', 4);
+            self::generateOutput($functionName, 'Returning HTTPD status', 3);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::generateOutput($functionName, 'Returning result', 4);
+            self::generateOutput($functionName, 'Returning result', 3);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -434,6 +443,8 @@ class twitch
         $functionName = 'PUT';
         $postfields = '';
         
+        self::generateOutput($functionName, 'Starting PUT query', 1);
+        
         // Specify the header
         if (array_key_exists('oauth_token', $post) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
@@ -447,10 +458,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::generateOutput($functionName, 'Header row => ' . $row, 4);
+            self::generateOutput($functionName, 'Header row => ' . $row, 3);
         }
         
-        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
+        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
         // Custom build the post fields
         $postfields = (is_array($put)) ? http_build_query($put) : $put;
@@ -472,24 +483,24 @@ class twitch
         
         if (empty($options))
         {
-            self::generateOutput($functionName, 'No additional options set', 4);
+            self::generateOutput($functionName, 'No additional options set', 3);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::generateOutput($functionName, 'Options set as an array', 4);
+            self::generateOutput($functionName, 'Options set as an array', 3);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::generateOutput($functionName, 'Options set as individual values', 4);
+                self::generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::generateOutput($functionName, 'command PUT => URL: ' . $url, 4);
+        self::generateOutput($functionName, 'command PUT => URL: ' . $url, 2);
         
         foreach ($put as $param => $val)
         {
@@ -497,10 +508,10 @@ class twitch
             {
                 foreach ($val as $key => $value)
                 {
-                    self::generateOutput($functionName, 'PUT option: [' . $param . '] ' . $key . '=>' . $value, 4);
+                    self::generateOutput($functionName, 'PUT option: [' . $param . '] ' . $key . '=>' . $value, 2);
                 }
             } else {
-                self::generateOutput($functionName, 'PUT option: ' . $param . '=>' . $val, 4);
+                self::generateOutput($functionName, 'PUT option: ' . $param . '=>' . $val, 2);
             }
         }
         
@@ -516,21 +527,21 @@ class twitch
 
         curl_close($handle);
         
-        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 4);
+        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
         self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($url, $put, $options, $debug, $postfields, $header, $field, $value, $postfields, $default, $errStr, $errNo, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::generateOutput($functionName, 'Returning HTTPD status', 4);
+            self::generateOutput($functionName, 'Returning HTTPD status', 3);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::generateOutput($functionName, 'Returning result', 4);
+            self::generateOutput($functionName, 'Returning result', 3);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -551,6 +562,8 @@ class twitch
         global $twitch_configuration;
         $functionName = 'DELETE';
         
+        self::generateOutput($functionName, 'Starting DELETE query', 1);
+        
         // Specify the header
         if (array_key_exists('oauth_token', $post) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
@@ -564,10 +577,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::generateOutput($functionName, 'Header row => ' . $row, 4);
+            self::generateOutput($functionName, 'Header row => ' . $row, 3);
         }
         
-        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 4);
+        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
         $default = array(
             CURLOPT_URL => $url,
@@ -584,15 +597,30 @@ class twitch
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::generateOutput($functionName, 'Options set as an array', 4);
+            self::generateOutput($functionName, 'Options set as an array', 3);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::generateOutput($functionName, 'Options set as individual values', 4);
+                self::generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
             }
         }
+        
+        self::generateOutput($functionName, 'command DELETE => URL: ' . $url, 2);
+        
+        foreach ($post as $param => $val)
+        {
+            if (is_array($val))
+            {
+                foreach ($val as $key => $value)
+                {
+                    self::generateOutput($functionName, 'DELETE option: [' . $param . '] ' . $key . '=>' . $value, 2);
+                }
+            } else {
+                self::generateOutput($functionName, 'DELETE option: ' . $param . '=>' . $val, 2);
+            }
+        }        
         
         ob_start();
         $result = curl_exec($handle);
@@ -600,20 +628,20 @@ class twitch
         curl_close($handle); 
         ob_end_clean();
         
-        self::generateOutput($functionName, 'Status returned: ' . $httpdStatus, 4);   
+        self::generateOutput($functionName, 'Status returned: ' . $httpdStatus, 3);   
 
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);        
+        self::generateOutput($functionName, 'Cleaning memory', 3);        
         unset($url, $post, $options, $header, $handle, $default, $key, $opt, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::generateOutput($functionName, 'Returning HTTPD status', 4);
+            self::generateOutput($functionName, 'Returning HTTPD status', 3);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::generateOutput($functionName, 'Returning result', 4);
+            self::generateOutput($functionName, 'Returning result', 3);
             unset($httpdStatus, $functionName);
             return $result; 
         }
