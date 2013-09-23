@@ -1482,7 +1482,7 @@ class twitch
         global $twitch_clientKey, $twitch_clientSecret, $twitch_clientUrl;
         
         $functionName = 'Generate_Auth';
-        self::generateOutput($functionName, 'Generating auth token', 4);
+        self::generateOutput($functionName, 'Generating auth token', 1);
         
         $url = 'https://api.twitch.tv/kraken/oauth2/token';
         $post = array(
@@ -1498,10 +1498,10 @@ class twitch
         
         $authKey = $result['access_token'];
         $grants = $result['scope'];
-        self::generateOutput($functionName, 'Access token returned: ' . $authKey, 4);
+        self::generateOutput($functionName, 'Access token returned: ' . $authKey, 3);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($code, $functionName, $url, $post, $options, $result);
         
         return array($authKey, $grants);
@@ -1521,7 +1521,7 @@ class twitch
         $scopes = '';
         $functionName = 'Request_Auth';
         
-        self::generateOutput($functionName, 'Generating redirect URL', 4);
+        self::generateOutput($functionName, 'Generating redirect URL', 1);
         
         foreach ($grantType as $scope)
         {
@@ -1537,7 +1537,7 @@ class twitch
             'scope=' . $scopes;
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($grantType, $scopes, $functionName, $scope);
         
         return $urlRedirect;
@@ -1552,7 +1552,15 @@ class twitch
      */ 
     public function retrieveRedirectCode($url)
     {
+        $functionName = 'RETRIEVE_CODE';
+        
+        self::generateOutput($functionName, 'Retrieving code from URL String', 1);
+        
         $code = getURLParamValue($url, 'code');
+        
+        //clean up
+        self::generateOutput($functionName, 'Cleaning memory', 3);
+        unset($functionName);
         
         return $code;
     }
@@ -1578,7 +1586,7 @@ class twitch
         $functionName = 'GET_BLOCKED';
         $requiredAuth = 'user_blocks_read';
         
-        self::generateOutput($functionName, 'Attempting to pull a complete list of blocked users for the channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Attempting to pull a complete list of blocked users for the channel: ' . $chan, 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1609,7 +1617,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -1621,7 +1629,7 @@ class twitch
         
         $usernamesObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'blocks', $authKey);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($usernamesObject), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($usernamesObject), 4);
         
         // Set the array
         foreach ($usernamesObject as $user)
@@ -1633,11 +1641,11 @@ class twitch
         // Was anything returned?  If not, put some output
         if (empty($usernames))
         {
-            self::generateOutput($functionName, 'No blocked users returned for channel: ' . $chan, 4);
+            self::generateOutput($functionName, 'No blocked users returned for channel: ' . $chan, 3);
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($return, $options, $url, $get, $limit, $usernamesObject, $key, $k, $value, $v, $functionName);
         
         // Return out our unkeyed or empty array
@@ -1661,7 +1669,7 @@ class twitch
         $functionName = 'ADD_BLOCKED';
         $requiredAuth = 'user_blocks_edit';
         
-        self::generateOutput($functionName, 'Attempting to add ' . $username . ' to ' . $chan . '\'s list of blocked users', 4);
+        self::generateOutput($functionName, 'Attempting to add ' . $username . ' to ' . $chan . '\'s list of blocked users', 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1692,7 +1700,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -1705,15 +1713,15 @@ class twitch
         // What did we get returned status wise?
         if ($result = 200)
         {
-            self::generateOutput($functionName, 'Successfully blocked channel ' . $username, 4);
+            self::generateOutput($functionName, 'Successfully blocked channel ' . $username, 3);
             $success = true;
         } else {
-            self::generateOutput($functionName, 'Unsuccessfully blocked channel ' . $username, 4);
+            self::generateOutput($functionName, 'Unsuccessfully blocked channel ' . $username, 3);
             $success = false;
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $username, $authKey, $code, $result, $functionName, $requiredAuth, $auth, $authSuccessful, $type, $url, $options, $post);
         
         // Post handles successs, so pass the info on
@@ -1737,7 +1745,7 @@ class twitch
         $functionName = 'REMOVE_BLOCKED';
         $requiredAuth = 'user_blocks_edit';
         
-        self::generateOutput($functionName, 'Attempting to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
+        self::generateOutput($functionName, 'Attempting to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1768,7 +1776,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -1780,19 +1788,19 @@ class twitch
             
         $success = self::cURL_delete($url, $post, $options);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($success), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($success), 4);
         
         if ($success == '204')
         {
-            self::generateOutput($functionName, 'Successfully removed ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
+            self::generateOutput($functionName, 'Successfully removed ' . $username . ' from ' . $chan . '\'s list of blocked users', 3);
         } else if ($success == '422') {
-            self::generateOutput($functionName, 'Service unavailable or delete failed', 4);
+            self::generateOutput($functionName, 'Service unavailable or delete failed', 3);
         } else {
-            self::generateOutput($functionName, 'Failed to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 4);
+            self::generateOutput($functionName, 'Failed to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 3);
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $username, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         // Bascally we either deleted or they were never there
@@ -1809,19 +1817,20 @@ class twitch
     public function getChannelObject($chan)
     {
         $functionName = 'GET_CHANNEL';
+        self::generateOutput($functionName, 'Grabbing channel object for channel: ' . $chan, 1);
         
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan;
         $get = array();
         $options = array();
         
-        self::generateOutput($functionName, 'Grabbing channel object for ' . $chan, 4);
+        self::generateOutput($functionName, 'Grabbing channel object for ' . $chan, 3);
         
         $object = json_decode(self::cURL_get($url, $get, $options, false), true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $functionName, $url, $get, $options);
         
         return $object;
@@ -1839,6 +1848,7 @@ class twitch
     {
         $functionName = 'GET_CHANNEL_AUTHED';
         $requiredAuth = 'channel_read';
+        self::generateOutput($functionName, 'Grabbing authenticated channel object', 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1870,11 +1880,9 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
-        
-        self::generateOutput($functionName, 'Grabbing channel object using authorzation key ' . $authKey, 4);
         
         $url = 'https://api.twitch.tv/kraken/channel';
         $get = array('oauth_token' => $authKey);
@@ -1882,10 +1890,10 @@ class twitch
 
         $object = json_decode(self::cURL_get($url, $get, $options, false), true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($authKey, $code, $auth, $authSuccessful, $type, $url, $get, $options);        
         
         return $object;
@@ -1908,8 +1916,7 @@ class twitch
         
         $functionName = 'GET_EDITORS';
         $requiredAuth = 'channel_read';
-        
-        self::generateOutput($functionName, 'Grabbing editors for ' . $chan . '\'s channel', 4);
+        self::generateOutput($functionName, 'Grabbing editors for ' . $chan . '\'s channel', 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -1940,7 +1947,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -1952,7 +1959,7 @@ class twitch
             
         $editorsObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'users', $authKey);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($editorsObject), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($editorsObject), 4);
         
         foreach ($editorsObject as $editor)
         {
@@ -1962,11 +1969,11 @@ class twitch
         // Was anything returned?  If not, put some output
         if (empty($editors))
         {
-            self::generateOutput($functionName, 'No editors returned for channel: ' . $chan, 4);
+            self::generateOutput($functionName, 'No editors returned for channel: ' . $chan, 3);
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $limit, $offset, $authKey, $code, $auth, $authSuccessful, $type, $functionName, $url, $options, $counter, $editor, $editorsObject);
         
         return $editors;
@@ -1989,7 +1996,7 @@ class twitch
         $requiredAuth = 'channel_editor';
         $functionName = 'UPDATE_CHANNEL';
         
-        self::generateOutput($functionName, 'Updating Channel object', 4);
+        self::generateOutput($functionName, 'Updating Channel object', 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2020,7 +2027,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -2032,25 +2039,25 @@ class twitch
         
         if ($title != null || '')
         {
-            self::generateOutput($functionName, 'New title added to array: ' . $title, 4);
+            self::generateOutput($functionName, 'New title added to array: ' . $title, 2);
             $updatedObjects['channel']['status'] = $title;
         } 
         
         if ($game  != null || '')
         {
-            self::generateOutput($functionName, 'New game added to array: ' . $game, 4);
+            self::generateOutput($functionName, 'New game added to array: ' . $game, 2);
             $updatedObjects['channel']['game'] = $game;
         } 
         
         if ($delay != null || '')
         {
-            self::generateOutput($functionName, 'New Stream Delay added to array: ' . $delay, 4);
+            self::generateOutput($functionName, 'New Stream Delay added to array: ' . $delay, 2);
             $updatedObjects['channel']['delay'] = $delay;
         } 
         
         $result = self::cURL_put($url, $updatedObjects, $options, true);
         
-        self::generateOutput($functionName, 'Status return: ' . $result, 5);
+        self::generateOutput($functionName, 'Status return: ' . $result, 4);
         
         if (($result != 404) || ($result != 400))
         {
@@ -2060,7 +2067,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $authKey, $code, $title, $game, $delay, $auth, $authSuccessful, $type, $url, $updatedObjects, $options, $functionName);        
         
         return $result;
@@ -2080,9 +2087,7 @@ class twitch
         $requiredAuth = 'channel_stream';
         $functionName = 'RESET_STREAM_KEY';
         
-        self::generateOutput($functionName, 'Resetting stream key for channel: ' . $chan, 4);
-        
-        self::generateOutput($functionName, 'Resetting Stream Key', 4);
+        self::generateOutput($functionName, 'Resetting stream key for channel: ' . $chan, 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2113,7 +2118,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -2123,7 +2128,7 @@ class twitch
         
         $result = self::cURL_delete($url, $post, $options, true);
         
-        self::generateOutput($functionName, 'Status return: ' . $result, 5);
+        self::generateOutput($functionName, 'Status return: ' . $result, 3);
         
         if ($result == 204)
         {
@@ -2133,7 +2138,7 @@ class twitch
         }
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2154,6 +2159,8 @@ class twitch
         $functionName = 'START_COMMERCIAL';
         $requiredAuth = 'channel_commercial';
         
+        self::generateOutput($functionName, 'Starting commercial for channel: ' . $chan, 1);
+        
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
         {
@@ -2183,16 +2190,16 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
-        self::generateOutput($functionName, 'Commercial time recieved as: ' . $length, 4);
+        self::generateOutput($functionName, 'Commercial time recieved as: ' . $length, 2);
         
         // Check the length to see if it is valid
         if (($length != 30) && ($length != 60) && ($length != 90))
         {
-            self::generateOutput($functionName, 'Commercial time invalid, set to 30 seconds', 4);
+            self::generateOutput($functionName, 'Commercial time invalid, set to 30 seconds', 2);
             $length = 30;
         }
         
@@ -2205,19 +2212,19 @@ class twitch
         
         $result = self::cURL_post($url, $post, $options, true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
         
         if ($result == 204)
         {
-            self::generateOutput($functionName, 'Commercial successfully started', 4);
+            self::generateOutput($functionName, 'Commercial successfully started', 3);
             $result = true;
         } else {
-            self::generateOutput($functionName, 'Commercial unable to be started', 4);
+            self::generateOutput($functionName, 'Commercial unable to be started', 3);
             $result = false;
         }
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $authKey, $code, $length, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2236,8 +2243,7 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_EMOTICONS_GLOBAL';
-        
-        self::generateOutput($functionName, 'Grabbing global Twitch emoticons', 4);
+        self::generateOutput($functionName, 'Grabbing global Twitch emoticons', 1);
         
         $url = 'https://api.twitch.tv/kraken/chat/emoticons';
         $options = array();
@@ -2245,9 +2251,9 @@ class twitch
         
         $objects = self::get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($objects), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($objects), 4);
         
-        self::generateOutput($functionName, 'Setting Keys', 4);
+        self::generateOutput($functionName, 'Setting Keys', 3);
         
         // Set keys
         foreach ($objects as $row)
@@ -2257,7 +2263,7 @@ class twitch
         }
         
         // clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($limit, $offset, $url, $options, $functionName, $objects, $row, $k);
         
         return $object;
@@ -2277,8 +2283,7 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_EMOTICONS';
-        
-        self::generateOutput($functionName, 'Grabbing emoticons for channel: ' . $user, 4);
+        self::generateOutput($functionName, 'Grabbing emoticons for channel: ' . $user, 1);
         
         $url = 'https://api.twitch.tv/kraken/chat/' . $user . '/emoticons';
         $options = array();
@@ -2286,9 +2291,9 @@ class twitch
         
         $objects = self::get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($objects), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($objects), 4);
         
-        self::generateOutput($functionName, 'Setting Keys', 4);
+        self::generateOutput($functionName, 'Setting Keys', 3);
         
         // Set keys
         foreach ($objects as $row)
@@ -2298,7 +2303,7 @@ class twitch
         }
         
         // clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $limit, $offset, $functionName, $url, $options, $objects, $k, $row);
         
         return $object;
@@ -2317,7 +2322,7 @@ class twitch
     {        
         $functionName = 'GET_BADGES';
         
-        self::generateOutput($functionName, 'Grabbing badges for channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Grabbing badges for channel: ' . $chan, 1);
         
         $url = 'https://api.twitch.tv/kraken/chat/' . $chan . '/badges';
         $options = array();
@@ -2325,10 +2330,10 @@ class twitch
         
         $object = json_decode(self::cURL_get($url, $get, $options, false), true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
         
         // clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $url, $options, $get, $functionName);        
         
         return $object;                
@@ -2349,6 +2354,8 @@ class twitch
         $requiredAuth = 'chat_login';
         $prefix = 'oauth:';
         
+        self::generateOutput($functionName, 'Generating chat login token', 1);
+        
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
         {
@@ -2378,17 +2385,17 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
         self::generateOutput($functionName, 'Token generated, concating prefix', 3);
         $chatToken = $prefix . $authKey;
         
-        self::generateOutput($functionName, 'Prefix added, login credential made: ' . $chatToken, 5);
+        self::generateOutput($functionName, 'Prefix added, login credential made: ' . $chatToken, 3);
         
         // clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($authKey, $auth, $authSuccessful, $code, $requiredAuth, $functionName, $type);        
         
         return $chatToken;                
@@ -2409,8 +2416,7 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_FOLLOWERS';
-        
-        self::generateOutput($functionName, 'Getting the list of channels followed by channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Getting the list of channels followed by channel: ' . $chan, 1);
         
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/follows';
         $options = array();
@@ -2419,7 +2425,7 @@ class twitch
              
         $followersObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($followersObject), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($followersObject), 4);
         
         foreach ($followersObject as $follower)
         {
@@ -2428,7 +2434,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $limit, $offset, $sorting, $follower, $followersObject, $functionName, $key);
         
         // Return out our array
@@ -2448,9 +2454,9 @@ class twitch
     public function getFollows($username, $limit, $offset, $sorting = 'desc')
     {
         global $twitch_configuration;
-        $functionName = 'GET_FOLLOWS';
         
-        self::generateOutput($functionName, 'Getting the list of channels following channel: ' . $username, 4);
+        $functionName = 'GET_FOLLOWS';
+        self::generateOutput($functionName, 'Getting the list of channels following channel: ' . $username, 1);
         
         // Init some vars       
         $channels = array();
@@ -2460,7 +2466,7 @@ class twitch
         // Build our cURL query and store the array
         $channelsObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($channelsObject), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($channelsObject), 4);
         
         foreach ($channelsObject as $channel)
         {
@@ -2469,7 +2475,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($username, $limit, $offset, $sorting, $channelsObject, $channel, $url, $options, $key, $functionName);
         
         // Return out our unkeyed array
@@ -2491,7 +2497,7 @@ class twitch
         $functionName = 'FOLLOW_CHANNEL';
         $requiredAuth = 'user_follows_edit';
         
-        self::generateOutput($functionName, 'Attempting to have channel ' . $user . ' follow the user ' . $chan, 4);      
+        self::generateOutput($functionName, 'Attempting to have channel ' . $user . ' follow the user ' . $chan, 1);      
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2522,7 +2528,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -2532,16 +2538,16 @@ class twitch
         
         $result = self::cURL_put($url, $post, $options, false);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
         
         if ($result['status'] == 404)
         {
-            self::generateOutput($functionName, 'Unable to follow channel.  Channel not found', 4);
+            self::generateOutput($functionName, 'Unable to follow channel.  Channel not found', 3);
             $result = false;
         }
 
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2562,7 +2568,7 @@ class twitch
         $functionName = 'UNFOLLOW_CHANNEL';
         $requiredAuth = 'user_follows_edit';
         
-        self::generateOutput($functionName, 'Attempting have channel ' . $user . ' unfollow channel ' . $chan, 4);
+        self::generateOutput($functionName, 'Attempting have channel ' . $user . ' unfollow channel ' . $chan, 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2593,7 +2599,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -2603,19 +2609,19 @@ class twitch
         
         $result = self::cURL_delete($url, $delete, $options, false);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 5);
+        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $delete);
         
         if ($result['status'] == 404)
         {
-            self::generateOutput($functionName, 'Successfully unfollowed channel', 4);
+            self::generateOutput($functionName, 'Successfully unfollowed channel', 3);
             unset($functionName);
             return true;
         } else {
-            self::generateOutput($functionName, 'Unsuccessfully unfollowed channel', 4);
+            self::generateOutput($functionName, 'Unsuccessfully unfollowed channel', 3);
             unset($functionName);
             return false;
         }
@@ -2635,7 +2641,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_LARGEST_GAME';
         
-        self::generateOutput($functionName, 'Attempting to get a list of the channels currently live to limit sorted by viewer count', 4);
+        self::generateOutput($functionName, 'Attempting to get a list of the channels currently live to limit sorted by viewer count', 1);
         
         // Init some vars       
         $gamesObject = array();
@@ -2653,7 +2659,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($limit, $offset, $hls, $url, $options, $gamesObject, $key, $game, $functionName);
         
         return $games;
@@ -2672,7 +2678,7 @@ class twitch
         global $twitch_configuration;
 
         $functionName = 'SEARCH_GAME';
-        self::generateOutput($functionName, 'Searching all game catagories for the string: ' . $query, 4);
+        self::generateOutput($functionName, 'Searching all game catagories for the string: ' . $query, 1);
         
         $url = 'https://api.twitch.tv/kraken/search/games';
         $get = array(
@@ -2698,7 +2704,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($query, $live, $url, $get, $options, $result, $k, $key, $value, $game, $functionName);
     
         return $object;
@@ -2715,7 +2721,7 @@ class twitch
     {
         $functionName = 'GET_STREAM_OBJECT';
         
-        self::generateOutput($functionName, 'Getting the stream object for channel ' . $chan, 4);
+        self::generateOutput($functionName, 'Getting the stream object for channel ' . $chan, 1);
         
         $url = 'https://api.twitch.tv/kraken/streams/' . $chan;
         $get = array();
@@ -2731,7 +2737,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $url, $get, $result, $functionName);
         
         return $object;
@@ -2756,6 +2762,7 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_STREAM_OBJECTS';
+        self::generateOutput($functionName, 'Attempting to get stream objects for the provided parameters', 1);
         
         // Init some vars       
         $url = 'https://api.twitch.tv/kraken/streams';
@@ -2781,7 +2788,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($game, $channels, $limit, $offset, $embedable, $hls, $client_id, $url, $options, $streamsObject, $key, $k, $value, $v, $objKey, $functionName);
         
         return $streams;              
@@ -2801,7 +2808,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_FEATURED';
         
-        self::generateOutput($functionName, 'Getting all featured streamers to limit', 4);
+        self::generateOutput($functionName, 'Getting all featured streamers to limit', 1);
         
         // Init some vars
         $featured = array();          
@@ -2822,7 +2829,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($limit, $offset, $embedable, $hls, $url, $options, $featuredObject, $key, $value, $k, $functionName);
         
         return $featured;           
@@ -2839,7 +2846,7 @@ class twitch
     {
         $functionName = 'GET_STATISTICS';
         
-        self::generateOutput($functionName, 'Getting current statistics for Twitch', 4);
+        self::generateOutput($functionName, 'Getting current statistics for Twitch', 1);
         
         $statistics = array();
         $url = 'https://api.twitch.tv/kraken/streams/summary';
@@ -2855,7 +2862,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($hls, $url, $get, $options, $result, $key, $value, $functionName);
         
         return $statistics;        
@@ -2872,7 +2879,7 @@ class twitch
     {
         $functionName = 'GET_VIDEO-ID';
         
-        self::generateOutput($functionName, 'Getting the video object for the video with the ID: ' . $id, 4);
+        self::generateOutput($functionName, 'Getting the video object for the video with the ID: ' . $id, 1);
         
         // init some vars
         $object = array();
@@ -2889,7 +2896,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($id, $functionName, $url, $get, $options, $result);
         
         return $object;             
@@ -2910,7 +2917,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_VIDEO-CHANNEL';
         
-        self::generateOutput($functionName, 'Getting the vido objects for channel: ' . $chan, 4);
+        self::generateOutput($functionName, 'Getting the vido objects for channel: ' . $chan, 1);
         
         // Init some vars
         $videoObjects = array();     
@@ -2929,7 +2936,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $limit, $offset, $boradcastsOnly, $functionName, $video, $videos, $key, $options, $url);
         
         return $videoObjects;                  
@@ -2952,7 +2959,7 @@ class twitch
         $requiredAuth = 'user_read';
         $functionName = 'GET_VIDEO-FOLLOWED';
         
-        self::generateOutput($functionName, 'Grabbing all video objects for the channels using the code: ' . $code, 4);
+        self::generateOutput($functionName, 'Grabbing all video objects for the channels using the code: ' . $code, 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -2983,7 +2990,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -3004,7 +3011,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($limit, $offset, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $videos, $video, $url, $options, $key);
         
         return $videosObject;      
@@ -3025,8 +3032,7 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_TOP_VIDEOS';
-        
-        self::generateOutput($functionName, 'Grabbing all of the top videos to limit', 4);
+        self::generateOutput($functionName, 'Grabbing all of the top videos to limit', 1);
         
         // check the period to make sure it is valid
         if (($period != 'week') && ($period != 'month') && ($period != 'all'))
@@ -3051,7 +3057,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($game, $limit, $offset, $period, $functionName, $video, $videos, $key, $url, $options);
         
         return $videosObject;         
@@ -3076,7 +3082,7 @@ class twitch
         $requiredAuth = 'channel_subscriptions';
         $functionName = 'GET_SUBSCRIBERS';
         
-        self::generateOutput($functionName, 'Getting the list of subcribers to channel: ' . $chan, 4);      
+        self::generateOutput($functionName, 'Getting the list of subcribers to channel: ' . $chan, 1);      
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -3107,7 +3113,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -3134,7 +3140,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $limit, $offset, $direction, $authKey, $code, $requiredAuth, $authKey, $auth, $authSuccessful, $type, $subscriber, $subscribersObject, $key, $url, $options);
         
         return $subscribers;
@@ -3155,7 +3161,7 @@ class twitch
         $requiredAuth = 'channel_subscriptions';
         $functionName = 'CHECK_SUBSCRIPTION';
         
-        self::generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 4);
+        self::generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -3186,7 +3192,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -3200,15 +3206,15 @@ class twitch
         // Check the return
         if (!empty($subscribed))
         {
-            self::generateOutput($functionName, 'User ' . $user . ' is subscribed to channel ' . $chan, 4);
+            self::generateOutput($functionName, 'User ' . $user . ' is subscribed to channel ' . $chan, 3);
             $subscribed = true;
         } else {
-            self::generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan . ' or system was unavailable', 4);
+            self::generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan . ' or system was unavailable', 3);
             $subscribed = false;
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $chan, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $url, $options, $get);
         
         return $subscribed;
@@ -3227,7 +3233,7 @@ class twitch
         global $twitch_configuration;        
         $functionName = 'GET_TEAMS';
         
-        self::generateOutput($functionName, 'Grabbing all available teams objects', 4);
+        self::generateOutput($functionName, 'Grabbing all available teams objects', 1);
         
         // Init some vars       
         $teams = array();        
@@ -3245,7 +3251,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning Memory', 4);
+        self::generateOutput($functionName, 'Cleaning Memory', 3);
         unset($limit, $offset, $teamsObject, $team, $url, $options, $key);
         
         return $teams;
@@ -3261,7 +3267,7 @@ class twitch
     public function getTeam($team)
     {
         $functionName = 'GET_USEROBJECT';
-        self::generateOutput($functionName, 'Attempting to get the team object for user: ' . $team, 4);
+        self::generateOutput($functionName, 'Attempting to get the team object for user: ' . $team, 1);
         
         $url = 'https://api.twitch.tv/kraken/teams/' . $team;
         $options = array();
@@ -3271,7 +3277,7 @@ class twitch
         $teamObject = json_decode(self::cURL_get($url, $get, $options, false), true);
 
         //clean up
-        self::generateOutput($functionName, 'Cleaning Memory', 4);
+        self::generateOutput($functionName, 'Cleaning Memory', 3);
         unset($team, $url, $options, $get, $functionName);
         
         return $teamObject;
@@ -3287,7 +3293,7 @@ class twitch
     public function getUserObject($user)
     {
         $functionName = 'GET_USEROBJECT';
-        self::generateOutput($functionName, 'Attempting to get the user object for user: ' . $user, 4);
+        self::generateOutput($functionName, 'Attempting to get the user object for user: ' . $user, 1);
         
         $url = 'https://api.twitch.tv/kraken/users/' . $user;
         $options = array();
@@ -3298,7 +3304,7 @@ class twitch
         self::generateOutput($functionName, 'Raw return: ' . $userObject, 4);
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning Memory', 4);
+        self::generateOutput($functionName, 'Cleaning Memory', 3);
         unset($user, $url, $options, $get, $functionName);
         
         return $userObject;          
@@ -3318,7 +3324,7 @@ class twitch
         $functionName = 'GET_USEROBJECT-AUTH';
         $requiredAuth = 'user_read';
         
-        self::generateOutput($functionName, 'Attempting to get the authenticated user object for user: ' . $user, 4);
+        self::generateOutput($functionName, 'Attempting to get the authenticated user object for user: ' . $user, 1);
         
         // Check our auth, we assume that the one provided will be ok
         if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
@@ -3349,7 +3355,7 @@ class twitch
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 4);
+            self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
         
@@ -3362,7 +3368,7 @@ class twitch
         self::generateOutput($functionName, 'Raw return: ' . $userObject, 4);
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning Memory', 4);
+        self::generateOutput($functionName, 'Cleaning Memory', 3);
         unset($user, $url, $options, $get, $authKey, $auth, $authSuccessful, $type, $functionName, $code);
         
         return $userObject;
