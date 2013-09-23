@@ -678,8 +678,9 @@ class twitch
         global $twitch_configuration;
         $functionName = 'ITERATION-' . $functionName;
         
-        self::generateOutput($functionName, 'Calculating parameters', 4); 
-        self::generateOutput($functionName, 'Limit recieved as: ' . $limit, 4);
+        self::generateOutput($functionName, 'starting Iteration sequence', 1);
+        self::generateOutput($functionName, 'Calculating parameters', 3); 
+        self::generateOutput($functionName, 'Limit recieved as: ' . $limit, 2);
         
         // Check to make sure limit is an int
         if ((gettype($limit) != 'integer') && (gettype($limit) != 'double') && (gettype($limit) != 'float'))
@@ -697,8 +698,8 @@ class twitch
             }
         }
         
-        self::generateOutput($functionName, 'Limit set to: ' . $limit, 4);
-        self::generateOutput($functionName, 'Offset recieved as: ' . $offset, 4);
+        self::generateOutput($functionName, 'Limit set to: ' . $limit, 2);
+        self::generateOutput($functionName, 'Offset recieved as: ' . $offset, 2);
         
         // Perform the same check on the offset
         if ((gettype($offset) != 'integer') && (gettype($offset) != 'double') && (gettype($offset) != 'float'))
@@ -715,7 +716,7 @@ class twitch
             }
         }
         
-        self::generateOutput($functionName, 'Offset set to: ' . $offset, 4);
+        self::generateOutput($functionName, 'Offset set to: ' . $offset, 2);
         
         // Init some vars  
         $grabbedRows = 0;
@@ -735,10 +736,10 @@ class twitch
         if ($toDo > $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']])
         {
             $startingLimit = $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']];
-            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
+            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         } else {
             $startingLimit = $toDo;
-            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
+            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         }
         
         // Build our GET array for the first iteration, these values will always be supplied
@@ -749,17 +750,17 @@ class twitch
         if ($authKey != null) 
         {
             $get['oauth_token'] = $authKey;
-            self::generateOutput($functionName, 'Auth Key added to GET array', 3);
+            self::generateOutput($functionName, 'Auth Key added to GET array', 2);
         }
         if ($hls != null)
         {
             $get['hls'] = $hls;
-            self::generateOutput($functionName, 'HLS added to GET array', 3);            
+            self::generateOutput($functionName, 'HLS added to GET array', 2);            
         }
         if ($direction != null)
         {
             $get['direction'] = $direction;
-            self::generateOutput($functionName, 'Direction added to GET array', 3);   
+            self::generateOutput($functionName, 'Direction added to GET array', 2);   
         }
         if ($channels != null)
         {
@@ -769,32 +770,32 @@ class twitch
                 $channelBlock = rtrim($channelBlock, ','); 
                 $get['channel'] = $channelBlock;
             }
-            self::generateOutput($functionName, 'Channels added to GET array', 3);
+            self::generateOutput($functionName, 'Channels added to GET array', 2);
         }
         if ($embedable != null)
         {
             $get['embedable'] = $embedable;
-            self::generateOutput($functionName, 'Embedable added to GET array', 3);
+            self::generateOutput($functionName, 'Embedable added to GET array', 2);
         }
         if ($client_id != null)
         {
             $get['client_id'] = $client_id;
-            self::generateOutput($functionName, 'Client ID added to GET array', 3);
+            self::generateOutput($functionName, 'Client ID added to GET array', 2);
         }
         if ($broadcasts != null)
         {
             $get['broadcasts'] = $broadcasts;
-            self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+            self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
         }
         if ($period != null)
         {
             $get['period'] = $period;
-            self::generateOutput($functionName, 'Period added to GET array', 3);
+            self::generateOutput($functionName, 'Period added to GET array', 2);
         }
         if ($game != null)
         {
             $get['game'] = $game;
-            self::generateOutput($functionName, 'Game added to GET array', 3);
+            self::generateOutput($functionName, 'Game added to GET array', 2);
         }
         
         // Build our cURL query and store the array
@@ -824,9 +825,9 @@ class twitch
         
         $toDo -= $currentReturnRows;
         
-        self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
+        self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
         self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
-        self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
+        self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
         
         // Iterate until we have everything grabbed we want to have
         while (($currentReturnRows == $startingLimit) && ($toDo > 0))
@@ -845,7 +846,7 @@ class twitch
                 }
             }
             
-            self::generateOutput($functionName, 'Returns to grab: ' . $toDo, 4);
+            self::generateOutput($functionName, 'Returns to grab: ' . $toDo, 3);
             
             if ($arrayKey != null)
             {
@@ -880,17 +881,17 @@ class twitch
             // Have we gotten everything we requested?
             if ($toDo <= 0)
             {
-                self::generateOutput($functionName, 'All items requested returned, breaking iteration', 4);
+                self::generateOutput($functionName, 'All items requested returned, breaking iteration', 3);
                 break;
             }
             
-            self::generateOutput($functionName, 'Current counter: ' . $currentReturns, 4);
-            self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 4);
+            self::generateOutput($functionName, 'Current counter: ' . $currentReturns, 3);
+            self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 3);
             
             // Are we no longer getting data? (Some fancy math here)
             if (($counter - (1 * ($iterations - 1))) != $expectedReturns)
             {
-                self::generateOutput($functionName, 'Expected number of returns not met, breaking', 4);
+                self::generateOutput($functionName, 'Expected number of returns not met, breaking', 3);
                 break;
             }
             
@@ -901,7 +902,7 @@ class twitch
                 $toDo = 2; // Catch this, it will drop one return
             }
             
-            self::generateOutput($functionName, 'Calculating new Parameters', 4);
+            self::generateOutput($functionName, 'Calculating new Parameters', 3);
             
             // Check how many we have left
             if (($limit <= $toDo) && ($limit != -1))
@@ -913,17 +914,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::generateOutput($functionName, 'Auth Key added to GET array', 3);
+                    self::generateOutput($functionName, 'Auth Key added to GET array', 2);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::generateOutput($functionName, 'HLS added to GET array', 3);            
+                    self::generateOutput($functionName, 'HLS added to GET array', 2);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::generateOutput($functionName, 'Direction added to GET array', 3);   
+                    self::generateOutput($functionName, 'Direction added to GET array', 2);   
                 }
                 if ($channels != null)
                 {
@@ -933,32 +934,32 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::generateOutput($functionName, 'Channels added to GET array', 3);
+                    self::generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::generateOutput($functionName, 'Embedable added to GET array', 3);
+                    self::generateOutput($functionName, 'Embedable added to GET array', 2);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::generateOutput($functionName, 'Client ID added to GET array', 3);
+                    self::generateOutput($functionName, 'Client ID added to GET array', 2);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::generateOutput($functionName, 'Period added to GET array', 3);
+                    self::generateOutput($functionName, 'Period added to GET array', 2);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::generateOutput($functionName, 'Game added to GET array', 3);
+                    self::generateOutput($functionName, 'Game added to GET array', 2);
                 }
             } else {
                 $get = array('limit' => $grabbedRows + $startingLimit,
@@ -968,17 +969,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::generateOutput($functionName, 'Auth Key added to GET array', 3);
+                    self::generateOutput($functionName, 'Auth Key added to GET array', 2);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::generateOutput($functionName, 'HLS added to GET array', 3);            
+                    self::generateOutput($functionName, 'HLS added to GET array', 2);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::generateOutput($functionName, 'Direction added to GET array', 3);   
+                    self::generateOutput($functionName, 'Direction added to GET array', 2);   
                 }
                 if ($channels != null)
                 {
@@ -988,36 +989,36 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::generateOutput($functionName, 'Channels added to GET array', 3);
+                    self::generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::generateOutput($functionName, 'Embedable added to GET array', 3);
+                    self::generateOutput($functionName, 'Embedable added to GET array', 2);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::generateOutput($functionName, 'Client ID added to GET array', 3);
+                    self::generateOutput($functionName, 'Client ID added to GET array', 2);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::generateOutput($functionName, 'Period added to GET array', 3);
+                    self::generateOutput($functionName, 'Period added to GET array', 2);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::generateOutput($functionName, 'Game added to GET array', 3);
+                    self::generateOutput($functionName, 'Game added to GET array', 2);
                 }                
             }
             
-            self::generateOutput($functionName, 'New query built, passing to GET:', 4);
+            self::generateOutput($functionName, 'New query built, passing to GET:', 3);
             
             // Run a new query
             $return = json_decode(self::cURL_get($url, $get, $options), true);
@@ -1025,12 +1026,12 @@ class twitch
             $toDo ++; // increment this to account for the _links object
             $iterations ++;
             
-            self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
-            self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 4);
-            self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
+            self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
+            self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 3);
+            self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
         }
         
-        self::generateOutput($functionName, 'Exited Iteration', 4);
+        self::generateOutput($functionName, 'Exited Iteration', 3);
         
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
@@ -1048,10 +1049,10 @@ class twitch
             }           
         }
         
-        self::generateOutput($functionName, 'Total returned rows: ' . $counter, 4);
+        self::generateOutput($functionName, 'Total returned rows: ' . $counter, 3);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($functionName, $url, $options, $limit, $offset, $arrayKey, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns);
         
         if (empty($object))
@@ -1093,8 +1094,9 @@ class twitch
         global $twitch_configuration;
         $functionName = 'ITERATION-' . $functionName;
         
-        self::generateOutput($functionName, 'Calculating parameters', 4);
-        self::generateOutput($functionName, 'Limit recieved as: ' . $limit, 4);
+        self::generateOutput($functionName, 'starting Iteration sequence', 1);
+        self::generateOutput($functionName, 'Calculating parameters', 3); 
+        self::generateOutput($functionName, 'Limit recieved as: ' . $limit, 2);
         
         // Check to make sure limit is an int
         if ((gettype($limit) != 'integer') && (gettype($limit) != 'double') && (gettype($limit) != 'float'))
@@ -1112,8 +1114,8 @@ class twitch
             }
         }
         
-        self::generateOutput($functionName, 'Limit set to: ' . $limit, 4);
-        self::generateOutput($functionName, 'Offset recieved as: ' . $offset, 4);
+        self::generateOutput($functionName, 'Limit set to: ' . $limit, 2);
+        self::generateOutput($functionName, 'Offset recieved as: ' . $offset, 2);
         
         // Perform the same check on the offset
         if ((gettype($offset) != 'integer') && (gettype($offset) != 'double') && (gettype($offset) != 'float'))
@@ -1130,10 +1132,11 @@ class twitch
             }
         }
         
-        self::generateOutput($functionName, 'Offset set to: ' . $offset, 4);
+        self::generateOutput($functionName, 'Offset set to: ' . $offset, 2);
         
-        // Init some vars
+        // Init some vars  
         $grabbedRows = 0;
+        $toDo = 0;
         $currentReturnRows = 0;
         $counter = 0;
         $iterations = 1;
@@ -1149,10 +1152,10 @@ class twitch
         if ($toDo > $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']])
         {
             $startingLimit = $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']];
-            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
+            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         } else {
             $startingLimit = $toDo;
-            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 4);
+            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         }
         
         // Build our GET array for the first iteration, these values will always be supplied
@@ -1163,17 +1166,17 @@ class twitch
         if ($authKey != null) 
         {
             $get['oauth_token'] = $authKey;
-            self::generateOutput($functionName, 'Auth Key added to GET array', 3);
+            self::generateOutput($functionName, 'Auth Key added to GET array', 2);
         }
         if ($hls != null)
         {
             $get['hls'] = $hls;
-            self::generateOutput($functionName, 'HLS added to GET array', 3);            
+            self::generateOutput($functionName, 'HLS added to GET array', 2);            
         }
         if ($direction != null)
         {
             $get['direction'] = $direction;
-            self::generateOutput($functionName, 'Direction added to GET array', 3);   
+            self::generateOutput($functionName, 'Direction added to GET array', 2);   
         }
         if ($channels != null)
         {
@@ -1183,36 +1186,36 @@ class twitch
                 $channelBlock = rtrim($channelBlock, ','); 
                 $get['channel'] = $channelBlock;
             }
-            self::generateOutput($functionName, 'Channels added to GET array', 3);
+            self::generateOutput($functionName, 'Channels added to GET array', 2);
         }
         if ($embedable != null)
         {
             $get['embedable'] = $embedable;
-            self::generateOutput($functionName, 'Embedable added to GET array', 3);
+            self::generateOutput($functionName, 'Embedable added to GET array', 2);
         }
         if ($client_id != null)
         {
             $get['client_id'] = $client_id;
-            self::generateOutput($functionName, 'Client ID added to GET array', 3);
+            self::generateOutput($functionName, 'Client ID added to GET array', 2);
         }
         if ($broadcasts != null)
         {
             $get['broadcasts'] = $broadcasts;
-            self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+            self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
         }
         if ($period != null)
         {
             $get['period'] = $period;
-            self::generateOutput($functionName, 'Period added to GET array', 3);
+            self::generateOutput($functionName, 'Period added to GET array', 2);
         }
         if ($game != null)
         {
             $get['game'] = $game;
-            self::generateOutput($functionName, 'Game added to GET array', 3);
+            self::generateOutput($functionName, 'Game added to GET array', 2);
         }
         
         // Build our cURL query and store the array
-        $return = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $return = json_decode(self::cURL_get($url, $get, $options), true);
 
         // check to see if return was 0, this indicates a staus return
         if ($return == 0)
@@ -1231,9 +1234,11 @@ class twitch
         // How many returns did we get?
         $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
         
-        self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
+        $toDo -= $currentReturnRows;
+        
+        self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
         self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
-        self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
+        self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
         
         // Iterate until we have everything grabbed we want to have
         while (($currentReturnRows == $startingLimit) && ($toDo > 0))
@@ -1252,6 +1257,9 @@ class twitch
                 }
             }
             
+            self::generateOutput($functionName, 'Returns to grab: ' . $toDo, 3);
+            
+            // How many returns did we get?
             $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
             
             $grabbedRows += $currentReturnRows;
@@ -1266,7 +1274,7 @@ class twitch
                         $counter ++;                        
                     }                    
                 }
-            }           
+            }                  
             
             // Calculate our returns and our expected returns
             $expectedReturns = ($startingLimit * $iterations) - (1 * $iterations);
@@ -1280,17 +1288,17 @@ class twitch
             // Have we gotten everything we requested?
             if ($toDo <= 0)
             {
-                self::generateOutput($functionName, 'All items requested returned, breaking iteration', 4);
+                self::generateOutput($functionName, 'All items requested returned, breaking iteration', 3);
                 break;
             }
             
-            self::generateOutput($functionName, 'Current counter: ' . $currentReturns, 4);
-            self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 4);
+            self::generateOutput($functionName, 'Current counter: ' . $currentReturns, 3);
+            self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 3);
             
             // Are we no longer getting data? (Some fancy math here)
             if (($counter - (1 * ($iterations - 1))) != $expectedReturns)
             {
-                self::generateOutput($functionName, 'Expected number of returns not met, breaking', 4);
+                self::generateOutput($functionName, 'Expected number of returns not met, breaking', 3);
                 break;
             }
             
@@ -1301,7 +1309,7 @@ class twitch
                 $toDo = 2; // Catch this, it will drop one return
             }
             
-            self::generateOutput($functionName, 'Calculating new Parameters', 4);
+            self::generateOutput($functionName, 'Calculating new Parameters', 3);
             
             // Check how many we have left
             if (($limit <= $toDo) && ($limit != -1))
@@ -1313,17 +1321,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::generateOutput($functionName, 'Auth Key added to GET array', 3);
+                    self::generateOutput($functionName, 'Auth Key added to GET array', 2);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::generateOutput($functionName, 'HLS added to GET array', 3);            
+                    self::generateOutput($functionName, 'HLS added to GET array', 2);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::generateOutput($functionName, 'Direction added to GET array', 3);   
+                    self::generateOutput($functionName, 'Direction added to GET array', 2);   
                 }
                 if ($channels != null)
                 {
@@ -1333,32 +1341,32 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::generateOutput($functionName, 'Channels added to GET array', 3);
+                    self::generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::generateOutput($functionName, 'Embedable added to GET array', 3);
+                    self::generateOutput($functionName, 'Embedable added to GET array', 2);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::generateOutput($functionName, 'Client ID added to GET array', 3);
+                    self::generateOutput($functionName, 'Client ID added to GET array', 2);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::generateOutput($functionName, 'Period added to GET array', 3);
+                    self::generateOutput($functionName, 'Period added to GET array', 2);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::generateOutput($functionName, 'Game added to GET array', 3);
+                    self::generateOutput($functionName, 'Game added to GET array', 2);
                 }
             } else {
                 $get = array('limit' => $grabbedRows + $startingLimit,
@@ -1368,17 +1376,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::generateOutput($functionName, 'Auth Key added to GET array', 3);
+                    self::generateOutput($functionName, 'Auth Key added to GET array', 2);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::generateOutput($functionName, 'HLS added to GET array', 3);            
+                    self::generateOutput($functionName, 'HLS added to GET array', 2);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::generateOutput($functionName, 'Direction added to GET array', 3);   
+                    self::generateOutput($functionName, 'Direction added to GET array', 2);   
                 }
                 if ($channels != null)
                 {
@@ -1388,53 +1396,53 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::generateOutput($functionName, 'Channels added to GET array', 3);
+                    self::generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::generateOutput($functionName, 'Embedable added to GET array', 3);
+                    self::generateOutput($functionName, 'Embedable added to GET array', 2);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::generateOutput($functionName, 'Client ID added to GET array', 3);
+                    self::generateOutput($functionName, 'Client ID added to GET array', 2);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 3);
+                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::generateOutput($functionName, 'Period added to GET array', 3);
+                    self::generateOutput($functionName, 'Period added to GET array', 2);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::generateOutput($functionName, 'Game added to GET array', 3);
+                    self::generateOutput($functionName, 'Game added to GET array', 2);
                 }                
             }
             
-            self::generateOutput($functionName, 'New query built, passing to GET:', 4);
+            self::generateOutput($functionName, 'New query built, passing to GET:', 3);
             
             // Run a new query
-            $return = json_decode(self::cURL_get($url, $get, $options, false), true);
+            $return = json_decode(self::cURL_get($url, $get, $options), true);
             
-            $toDo ++;
+            $toDo ++; // increment this to account for the _links object
             $iterations ++;
             
-            self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 4);
-            self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 4);
-            self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 5);
+            self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
+            self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 3);
+            self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
         }
         
-        self::generateOutput($functionName, 'Exited Iteration', 4);
+        self::generateOutput($functionName, 'Exited Iteration', 3);
         
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
-        {
+        {            
             foreach ($return as $set)
             {
                 foreach ($set as $key => $value)
@@ -1448,10 +1456,10 @@ class twitch
             }           
         }
         
-        self::generateOutput($functionName, 'Total returned rows: ' . $counter, 4);
+        self::generateOutput($functionName, 'Total returned rows: ' . $counter, 3);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 4);
+        self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($functionName, $url, $options, $limit, $offset, $arrayKey, $arrayKey2, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns);
         
         if (empty($object))
