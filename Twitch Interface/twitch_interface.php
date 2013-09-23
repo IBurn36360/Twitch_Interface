@@ -1561,7 +1561,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -1644,7 +1644,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -1720,7 +1720,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -1822,7 +1822,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -1892,7 +1892,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -1972,7 +1972,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -2065,7 +2065,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -2135,7 +2135,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -2330,7 +2330,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -2474,7 +2474,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -2545,7 +2545,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -2935,7 +2935,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -3059,7 +3059,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -3138,7 +3138,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
@@ -3301,7 +3301,7 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(400, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
