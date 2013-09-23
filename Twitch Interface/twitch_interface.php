@@ -42,12 +42,12 @@ $twitch_configuration = array(
     'API_VERSION'             => 3,                // This sets what API version to use.  Specifies that value in the header
     'TOKEN_SEND_METHOD'       => 'HEADER',         // This sets how any OAuth tokens are sent.  Valid options are 'HEADER' and 'QUERY'
     'RETRY_COUNTER'           => 3,                // This sets the number of retries the interface will do when faced with status 0 returns
-    'DEBUG_SUPPRESSION_LEVEL' => $twitc_debugLevels['FINE'], // This sets the maximum debug level that gets to output, ALL sets to display all returns, including RAW JSON returns
+    'DEBUG_SUPPRESSION_LEVEL' => $twitch_debugLevels['FINE'], // This sets the maximum debug level that gets to output, ALL sets to display all returns, including RAW JSON returns
     'CALL_LIMIT_DEFAULT'      => '25',
     'CALL_LIMIT_DOUBLE'       => '50',
     'CALL_LIMIT_MAX'          => '100');
     
-$twitc_debugLevels = array(
+$twitch_debugLevels = array(
     'FINE' => 1,   // Displays only call inits
     'FINER' => 2,  // Displays variable changes
     'FINEST' => 3, // Displays all output other than RAW returns
