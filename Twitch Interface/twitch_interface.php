@@ -175,7 +175,7 @@ class twitch
         if ($twitch_configuration['DEBUG_SUPPRESSION_LEVEL'] >= $outputLevel)
         {
             // Enter your output format code here
-            echo($function . ' || ' . $errStr . '<br />');
+            
         }
     }
     
