@@ -33,6 +33,13 @@ if (($twitch_clientKey === '' || null) || ($twitch_clientSecret === '' || null) 
     trigger_error('Please enter your Kraken API credentials into the main file on lines 26, 27 and 28');
 }
 
+$twitch_debugLevels = array(
+    'FINE' => 1,   // Displays only call inits
+    'FINER' => 2,  // Displays variable changes
+    'FINEST' => 3, // Displays all output other than RAW returns
+    'ALL' => 4,    // Displays all output possible
+);
+
 // This holds many of the limitation settings for performing calls, stored as an array for ease of calling [Keyed]
 $twitch_configuration = array(
     'CALL_LIMIT_SETTING'      => 'CALL_LIMIT_MAX', // This sets the query limit for all calls
@@ -46,13 +53,6 @@ $twitch_configuration = array(
     'CALL_LIMIT_DEFAULT'      => '25',
     'CALL_LIMIT_DOUBLE'       => '50',
     'CALL_LIMIT_MAX'          => '100');
-    
-$twitch_debugLevels = array(
-    'FINE' => 1,   // Displays only call inits
-    'FINER' => 2,  // Displays variable changes
-    'FINEST' => 3, // Displays all output other than RAW returns
-    'ALL' => 4,    // Displays all output possible
-);
 
 // This is a helper function that I have decided to make available outside of the class scope
 if (!function_exists('getURLParamValue'))
@@ -167,7 +167,7 @@ class twitch
      * 
      * @return User defined return
      */ 
-    private function generateOutput($function, $errStr, $outputLevel = 5)
+    private function generateOutput($function, $errStr, $outputLevel = 4)
     {
         global $twitch_configuration;
         
@@ -175,7 +175,7 @@ class twitch
         if ($twitch_configuration['DEBUG_SUPPRESSION_LEVEL'] >= $outputLevel)
         {
             // Enter your output format code here
-            
+            echo($function . ' || ' . $errStr . '<br />');
         }
     }
     
