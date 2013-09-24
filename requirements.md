@@ -22,4 +22,4 @@ You do not require credentials for this interface to work, as not all calls requ
 | $twitch_clientSecret | client_secret | String| 
 | $twitch_clientUrl | client_uri | String |
 
-In order to avoid putting in any credentials, you are able to put a space in the string value of the credential to satisfy my chack here.  If you wish to use your credentials, please put them into the file as is from Twitch directly.
+In order to avoid putting in any credentials, you are able to put a space in the string value of the credential to satisfy the check.  If you wish to use your credentials, please put them into the file as is from Twitch directly.  You can generate a set of credentials from [here](http://www.twitch.tv/kraken/oauth2/clients/new)
