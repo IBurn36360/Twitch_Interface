@@ -52,7 +52,8 @@ $twitch_configuration = array(
     'DEBUG_SUPPRESSION_LEVEL' => $twitch_debugLevels['FINE'], // This sets the maximum debug level that gets to output, ALL sets to display all returns, including RAW JSON returns
     'CALL_LIMIT_DEFAULT'      => '25',
     'CALL_LIMIT_DOUBLE'       => '50',
-    'CALL_LIMIT_MAX'          => '100');
+    'CALL_LIMIT_MAX'          => '100'
+);
 
 // This is a helper function that I have decided to make available outside of the class scope
 if (!function_exists('getURLParamValue'))
