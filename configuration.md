@@ -4,11 +4,92 @@
 
 This is a list of all configuration options found in the interface between lines 36 to 56.  
 
-#$twitch_DebugLevels
+## $twitch_DebugLevels
 
-| Level | Description |
-| ---- | ------------ |
-| FINE | This level of output only passes function initialization to the output functions defined |
-| FINER | This level of output passes function init and and variable transformations or checks |
-| FINEST | This level of output passes everything __EXCEPT__ the raw returns from cURL returns or iteration |
-| ALL | This level of output passes ALL output to the output functions, including all raw returns.  This is __NOT__ recommended due to how large some returns are |
+***  
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Default Value</th>
+            <th width="50">Type</th>
+            <th width=100%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>CALL_LIMIT_SETTING</td>
+            <td>CALL_LIMIT_MAX</td>
+            <td>String</td>
+            <td>Set limit for the number of returns in one call, used to seperate calls out into segments of a specified length.  Accepted values are <code>CALL_LIMIT_DEFAULT</code>, <code>CALL_LIMIT_DOUBLE</code> and <code>CALL_LIMIT_MAX</code>.</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+## $twitch_configuration  
+
+***  
+
+| Variable | Default Value | Description |
+| --- | ------------------ | ----------- |
