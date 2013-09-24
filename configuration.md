@@ -98,22 +98,22 @@ This is a list of all configuration options found in the interface between lines
             <td>This sets what debug suppression level that the interface will use when checking what output is passed to the user defined functions.  This accepts one of four values: <code>$twitch_debugLevels['FINE']</code>, <code>$twitch_debugLevels['FINER']</code>, <code>$twitch_debugLevels['FINEST']</code> and <code>$twitch_debugLevels['ALL']</code></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>CALL_LIMIT_DEFAULT</td>
+            <td>25</td>
+            <td>String</td>
+            <td>This sets the upper limit of any single call to 25.  This is a value that should <b>NOT</b> be changed under any circumstances unless you know how Twitch handles its limits.</td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>CALL_LIMIT_DOUBLE</td>
+            <td>50</td>
+            <td>String</td>
+            <td>This sets the upper limit of any single call to 50.  This is a value that should <b>NOT</b> be changed under any circumstances unless you know how Twitch handles its limits.</td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>CALL_LIMIT_MAX</td>
+            <td>100</td>
+            <td>String</td>
+            <td>This sets the upper limit of any single call to 100.  This is a value that should <b>NOT</b> be changed under any circumstances unless you know how Twitch handles its limits.</td>
         </tr>
     </tbody>
 </table>
