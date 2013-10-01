@@ -1497,8 +1497,8 @@ class twitch
         
         $result = json_decode(self::cURL_post($url, $post, $options, false), true);
         
-        $authKey = $result['access_token'];
-        $grants = $result['scope'];
+        $authKey['token'] = $result['access_token'];
+        $grants['scopes'] = $result['scope'];
         self::generateOutput($functionName, 'Access token returned: ' . $authKey, 3);
         
         // Clean up
