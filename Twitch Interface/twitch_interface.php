@@ -1509,6 +1509,47 @@ class twitch
     }
     
     /**
+     * Checks a token for validity and access grants available.
+     * 
+     * $authToken - [string] The token that you want to check
+     * 
+     * $authToken - [array} Either the provided token and the array of scopes if it was valid or false as the token and an empty array of scopes
+     */
+     
+     public function checkToken($authToken)
+     {
+        global $twitch_clientKey, $twitch_clientSecret, $twitch_clientUrl;
+        
+        $functionName = 'Generate_Token';
+        self::generateOutput($functionName, 'Checking OAuth token', 1);
+        
+        $url = 'https://api.twitch.tv/kraken';
+        $post = array(
+            'oauth_token' => $authToken
+        );
+        $options = array();
+        
+        $result = json_decode(self::cURL_post($url, $post, $options, false), true);
+        
+        if ($result['token']['valid'])
+        {
+            self::generateOutput($functionName, 'Token valid', 3);
+            $token['token'] = $authToken;
+            $token['scopes'] = $result['authorization']['scopes'];
+        } else {
+            self::generateOutput($functionName, 'Token not valid', 3);
+            $token['token'] = false;
+            $token['scopes'] = array();
+        }
+        
+        // Clean up
+        self::generateOutput($functionName, 'Cleaning memory', 3);
+        unset($authToken, $functionName, $url, $post, $options, $result);
+        
+        return $token;     
+     }
+    
+    /**
      * Request that a user generate an auth code for our use.
      * 
      * @param $grantType - [array] All auth types requested for the application
