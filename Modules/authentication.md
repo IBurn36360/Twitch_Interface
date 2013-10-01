@@ -6,10 +6,10 @@ These calls handle everything about authentication, generation of tokens and che
 
 | Call | Description |
 | ---- | ----------- |
-| [twitch::generateToken()](https://github.com/IBurn36360/Twitch_Interface/edit/master/Modules/authentication.md#twitchgeneratetoken) | Generates an OAuth token. |
-| [twitch::checkToken()](https://github.com/IBurn36360/Twitch_Interface/edit/master/Modules/authentication.md#twitchchecktoken) | Checks what scopes a provided OAuth token is allowed and the state of it |
-| [twitch::generateAuthorizationURL()](https://github.com/IBurn36360/Twitch_Interface/edit/master/Modules/authentication.md#twitchgenerateauthorizationurl) | Generates an authorization URL for a user to authorize your application. |
-| [twitch::retrieveRedirectCode()](https://github.com/IBurn36360/Twitch_Interface/edit/master/Modules/authentication.md#twitchretrieveredirectcode) | Retrieves the code out of a string URL if the code was not properly returned on redirect. |  
+| [twitch::generateToken()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchgeneratetoken) | Generates an OAuth token. |
+| [twitch::checkToken()](https://github.com/IBurn36360/Twitch_Interface/master/Modules/authentication.md#twitchchecktoken) | Checks what scopes a provided OAuth token is allowed and the state of it |
+| [twitch::generateAuthorizationURL()](https://github.com/IBurn36360/Twitch_Interface/master/Modules/authentication.md#twitchgenerateauthorizationurl) | Generates an authorization URL for a user to authorize your application. |
+| [twitch::retrieveRedirectCode()](https://github.com/IBurn36360/Twitch_Interface/master/Modules/authentication.md#twitchretrieveredirectcode) | Retrieves the code out of a string URL if the code was not properly returned on redirect. |  
 
 ## `twitch::generateToken()`  
 
