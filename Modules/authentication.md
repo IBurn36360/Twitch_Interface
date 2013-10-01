@@ -36,13 +36,13 @@ Generates an OAuth token for use in authenticated calls or may be called standal
     </tbody>
 </table>
 
-### Example Request  
+### Example Call 
 
 ```php
 $testToken = twitch::generateToken('abcdefghijklmnopqrstuvwxyz12345');
 ```
 
-### Example Response
+### Example Return
 
 ```json
 {
@@ -83,13 +83,13 @@ Generates an authorization URL to redirect your user to the Twitch page for your
     </tbody>
 </table>
 
-### Example Request  
+### Example Call  
 
 ```php
 $redirectURL = twitch::generateAuthorizationURL(array('user_read', 'user_blocks_edit'));
 ```
 
-### Example Response
+### Example Return
 
 ```json
 "https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=1234123412341234123412341234123&redirect_uri=http://www.testurl.com/return.php&scope=user_read+user_blocks_edit"
