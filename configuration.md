@@ -16,22 +16,22 @@
     <thead>
         <tr>
             <th>Variable</th>
-            <th>Type</th>
-            <th width=50>Default Value</th>
+            <th>Default Value</th>
+            <th width=50>Type</th>
             <th width=100%>Description</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>$twitch_clientKey</td>
-            <td>String</td>
             <td>''</td>
+            <td>String</td>
             <td>Defines the Twitch value client_key</td>
         </tr>
         <tr>
             <td>$twitch_clientSecret</td>
-            <td>String</td>
             <td>''</td>
+            <td>String</td>
             <td>Defines the Twitch value client_secret</td>
         </tr>
         <tr>
