@@ -114,7 +114,8 @@ If successful:
 }
 ```
 
-If no token was returned:
+If the token was no longer valid:  
+
 ```json
 {
   "token": false,
