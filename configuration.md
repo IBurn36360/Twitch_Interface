@@ -2,6 +2,53 @@
 
 ***  
 
+| Set | Description |
+| --- | ----------- |
+| [Twitch Credentials]() | This is your set of API credentials for use in authenticated calls or in use with generating tokens |
+| [Config Options]() | This is the set of options that control how the interface works and what options are enabled/diabled |
+
+
+## Twitch Credentials
+
+***  
+
+<table>
+    <thead>
+        <tr>
+            <th>Variable</th>
+            <th>Type</th>
+            <th width=50>Default Value</th>
+            <th width=100%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>$twitch_clientKey</td>
+            <td>String</td>
+            <td>''</td>
+            <td>Defines the Twitch value client_key</td>
+        </tr>
+        <tr>
+            <td>$twitch_clientSecret</td>
+            <td>String</td>
+            <td>''</td>
+            <td>Defines the Twitch value client_secret</td>
+        </tr>
+        <tr>
+            <td>$twitch_clientUrl</td>
+            <td>String</td>
+            <td>''</td>
+            <td>Defines the Twitch value client_uri</td>
+        </tr>
+    </tbody>
+</table>
+
+All of these values are empty strings by default and can be easily chaged to be a string with a space or any value as a short-circuit to allow the interface to bypass its credential check.  in order to use the interface you MUST either add any value into each of the 3 strings or add your credentials in order to perform all generation calls.
+
+## Config options
+
+***  
+
 This is a list of all configuration options found in the interface between lines 36 to 56.  
 
 ### $twitch_DebugLevels
