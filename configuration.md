@@ -4,8 +4,8 @@
 
 | Set | Description |
 | --- | ----------- |
-| [Twitch Credentials]() | This is your set of API credentials for use in authenticated calls or in use with generating tokens |
-| [Config Options]() | This is the set of options that control how the interface works and what options are enabled/diabled |
+| [Twitch Credentials](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch-credentials) | This is your set of API credentials for use in authenticated calls or in use with generating tokens |
+| [Config Options](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#config-options) | This is the set of options that control how the interface works and what options are enabled/diabled |
 
 
 ## Twitch Credentials
