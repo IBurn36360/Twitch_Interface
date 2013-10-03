@@ -44,13 +44,24 @@ $testToken = twitch::generateToken('abcdefghijklmnopqrstuvwxyz12345');
 
 ### Example Return
 
+If successful:
+
 ```json
 {
   "token": "jaxvvop7l6oypwg8bwk38nsozliakd3",
-  "scopes": {
+  "scopes": [
     "0": "user_read",
     "1": "user_blocks_edit"
-  }
+  ]
+}
+```
+
+If no token was returned:
+```json
+{
+  "token": false,
+  "scopes": [
+  ]
 }
 ```
 
