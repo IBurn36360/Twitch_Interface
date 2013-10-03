@@ -11,6 +11,8 @@ These calls handle everything about authentication, generation of tokens and che
 | [twitch::generateAuthorizationURL()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchgenerateauthorizationurl) | Generates an authorization URL for a user to authorize your application. |
 | [twitch::retrieveRedirectCode()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchretrieveredirectcode) | Retrieves the code out of a string URL if the code was not properly returned on redirect. |  
 
+***  
+
 ## `twitch::generateToken()`  
 
 Generates an OAuth token for use in authenticated calls or may be called standalone to generate a token manually. Returns an unkeyed array with the first row returned as the OAuth token and the second the array of all returned scopes. 
@@ -65,6 +67,8 @@ If no token was returned:
 }
 ```
 
+***  
+
 ## `twitch::checkToken()`  
 
 ### Parameters  
@@ -116,6 +120,8 @@ If no token was returned:
   }
 }
 ```
+
+***  
 
 ## `twitch::generateAuthorizationURL()`  
 
