@@ -1476,7 +1476,7 @@ class twitch
      * 
      * @param $code - [string] String of auth code used to grant authorization
      * 
-     * @return array($authKey, $grants) - Array return: $authKey is the token returned, $grants is an array of all granted permissions
+     * @return$token - The generated token and the array of all scopes returned with the token, keyed
      */
     public function generateToken($code)
     {
@@ -1497,15 +1497,22 @@ class twitch
         
         $result = json_decode(self::cURL_post($url, $post, $options, false), true);
         
-        $authKey['token'] = $result['access_token'];
-        $grants['scopes'] = $result['scope'];
-        self::generateOutput($functionName, 'Access token returned: ' . $authKey, 3);
+        if (array_key_exists('access_token', $result))
+        {
+            $token['token'] = $result['access_token'];
+            $token['scopes'] = $result['scope'];
+            self::generateOutput($functionName, 'Access token returned: ' . $authKey, 3);            
+        } else {
+            $token['token'] = false;
+            $token['grants'] = array();
+            self::generateOutput($functionName, 'Access token not returned', 3);
+        }
         
         // Clean up
         self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($code, $functionName, $url, $post, $options, $result);
         
-        return array($authKey, $grants);
+        return $token;
     }
     
     /**
@@ -1630,24 +1637,46 @@ class twitch
         
         self::generateOutput($functionName, 'Attempting to pull a complete list of blocked users for the channel: ' . $chan, 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -1713,24 +1742,46 @@ class twitch
         
         self::generateOutput($functionName, 'Attempting to add ' . $username . ' to ' . $chan . '\'s list of blocked users', 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -1745,7 +1796,7 @@ class twitch
             self::generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth[0];
         }
-        
+                
         $url = 'https://api.twitch.tv/kraken/users/' . $chan . '/blocks/' . $username;
         $options = array();
         $post = array('oauth_token' => $authKey);
@@ -1789,24 +1840,46 @@ class twitch
         
         self::generateOutput($functionName, 'Attempting to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -1892,25 +1965,46 @@ class twitch
         $requiredAuth = 'channel_read';
         self::generateOutput($functionName, 'Grabbing authenticated channel object', 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                // Check to see what we are authorizsed to use
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -1960,24 +2054,46 @@ class twitch
         $requiredAuth = 'channel_read';
         self::generateOutput($functionName, 'Grabbing editors for ' . $chan . '\'s channel', 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -2040,24 +2156,46 @@ class twitch
         
         self::generateOutput($functionName, 'Updating Channel object', 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -2131,24 +2269,46 @@ class twitch
         
         self::generateOutput($functionName, 'Resetting stream key for channel: ' . $chan, 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
-             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -2203,24 +2363,46 @@ class twitch
         
         self::generateOutput($functionName, 'Starting commercial for channel: ' . $chan, 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -2398,24 +2580,46 @@ class twitch
         
         self::generateOutput($functionName, 'Generating chat login token', 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -2541,24 +2745,46 @@ class twitch
         
         self::generateOutput($functionName, 'Attempting to have channel ' . $user . ' follow the user ' . $chan, 1);      
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -2612,24 +2838,46 @@ class twitch
         
         self::generateOutput($functionName, 'Attempting have channel ' . $user . ' unfollow channel ' . $chan, 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -3003,24 +3251,46 @@ class twitch
         
         self::generateOutput($functionName, 'Grabbing all video objects for the channels using the code: ' . $code, 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -3126,24 +3396,46 @@ class twitch
         
         self::generateOutput($functionName, 'Getting the list of subcribers to channel: ' . $chan, 1);      
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -3205,24 +3497,46 @@ class twitch
         
         self::generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
@@ -3368,24 +3682,46 @@ class twitch
         
         self::generateOutput($functionName, 'Attempting to get the authenticated user object for user: ' . $user, 1);
         
-        // Check our auth, we assume that the one provided will be ok
-        if ($authKey == null || '') // we do a double check here because some users may decide to pass us an empty string instead of a null value.  They are, in fact, different
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
         {
-            $auth = self::generateToken($code);
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failiure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
             
             $authSuccessful = false;
             
-            // Were we returned an array of authenticated scopes?
-            if (is_array($auth[1]))
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
             {
-                foreach ($auth[1] as $type)
+                if ($type = $requiredAuth)
                 {
-                    if ($type = $requiredAuth)
-                    {
-                        // We found the scope, we are good then
-                        $authSuccessful = true;
-                        break;
-                    }
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
                 }
             }
             
