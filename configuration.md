@@ -36,8 +36,8 @@
         </tr>
         <tr>
             <td>$twitch_clientUrl</td>
-            <td>String</td>
             <td>''</td>
+            <td>String</td>
             <td>Defines the Twitch value client_uri</td>
         </tr>
     </tbody>
