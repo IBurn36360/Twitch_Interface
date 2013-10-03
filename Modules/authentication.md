@@ -97,7 +97,7 @@ Does several functions, first, checks the validity of a token, of it is valid, w
 ### Example Call 
 
 ```php
-$testToken = twitch::checkToken('abcdefghijklmnopqrstuvwxyz12345');
+$testToken = twitch::checkToken('jaxvvop7l6oypwg8bwk38nsozliakd3');
 ```
 
 ### Example Return
