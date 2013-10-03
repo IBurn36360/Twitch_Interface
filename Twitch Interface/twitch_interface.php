@@ -1616,9 +1616,6 @@ class twitch
 
     /**
      * Grabs a list of the users blocked from a channel
-     * $authKey and $code are independent from one another.  You can supply either depending on the situation.
-     * If you have a valid auth key, proide that, otherwise provide a code and one will be generated.  
-     * Set $authKey to null in that case.
      * 
      * @param $chan - [string] Channel name to grab blocked users list from
      * @param $limit - [int] Limit of users to grab, -1 is unlimited
