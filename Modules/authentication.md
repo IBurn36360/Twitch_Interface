@@ -71,6 +71,8 @@ If no token was returned:
 
 ## `twitch::checkToken()`  
 
+Does several functions, first, checks the validity of a token, of it is valid, will also return the array of all scopes granted to the token.  
+
 ### Parameters  
 
 <table>
@@ -161,3 +163,38 @@ $redirectURL = twitch::generateAuthorizationURL(array('user_read', 'user_blocks_
 ```
 
 ## `twitch::retrieveRedirectCode()`  
+
+Grabs the authorization code out of a string URL, useful if you do not have your URL parameters handled, or if you want to have users manually put in the code themselves.  This function is positionally insensitive, meaning that the order of parameters does NOT matter.
+
+### Parameters  
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Required?</th>
+            <th width="50">Type</th>
+            <th width=100%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>$url</code></td>
+            <td>required</td>
+            <td>array</td>
+            <td>The string URL to grab the authorization code out from.</td>
+        </tr>
+    </tbody>
+</table>
+
+### Example Call  
+
+```php
+$code = twitch::retrieveRedirectCode('http://www.testurl.com/return.php?client_id=1234123412341234123412341234123&redirect_uri=http://www.testurl.com/return.php&scope=user_read+user_blocks_edit?code=1234123412341234123412341234123');
+```
+
+### Example Return
+
+```json
+"1234123412341234123412341234123"
+```
