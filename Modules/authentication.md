@@ -67,7 +67,55 @@ If no token was returned:
 
 ## `twitch::checkToken()`  
 
+### Parameters  
 
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Required?</th>
+            <th width="50">Type</th>
+            <th width=100%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>$authToken</code></td>
+            <td>required</td>
+            <td>string</td>
+            <td>The OAuth token you wish to verify.</td>
+        </tr>
+    </tbody>
+</table>
+
+### Example Call 
+
+```php
+$testToken = twitch::checkToken('abcdefghijklmnopqrstuvwxyz12345');
+```
+
+### Example Return
+
+If successful:
+
+```json
+{
+  "token": "jaxvvop7l6oypwg8bwk38nsozliakd3",
+  "scopes": {
+    "0": "user_read",
+    "1": "user_blocks_edit"
+  }
+}
+```
+
+If no token was returned:
+```json
+{
+  "token": false,
+  "scopes": {
+  }
+}
+```
 
 ## `twitch::generateAuthorizationURL()`  
 
