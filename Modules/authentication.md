@@ -160,7 +160,7 @@ $redirectURL = twitch::generateAuthorizationURL(array('user_read', 'user_blocks_
 ### Example Return
 
 ```json
-"https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=1234123412341234123412341234123&redirect_uri=http://www.testurl.com/return.php&scope=user_read+user_blocks_edit"
+"https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_secret=1234123412341234123412341234123&client_id=1234123412341234123412341234123&redirect_uri=http://www.testurl.com/return.php&scope=user_read+user_blocks_edit"
 ```
 
 ## `twitch::retrieveRedirectCode()`  
