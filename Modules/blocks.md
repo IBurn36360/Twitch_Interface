@@ -73,20 +73,27 @@ $testToken = twitch::getBlockedUsers('testchannel1', 100, 10, 'jaxvvop7l6oypwg8b
 
 If successful:
 
+[Blocks object returned from Twitch](https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md#example-response)
+
 ```json
 {
-  "testuser11": { [Blocks object returned from Twitch](https://github.com/justintv/Twitch-API/blob/master/v3_resources/blocks.md#example-response)
+  "testuser11": { [Blocks object returned from Twitch]
   },
   "testuser12": {
   }
 }
 ```
 
-If no token was returned:
+If no users were returned:
+
 ```json
 {
-  "token": false,
-  "scopes": {
-  }
+
 }
+```
+
+If authentication failiure:  (Will pass an error out to the output functions before returning)
+
+```json
+null
 ```
