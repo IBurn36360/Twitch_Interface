@@ -99,3 +99,76 @@ If authentication failiure:  (Will pass an error out to the output functions bef
 
 }
 ```
+
+***  
+
+## `twitch::addBlockedUser()`  
+
+Attempts to add a users to a channel's list of blocked users.
+
+<code>Authenticated: </code> user_blocks_edit
+
+### Parameters  
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th width=20%>Required?</th>
+            <th width="50">Type</th>
+            <th width=99%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>$chan</code></td>
+            <td>required</td>
+            <td>string</td>
+            <td>This is the channel name to add the blocked user to.</td>
+        </tr>
+        <tr>
+            <td><code>$username</code></td>
+            <td>required</td>
+            <td>string</td>
+            <td>This is the username of the user to add to said channel's blocks list.</td>
+        </tr>
+        <tr>
+            <td><code>$authKey</code></td>
+            <td>Required if a valid code is not supplied to <code>$code</code></td>
+            <td>string</td>
+            <td>This is the OAuth token to attempt to use for the call.  This token is checked prior to the call for validity and scope.</td>
+        </tr>
+        <tr>
+            <td><code>$code</code></td>
+            <td>Required if no token was supplied to <code>$authKey</code> or if <code>$authKey</code> was no longer valid.</td>
+            <td>string</td>
+            <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
+        </tr>
+    </tbody>
+</table>
+
+### Example Call 
+
+```php
+$testToken = twitch::addBlockedUser('testchannel1', 'testUser1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+```
+
+### Example Return
+
+If successful:
+
+```json
+true
+```
+
+If no users were returned:
+
+```json
+false
+```
+
+If authentication failiure:  (Will pass an error out to the output functions before returning)
+
+```json
+false
+```
