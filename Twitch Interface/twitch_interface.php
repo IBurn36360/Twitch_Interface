@@ -1647,14 +1647,14 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                         return array(); // return out here, match the fail state of the call
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -1752,14 +1752,14 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                         return false; // return out here, match the fail state of the call
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -1851,14 +1851,14 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                         return false; // return out here, match the fail state of the call
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -1982,14 +1982,14 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                         return array();
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -2077,14 +2077,14 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                         return array();
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -2180,14 +2180,14 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                         return false;
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -2272,7 +2272,7 @@ class twitch
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
      * 
-     * @return $result - True on success, else false on failiure
+     * @return $result - True on success, else false on failure
      */ 
     public function resetStreamKey($chan, $authKey, $code)
     {   
@@ -2294,14 +2294,14 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                         return false;
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
