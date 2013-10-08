@@ -6,7 +6,7 @@ These calls handle everything reguarding blocked users.  This includes listing t
 
 | Call | Description |
 | ---- | ----------- |
-| [twitch::getBlockedUsers()]() | Grabs a list of all blocked user objects to limit or end of list. |
+| [twitch::getBlockedUsers(https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#twitchgetblockedusers)]() | Grabs a list of all blocked user objects to limit or end of list. |
 | [twitch::addBlockedUser()]() | Attempts to add a user to your list of blocked users. |
 | [twitch::removeBlockedUser()]() | Attempts to remove a user from your list of blocked users. |
 
@@ -95,5 +95,7 @@ If no users were returned:
 If authentication failiure:  (Will pass an error out to the output functions before returning)
 
 ```json
-null
+{
+
+}
 ```
