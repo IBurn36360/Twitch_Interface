@@ -24,9 +24,9 @@ Attempts to grab a list of all blocked user objects to limit or end of listing.
     <thead>
         <tr>
             <th>Name</th>
-            <th>Required?</th>
+            <th width=20%>Required?</th>
             <th width="50">Type</th>
-            <th width=100%>Description</th>
+            <th width=99%>Description</th>
         </tr>
     </thead>
     <tbody>
@@ -38,13 +38,13 @@ Attempts to grab a list of all blocked user objects to limit or end of listing.
         </tr>
         <tr>
             <td><code>$limit</code></td>
-            <td>optional (defaults to -1)</td>
+            <td>optional <br />(defaults to -1)</td>
             <td>int</td>
             <td>The high edge limit of rows to return for the call.  Should there be more rows to the list than this value, this is the limit of rows that will be retuned instead.  -1 is a limitless return (theoretically)</td>
         </tr>
         <tr>
             <td><code>$offset</code></td>
-            <td>optional (defaults to 0)</td>
+            <td>optional <br />(defaults to 0)</td>
             <td>int</td>
             <td>The numbeer of rows to offset the call by.  Of instance, if the integer 50 is supplied, will skip over the first 50 returns completely and then apply the limit for the calls.</td>
         </tr>
