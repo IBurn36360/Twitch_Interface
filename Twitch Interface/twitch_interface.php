@@ -1947,6 +1947,11 @@ class twitch
         self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $functionName, $url, $get, $options);
         
+        if (!is_array($object))
+        {
+            $object = array(); // Catch to make sure that an array is returned no matter what, technically our fail state
+        }
+        
         return $object;
     }
     
@@ -1980,6 +1985,7 @@ class twitch
                         $auth = self::generateToken($code); // Assume generation and check later for failiure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
+                        return array();
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
@@ -1991,7 +1997,7 @@ class twitch
             {
                 self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
-                return; // return out after the error is passed
+                return array(); // return out after the error is passed
             }
             
             $authSuccessful = false;
@@ -2011,7 +2017,7 @@ class twitch
             if (!$authSuccessful)
             {
                 self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
-                return null;
+                return array();
             }
             
             // Assign our key
@@ -2029,7 +2035,12 @@ class twitch
         
         // Clean up
         self::generateOutput($functionName, 'Cleaning memory', 3);
-        unset($authKey, $code, $auth, $authSuccessful, $type, $url, $get, $options);        
+        unset($authKey, $code, $auth, $authSuccessful, $type, $url, $get, $options);
+        
+        if (!is_array($object))
+        {
+            $object = array(); // Catch to make sure that an array is returned no matter what, technically our fail state
+        }
         
         return $object;
     }
@@ -2069,6 +2080,7 @@ class twitch
                         $auth = self::generateToken($code); // Assume generation and check later for failiure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
+                        return array();
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
@@ -2080,7 +2092,7 @@ class twitch
             {
                 self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
-                return; // return out after the error is passed
+                return array(); // return out after the error is passed
             }
             
             $authSuccessful = false;
@@ -2100,7 +2112,7 @@ class twitch
             if (!$authSuccessful)
             {
                 self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
-                return null;
+                return array();
             }
             
             // Assign our key
@@ -2171,6 +2183,7 @@ class twitch
                         $auth = self::generateToken($code); // Assume generation and check later for failiure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
+                        return false;
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
@@ -2182,7 +2195,7 @@ class twitch
             {
                 self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
-                return; // return out after the error is passed
+                return false; // return out after the error is passed
             }
             
             $authSuccessful = false;
@@ -2202,7 +2215,7 @@ class twitch
             if (!$authSuccessful)
             {
                 self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
-                return null;
+                return false;
             }
             
             // Assign our key
@@ -2284,6 +2297,7 @@ class twitch
                         $auth = self::generateToken($code); // Assume generation and check later for failiure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
+                        return false;
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
@@ -2295,7 +2309,7 @@ class twitch
             {
                 self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
-                return; // return out after the error is passed
+                return false; // return out after the error is passed
             }
             
             $authSuccessful = false;
@@ -2315,7 +2329,7 @@ class twitch
             if (!$authSuccessful)
             {
                 self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
-                return null;
+                return false;
             }
             
             // Assign our key
@@ -2375,13 +2389,14 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
+                        return false;
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -2389,7 +2404,7 @@ class twitch
             {
                 self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
-                return; // return out after the error is passed
+                return false; // return out after the error is passed
             }
             
             $authSuccessful = false;
@@ -2409,7 +2424,7 @@ class twitch
             if (!$authSuccessful)
             {
                 self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
-                return null;
+                return false;
             }
             
             // Assign our key
@@ -2592,13 +2607,13 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -2757,13 +2772,13 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -2850,13 +2865,13 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -3263,13 +3278,13 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -3408,13 +3423,13 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -3509,13 +3524,13 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
@@ -3694,13 +3709,13 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failiure
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
                     } else {
                         self::generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failiure
+                $auth = self::generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
