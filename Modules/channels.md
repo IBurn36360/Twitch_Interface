@@ -1,4 +1,4 @@
-# Chsnnels  
+# Channels  
 
 ***  
 
@@ -6,9 +6,9 @@ These calls handle everything about getting channel data and updating channel da
 
 | Call | Description |
 | ---- | ----------- |
-| [twitch::getChannelObject()]() | Gets an unauthenticated channel object for the target channel. |
-| [twitch::getChannelObject_Authd()]() | Gets an authenticated channel object using an OAuth token as the identifying parameter. |
-| [twitch::getEditors()]() | Grabs a list of all editors to targe channel. |
+| [twitch::getChannelObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgetchannelobject) | Gets an unauthenticated channel object for the target channel. |
+| [twitch::getChannelObject_Authd()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgetchannelobject_authd) | Gets an authenticated channel object using an OAuth token as the identifying parameter. |
+| [twitch::getEditors()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgeteditors) | Grabs a list of all editors to targe channel. |
 | [twitch::updateChannelObject()]() | Updates the target channel with new information. |
 | [twitch::resetStreamKey()]() | Attempts to reset target channels stream key and have a new one generated. |
 | [twitch::startCommercial()]() | Attempts to start a commercial on target channel. |
