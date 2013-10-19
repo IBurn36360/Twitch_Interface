@@ -2054,7 +2054,7 @@ class twitch
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
      * 
-     * @return $editors - [array] unkeyed array of all editor displayed names
+     * @return $editors - [array] unkeyed array of all editor names
      */ 
     public function getEditors($chan, $limit = -1, $offset = 0, $authKey, $code)
     {
