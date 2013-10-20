@@ -46,7 +46,7 @@ Attempts to grab a list of all blocked user objects to limit or end of listing.
             <td><code>$offset</code></td>
             <td>optional <br />(defaults to 0)</td>
             <td>int</td>
-            <td>The numbeer of rows to offset the call by.  Of instance, if the integer 50 is supplied, will skip over the first 50 returns completely and then apply the limit for the calls.</td>
+            <td>The numbeer of rows to offset the call by.  For instance, if the integer 50 is supplied, will skip over the first 50 returns completely and then apply the limit for the calls.</td>
         </tr>
         <tr>
             <td><code>$authKey</code></td>
@@ -66,7 +66,7 @@ Attempts to grab a list of all blocked user objects to limit or end of listing.
 ### Example Call 
 
 ```php
-$testToken = twitch::getBlockedUsers('testchannel1', 100, 10, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$blockedUsers = twitch::getBlockedUsers('testchannel1', 100, 10, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
 ```
 
 ### Example Return
@@ -150,7 +150,7 @@ Attempts to add a user to a channel's list of blocked users.
 ### Example Call 
 
 ```php
-$testToken = twitch::addBlockedUser('testchannel1', 'testUser1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$success = twitch::addBlockedUser('testchannel1', 'testUser1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
 ```
 
 ### Example Return
@@ -223,7 +223,7 @@ Attempts to reamove a user from a channel's list of blocked users.
 ### Example Call 
 
 ```php
-$testToken = twitch::removeBlockedUser('testchannel1', 'testUser1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$success = twitch::removeBlockedUser('testchannel1', 'testUser1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
 ```
 
 ### Example Return
