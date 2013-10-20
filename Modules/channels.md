@@ -296,6 +296,197 @@ If authentication failure (Error passed to output functions before returns):
 
 ## `twitch::updateChannelObject()`
 
-Attempts to update a channel with a new set of information.  Accepts a new title, game and stream delay.
+Attempts to update the specified channel with any of the following parameters: Title, Game, Stream Delay.
 
-### Params
+<code>Authenticated: </code> channel_editor
+
+### Parameters
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th width=20%>Required?</th>
+            <th width="50">Type</th>
+            <th width=99%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>$chan</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>This is the channel name to attempt to update the channel object for.</td>
+        </tr> 
+        <tr>
+            <td><code>$authKey</code></td>
+            <td>Required if a valid code is not supplied to <code>$code</code></td>
+            <td>string</td>
+            <td>This is the OAuth token to attempt to use for the call.  This token is checked prior to the call for validity and scope.</td>
+        </tr>
+        <tr>
+            <td><code>$code</code></td>
+            <td>Required if no token was supplied to <code>$authKey</code> or if <code>$authKey</code> was no longer valid.</td>
+            <td>string</td>
+            <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
+        </tr>
+        <tr>
+            <td><code>$title</code></td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>The new title for the updated channel.</td>
+        </tr> 
+        <tr>
+            <td><code>$game</code></td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>The new game for the updated channel.</td>
+        </tr>
+        <tr>
+            <td><code>$delay</code></td>
+            <td>Optional</td>
+            <td>string</td>
+            <td>The new stream delay, in seconds, for the updated channel.</td>
+        </tr>
+    </tbody>
+</table>
+
+### Example Call 
+
+```php
+$testObject = twitch::updateChannelobject('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', 'Test Title', 'Test Game', 'Test Delay');
+```
+
+### Example Return
+
+If successful:
+
+```json
+true
+```
+
+If failure:
+
+```json
+false
+```
+
+If authentication failure:
+
+```json
+false
+```
+
+*** 
+
+## `twitch::resetStreamKey()`
+
+Attempts to reset the stream key of the specified channel.
+
+<code>Authenticated: </code> channel_stream
+
+### Parameters
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th width=20%>Required?</th>
+            <th width="50">Type</th>
+            <th width=99%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>$chan</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>This is the channel name to attempt to update the channel object for.</td>
+        </tr> 
+        <tr>
+            <td><code>$authKey</code></td>
+            <td>Required if a valid code is not supplied to <code>$code</code></td>
+            <td>string</td>
+            <td>This is the OAuth token to attempt to use for the call.  This token is checked prior to the call for validity and scope.</td>
+        </tr>
+        <tr>
+            <td><code>$code</code></td>
+            <td>Required if no token was supplied to <code>$authKey</code> or if <code>$authKey</code> was no longer valid.</td>
+            <td>string</td>
+            <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
+        </tr>
+    </tbody>
+</table>
+
+### Example Call 
+
+```php
+$testObject = twitch::resetStreamKey('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+```
+
+### Example Return
+
+If successful:
+
+```json
+true
+```
+
+If failure:
+
+```json
+false
+```
+
+If authentication failure:
+
+```json
+false
+```
+
+***  
+
+## `twitch::startCommercial()`
+
+Attempts to run a commercial on the specified channel.
+
+<code>Authenticated: </code> channel_stream
+
+### Parameters
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th width=20%>Required?</th>
+            <th width="50">Type</th>
+            <th width=99%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>$chan</code></td>
+            <td>Required</td>
+            <td>string</td>
+            <td>This is the channel name to attempt to update the channel object for.</td>
+        </tr> 
+        <tr>
+            <td><code>$authKey</code></td>
+            <td>Required if a valid code is not supplied to <code>$code</code></td>
+            <td>string</td>
+            <td>This is the OAuth token to attempt to use for the call.  This token is checked prior to the call for validity and scope.</td>
+        </tr>
+        <tr>
+            <td><code>$code</code></td>
+            <td>Required if no token was supplied to <code>$authKey</code> or if <code>$authKey</code> was no longer valid.</td>
+            <td>string</td>
+            <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
+        </tr>
+        <tr>
+            <td><code>$length</code></td>
+            <td>Optional</td>
+            <td>int</td>
+            <td>The length of the commercial to be run, accepts <code>30</code>,<code>60</code> and <code>90</code>.  If not supplied or not the expected value, defaults to <code>30</code></td>
+        </tr>
+    </tbody>
+</table>
