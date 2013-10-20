@@ -9,9 +9,9 @@ These calls handle everything about getting channel data and updating channel da
 | [twitch::getChannelObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgetchannelobject) | Gets an unauthenticated channel object for the target channel. |
 | [twitch::getChannelObject_Authd()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgetchannelobject_authd) | Gets an authenticated channel object using an OAuth token as the identifying parameter. |
 | [twitch::getEditors()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgeteditors) | Grabs a list of all editors to targe channel. |
-| [twitch::updateChannelObject()]() | Updates the target channel with new information. |
-| [twitch::resetStreamKey()]() | Attempts to reset target channels stream key and have a new one generated. |
-| [twitch::startCommercial()]() | Attempts to start a commercial on target channel. |
+| [twitch::updateChannelObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchupdatechannelobject) | Updates the target channel with new information. |
+| [twitch::resetStreamKey()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchresetstreamkey) | Attempts to reset target channels stream key and have a new one generated. |
+| [twitch::startCommercial()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchstartcommercial) | Attempts to start a commercial on target channel. |
 
 ***  
 
@@ -261,7 +261,7 @@ Grabs a list of all editors to the specified channel.  This call uses the [KEY_N
 ### Example Call 
 
 ```php
-$testObject = twitch::getChannelObject_Authd('testChannel1', -1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$editors = twitch::getEditors('testChannel1', -1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
 ```
 
 ### Example Return
@@ -354,7 +354,7 @@ Attempts to update the specified channel with any of the following parameters: T
 ### Example Call 
 
 ```php
-$testObject = twitch::updateChannelobject('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', 'Test Title', 'Test Game', 'Test Delay');
+$success = twitch::updateChannelobject('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', 'Test Title', 'Test Game', 'Test Delay');
 ```
 
 ### Example Return
@@ -421,7 +421,7 @@ Attempts to reset the stream key of the specified channel.
 ### Example Call 
 
 ```php
-$testObject = twitch::resetStreamKey('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$success = twitch::resetStreamKey('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
 ```
 
 ### Example Return
@@ -450,7 +450,7 @@ false
 
 Attempts to run a commercial on the specified channel.
 
-<code>Authenticated: </code> channel_stream
+<code>Authenticated: </code> channel_commercial
 
 ### Parameters
 
@@ -490,3 +490,30 @@ Attempts to run a commercial on the specified channel.
         </tr>
     </tbody>
 </table>
+
+
+### Example Call 
+
+```php
+$success = twitch::startCommercial()('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', 30);
+```
+
+### Example Return
+
+If successful:
+
+```json
+true
+```
+
+If failure:
+
+```json
+false
+```
+
+If authentication failure:
+
+```json
+false
+```
