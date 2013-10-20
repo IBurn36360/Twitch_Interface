@@ -294,3 +294,8 @@ If authentication failure (Error passed to output functions before returns):
 
 *** 
 
+## `twitch::updateChannelObject()`
+
+Attempts to update a channel with a new set of information.  Accepts a new title, game and stream delay.
+
+### Params
