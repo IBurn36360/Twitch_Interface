@@ -198,7 +198,8 @@ class twitch
         self::generateOutput($functionName, 'Starting GET query', 1);
         
         // Specify the header
-        if (array_key_exists('oauth_token', $get) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        
+        if ((array_key_exists('oauth_token', $get) == 1 || true) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $get['oauth_token']);
@@ -321,7 +322,7 @@ class twitch
         self::generateOutput($functionName, 'Starting POST query', 1);
         
         // Specify the header
-        if (array_key_exists('oauth_token', $post) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $get) == 1 || true) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -447,7 +448,7 @@ class twitch
         self::generateOutput($functionName, 'Starting PUT query', 1);
         
         // Specify the header
-        if (array_key_exists('oauth_token', $post) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $get) == 1 || true) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -566,7 +567,7 @@ class twitch
         self::generateOutput($functionName, 'Starting DELETE query', 1);
         
         // Specify the header
-        if (array_key_exists('oauth_token', $post) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $get) == 1 || true) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -1501,7 +1502,7 @@ class twitch
         {
             $token['token'] = $result['access_token'];
             $token['scopes'] = $result['scope'];
-            self::generateOutput($functionName, 'Access token returned: ' . $authKey, 3);            
+            self::generateOutput($functionName, 'Access token returned: ' . $token['token'], 3);            
         } else {
             $token['token'] = false;
             $token['grants'] = array();
@@ -1686,7 +1687,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/users/' . $chan . '/blocks';
@@ -1792,7 +1793,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
                 
         $url = 'https://api.twitch.tv/kraken/users/' . $chan . '/blocks/' . $username;
@@ -1891,7 +1892,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/users/' . $chan . '/blocks';
@@ -2022,7 +2023,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/channel';
@@ -2117,7 +2118,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/users/' . $chan . '/editors';
@@ -2220,7 +2221,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan;
@@ -2334,7 +2335,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/stream_key';
@@ -2429,7 +2430,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         self::generateOutput($functionName, 'Commercial time recieved as: ' . $length, 2);
@@ -2646,7 +2647,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         self::generateOutput($functionName, 'Token generated, concating prefix', 3);
@@ -2811,7 +2812,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/users/' . $user . '/follows/channels/' . $chan;
@@ -2904,7 +2905,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/users/' . $user . '/follows/channels/' . $chan;
@@ -3317,7 +3318,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         // Init some vars       
@@ -3462,7 +3463,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         // Check our sorting direction
@@ -3563,7 +3564,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/subscriptions/' . $user;
@@ -3748,7 +3749,7 @@ class twitch
             
             // Assign our key
             self::generateOutput($functionName, 'Required scope found in array', 3);
-            $authKey = $auth[0];
+            $authKey = $auth['token'];
         }
         
         $url = 'https://api.twitch.tv/kraken/users/' . $user;
