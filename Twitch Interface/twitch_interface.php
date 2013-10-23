@@ -1545,10 +1545,12 @@ class twitch
             self::generateOutput($functionName, 'Token valid', 3);
             $token['token'] = $authToken;
             $token['scopes'] = $result['authorization']['scopes'];
+            $token['name'] = $result['user_name'];
         } else {
             self::generateOutput($functionName, 'Token not valid', 3);
             $token['token'] = false;
             $token['scopes'] = array();
+            $token['name'] = '';
         }
         
         // Clean up
