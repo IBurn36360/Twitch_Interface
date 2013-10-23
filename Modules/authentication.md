@@ -110,7 +110,8 @@ If successful:
   "scopes": {
     "0": "user_read",
     "1": "user_blocks_edit"
-  }
+  },
+  "name": "testUser1"
 }
 ```
 
@@ -120,7 +121,8 @@ If the token was no longer valid:
 {
   "token": false,
   "scopes": {
-  }
+  },
+  "name": ""
 }
 ```
 
