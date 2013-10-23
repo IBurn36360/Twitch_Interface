@@ -199,7 +199,7 @@ class twitch
         
         // Specify the header
         
-        if ((array_key_exists('oauth_token', $get) == 1 || true) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $get['oauth_token']);
@@ -322,7 +322,7 @@ class twitch
         self::generateOutput($functionName, 'Starting POST query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1 || true) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -448,7 +448,7 @@ class twitch
         self::generateOutput($functionName, 'Starting PUT query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1 || true) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -567,7 +567,7 @@ class twitch
         self::generateOutput($functionName, 'Starting DELETE query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1 || true) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -724,14 +724,14 @@ class twitch
         $grabbedRows = 0;
         $toDo = 0;
         $currentReturnRows = 0;
-        $counter = 0;
+        $counter = 1;
         $iterations = 1;
         $object = array();
         if ($limit == -1)
         {
             $toDo = 100000000; // Set to an arbritrarily large number so that we can itterate forever if need be
         } else {
-            $toDo = $limit + 1; // We have a finite amount of iterations to do, account for the _links object in the first return
+            $toDo = $limit; // We have a finite amount of iterations to do, account for the _links object in the first return
         }
         
         // Calculate the starting limit
@@ -825,8 +825,6 @@ class twitch
             $currentReturnRows = count($return);
         }
         
-        $toDo -= $currentReturnRows;
-        
         self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
         self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
         self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
@@ -858,27 +856,26 @@ class twitch
             }
             
             $grabbedRows += $currentReturnRows;
-            
+
             foreach ($return as $set)
             {
-                foreach ($set as $key => $value)
+                if (is_array($set)) // Skip a singular _link object that is not an array
                 {
-                    if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                    foreach ($set as $key => $value)
                     {
-                        $object[$counter] = $value;
-                        $counter ++;                        
-                    }                    
+                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        {
+                            $object[$counter] = $value;
+                            $counter ++;                        
+                        }                    
+                    }                              
                 }
-            }                  
+            }                   
             
             // Calculate our returns and our expected returns
-            $expectedReturns = ($startingLimit * $iterations) - (1 * $iterations);
-            if ($iterations > 1)
-            {
-                $currentReturns = ($counter - 1);
-            } else {
-                $currentReturns = ($counter - (1 * ($iterations - 1)));
-            }
+            $expectedReturns = $startingLimit * $iterations - (1 * ($iterations - 1));
+            $currentReturns = $counter;
+
             
             // Have we gotten everything we requested?
             if ($toDo <= 0)
@@ -891,13 +888,13 @@ class twitch
             self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 3);
             
             // Are we no longer getting data? (Some fancy math here)
-            if (($counter - (1 * ($iterations - 1))) != $expectedReturns)
+            if ($currentReturns != $expectedReturns)
             {
                 self::generateOutput($functionName, 'Expected number of returns not met, breaking', 3);
                 break;
             }
             
-            $toDo -= $grabbedRows;
+            $toDo = $limit - $currentReturns;
             
             if ($toDo == 1)
             {
@@ -907,10 +904,12 @@ class twitch
             self::generateOutput($functionName, 'Calculating new Parameters', 3);
             
             // Check how many we have left
-            if (($limit <= $toDo) && ($limit != -1))
+            if (($toDo > $startingLimit) && ($limit != -1) && ($toDo > 0))
             {
-                $get = array('limit' => $grabbedRows +$startingLimit,
-                    'offset' => $grabbedRows);
+                self::generateOutput($functionName, 'Continuing iteration', 3);
+                
+                $get = array('limit' => $currentReturns + $startingLimit,
+                    'offset' => $currentReturns);
                     
                 // Now check every optional param to see if it exists and att it to the array
                 if ($authKey != null) 
@@ -964,8 +963,10 @@ class twitch
                     self::generateOutput($functionName, 'Game added to GET array', 2);
                 }
             } else {
-                $get = array('limit' => $grabbedRows + $startingLimit,
-                    'offset' => $grabbedRows);
+                self::generateOutput($functionName, 'Last return to grab', 3);
+                
+                $get = array('limit' => $toDo + 1,
+                    'offset' => $currentReturns);
                     
                 // Now check every optional param to see if it exists and att it to the array
                 if ($authKey != null) 
@@ -1023,9 +1024,9 @@ class twitch
             self::generateOutput($functionName, 'New query built, passing to GET:', 3);
             
             // Run a new query
+            unset($return); // unset for a clean return
             $return = json_decode(self::cURL_get($url, $get, $options), true);
             
-            $toDo ++; // increment this to account for the _links object
             $iterations ++;
             
             self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
@@ -1094,7 +1095,7 @@ class twitch
     private function get_iteratedNested($functionName, $url, $options, $limit, $offset, $arrayKey, $arrayKey2, $authKey = null, $hls = null, $direction = null, $channels = null, $embedable = null, $client_id = null, $broadcasts = null, $period = null)
     {
         global $twitch_configuration;
-        $functionName = 'ITERATION-' . $functionName;
+        $functionName = 'ITERATION_NESTED-' . $functionName;
         
         self::generateOutput($functionName, 'starting Iteration sequence', 1);
         self::generateOutput($functionName, 'Calculating parameters', 3); 
@@ -1140,14 +1141,14 @@ class twitch
         $grabbedRows = 0;
         $toDo = 0;
         $currentReturnRows = 0;
-        $counter = 0;
+        $counter = 1;
         $iterations = 1;
         $object = array();
         if ($limit == -1)
         {
             $toDo = 100000000; // Set to an arbritrarily large number so that we can itterate forever if need be
         } else {
-            $toDo = $limit + 1; // We have a finite amount of iterations to do, account for the _links object in the first return
+            $toDo = $limit; // We have a finite amount of iterations to do, account for the _links object in the first return
         }
         
         // Calculate the starting limit
@@ -1236,8 +1237,6 @@ class twitch
         // How many returns did we get?
         $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
         
-        $toDo -= $currentReturnRows;
-        
         self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
         self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
         self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
@@ -1261,31 +1260,29 @@ class twitch
             
             self::generateOutput($functionName, 'Returns to grab: ' . $toDo, 3);
             
-            // How many returns did we get?
             $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
             
             $grabbedRows += $currentReturnRows;
-            
+
             foreach ($return as $set)
             {
-                foreach ($set as $key => $value)
+                if (is_array($set)) // Skip a singular _link object that is not an array
                 {
-                    if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                    foreach ($set as $key => $value)
                     {
-                        $object[$counter] = $value;
-                        $counter ++;                        
-                    }                    
+                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        {
+                            $object[$counter] = $value;
+                            $counter ++;                        
+                        }                    
+                    }                              
                 }
-            }                  
+            }                   
             
             // Calculate our returns and our expected returns
-            $expectedReturns = ($startingLimit * $iterations) - (1 * $iterations);
-            if ($iterations > 1)
-            {
-                $currentReturns = ($counter - 1);
-            } else {
-                $currentReturns = ($counter - (1 * ($iterations - 1)));
-            }
+            $expectedReturns = $startingLimit * $iterations - (1 * ($iterations - 1));
+            $currentReturns = $counter;
+
             
             // Have we gotten everything we requested?
             if ($toDo <= 0)
@@ -1298,13 +1295,13 @@ class twitch
             self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 3);
             
             // Are we no longer getting data? (Some fancy math here)
-            if (($counter - (1 * ($iterations - 1))) != $expectedReturns)
+            if ($currentReturns != $expectedReturns)
             {
                 self::generateOutput($functionName, 'Expected number of returns not met, breaking', 3);
                 break;
             }
             
-            $toDo -= $grabbedRows;
+            $toDo = $limit - $currentReturns;
             
             if ($toDo == 1)
             {
@@ -1314,10 +1311,12 @@ class twitch
             self::generateOutput($functionName, 'Calculating new Parameters', 3);
             
             // Check how many we have left
-            if (($limit <= $toDo) && ($limit != -1))
+            if (($toDo > $startingLimit) && ($limit != -1) && ($toDo > 0))
             {
-                $get = array('limit' => $grabbedRows +$startingLimit,
-                    'offset' => $grabbedRows);
+                self::generateOutput($functionName, 'Continuing iteration', 3);
+                
+                $get = array('limit' => $currentReturns + $startingLimit,
+                    'offset' => $currentReturns);
                     
                 // Now check every optional param to see if it exists and att it to the array
                 if ($authKey != null) 
@@ -1371,8 +1370,10 @@ class twitch
                     self::generateOutput($functionName, 'Game added to GET array', 2);
                 }
             } else {
-                $get = array('limit' => $grabbedRows + $startingLimit,
-                    'offset' => $grabbedRows);
+                self::generateOutput($functionName, 'Last return to grab', 3);
+                
+                $get = array('limit' => $toDo + 1,
+                    'offset' => $currentReturns);
                     
                 // Now check every optional param to see if it exists and att it to the array
                 if ($authKey != null) 
@@ -1430,9 +1431,9 @@ class twitch
             self::generateOutput($functionName, 'New query built, passing to GET:', 3);
             
             // Run a new query
+            unset($return); // unset for a clean return
             $return = json_decode(self::cURL_get($url, $get, $options), true);
             
-            $toDo ++; // increment this to account for the _links object
             $iterations ++;
             
             self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
@@ -1459,7 +1460,7 @@ class twitch
         }
         
         self::generateOutput($functionName, 'Total returned rows: ' . $counter, 3);
-        
+                
         // Clean up
         self::generateOutput($functionName, 'Cleaning memory', 3);
         unset($functionName, $url, $options, $limit, $offset, $arrayKey, $arrayKey2, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns);
