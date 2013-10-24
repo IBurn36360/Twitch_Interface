@@ -3627,7 +3627,7 @@ class twitch
     /**
      * Checks to see if a user is subscribed to a specified channel from the channel side
      * 
-     * @param $user - [string] Username of the use check against
+     * @param $user - [string] Username of the user check against
      * @param $chan - [string] Channel name of the channel to check against
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
@@ -3637,7 +3637,7 @@ class twitch
     public function checkChannelSubscription($user, $chan, $authKey, $code)
     {
         $requiredAuth = 'channel_subscriptions';
-        $functionName = 'CHECK_SUBSCRIPTION';
+        $functionName = 'CHECK_CHANNEL_SUBSCRIPTION';
         
         self::generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
         
@@ -3704,11 +3704,121 @@ class twitch
         $subscribed = json_decode(self::cURL_get($url, $get, $options, true), true);
         
         // Check the return
-        if ($subscribed)
+        if ($subscribed == 403)
         {
-            
+            self::generateOutput($functionName, 'Authentication failed to have access to channel account.  Please check channel ' . $chan . ' access.', 3);
+            $subscribed = false;
+        } elseif ($subscribed == 422) {
+            self::generateOutput($functionName, 'Channel ' . $chan . ' does not have subscription program available', 3);
+            $subscribed = false;
+        } elseif ($subscribed == 404) {
+            self::generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan, 3);
+            $subscribed = false;
         } else {
+            self::generateOutput($functionName, 'User ' . $user . ' is subscribed to channel' . $chan, 3);
+            $subscribed = true;
+        }
+        
+        // Clean up quickly
+        self::generateOutput($functionName, 'Cleaning memory', 3);
+        unset($user, $chan, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $url, $options, $get);
+        
+        return $subscribed;
+    }
+    
+    /**
+     * Checks to see if a user is subscribed to a specified channel from the user side
+     * 
+     * @param $user - [string] Username of the user check against
+     * @param $chan - [string] Channel name of the channel to check against
+     * @param $authKey - [string] Authentication key used for the session
+     * @param $code - [string] Code used to generate an Authentication key
+     * 
+     * @return $subscribed - [bool] the status of the user subscription
+     */ 
+    public function checkUserSubscription($user, $chan, $authKey, $code)
+    {
+        $requiredAuth = 'user_subscriptions';
+        $functionName = 'CHECK_USER_SUBSCRIPTION';
+        
+        self::generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
+        
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
+        {
+            if ($authKey != null || '')
+            {
+                $check = self::checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                    } else {
+                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = self::generateToken($code); // Assume generation and check later for failure
+            }
             
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
+            
+            $authSuccessful = false;
+            
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
+            {
+                if ($type = $requiredAuth)
+                {
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
+                }
+            }
+            
+            // Did we fail?
+            if (!$authSuccessful)
+            {
+                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                return null;
+            }
+            
+            // Assign our key
+            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $authKey = $auth['token'];
+        }
+        
+        $url = 'https://api.twitch.tv/kraken/users/' . $user . '/subscriptions/' . $chan;
+        $options = array();
+        $get = array('oauth_token' => $authKey);
+        
+        // Build our cURL query and store the array
+        $subscribed = json_decode(self::cURL_get($url, $get, $options, true), true);
+        
+        // Check the return
+        if ($subscribed == 403)
+        {
+            self::generateOutput($functionName, 'Authentication failed to have access to channel account.  Please check user ' . $user . '\'s access.', 3);
+            $subscribed = false;
+        } elseif ($subscribed == 422) {
+            self::generateOutput($functionName, 'Channel ' . $chan . ' does not have subscription program available', 3);
+            $subscribed = false;
+        } elseif ($subscribed == 404) {
+            self::generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan, 3);
+            $subscribed = false;
+        } else {
+            self::generateOutput($functionName, 'User ' . $user . ' is subscribed to channel ' . $chan, 3);
+            $subscribed = true;
         }
         
         // Clean up quickly
