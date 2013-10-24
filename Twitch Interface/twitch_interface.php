@@ -326,16 +326,16 @@ class twitch
         self::generateOutput($functionName, 'Starting POST query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
+        if ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $get['oauth_token'],
+                'Authorization: OAuth ' . $post['oauth_token'],
                 'Client-ID: ' . $twitch_clientKey);
-            unset($get['oauth_token']);
-        } elseif ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
+            unset($post['oauth_token']);
+        } elseif ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $get['oauth_token']);
-            unset($get['oauth_token']);            
+                'Authorization: OAuth ' . $post['oauth_token']);
+            unset($post['oauth_token']);            
         } else {
            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json');
         }
@@ -457,16 +457,16 @@ class twitch
         self::generateOutput($functionName, 'Starting PUT query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
+        if ((array_key_exists('oauth_token', $put) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $get['oauth_token'],
+                'Authorization: OAuth ' . $put['oauth_token'],
                 'Client-ID: ' . $twitch_clientKey);
-            unset($get['oauth_token']);
-        } elseif ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
+            unset($put['oauth_token']);
+        } elseif ((array_key_exists('oauth_token', $put) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $get['oauth_token']);
-            unset($get['oauth_token']);            
+                'Authorization: OAuth ' . $put['oauth_token']);
+            unset($put['oauth_token']);            
         } else {
            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json');
         }
@@ -581,16 +581,16 @@ class twitch
         self::generateOutput($functionName, 'Starting DELETE query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
+        if ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $get['oauth_token'],
+                'Authorization: OAuth ' . $post['oauth_token'],
                 'Client-ID: ' . $twitch_clientKey);
-            unset($get['oauth_token']);
-        } elseif ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
+            unset($post['oauth_token']);
+        } elseif ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $get['oauth_token']);
-            unset($get['oauth_token']);            
+                'Authorization: OAuth ' . $post['oauth_token']);
+            unset($post['oauth_token']);            
         } else {
            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json');
         }
@@ -1115,20 +1115,17 @@ class twitch
         
         self::generateOutput($functionName, 'Exited Iteration', 3);
         
-        // check to see if the loop was skipped
-        if ((empty($object)) && (!empty($return)))
+        // Run this one last time, a little redundant, but we could have skipped a return
+        foreach ($return as $set)
         {
-            foreach ($return as $set)
+            if (is_array($set))
             {
-                if (is_array($set))
+                foreach ($set as $key => $value)
                 {
-                    foreach ($set as $key => $value)
+                    if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
-                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
-                        {
-                            $object[$counter] = $value;
-                            $counter ++;
-                        }
+                        $object[$counter] = $value;
+                        $counter ++;
                     }
                 }
             }
@@ -1584,20 +1581,17 @@ class twitch
         
         self::generateOutput($functionName, 'Exited Iteration', 3);
         
-        // check to see if the loop was skipped
-        if ((empty($object)) && (!empty($return)))
+        // Run this one last time, a little redundant, but we could have skipped a return
+        foreach ($return as $set)
         {
-            foreach ($return as $set)
+            if (is_array($set))
             {
-                if (is_array($set))
+                foreach ($set as $key => $value)
                 {
-                    foreach ($set as $key => $value)
+                    if (($key != 'next') && ($key != 'self') && (is_array($value)))
                     {
-                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
-                        {
-                            $object[$counter] = $value;
-                            $counter ++;
-                        }
+                        $object[$counter] = $value;
+                        $counter ++;
                     }
                 }
             }
@@ -3632,7 +3626,7 @@ class twitch
         // Set the keys and array
         foreach ($subscribersObject as $subscriber)
         {
-            $key = $subscriber[$twitch_configuration['KEY_NAME']];
+            $key = $subscriber['user'][$twitch_configuration['KEY_NAME']];
             $subscribers[$key] = $subscriber;
         }
         
