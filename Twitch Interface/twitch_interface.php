@@ -322,7 +322,7 @@ class twitch
         self::generateOutput($functionName, 'Starting POST query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -448,7 +448,7 @@ class twitch
         self::generateOutput($functionName, 'Starting PUT query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $put) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -567,7 +567,7 @@ class twitch
         self::generateOutput($functionName, 'Starting DELETE query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
+        if ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER'))
         {
             $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
                 'Authorization: OAuth ' . $post['oauth_token']);
@@ -735,12 +735,12 @@ class twitch
         }
         
         // Calculate the starting limit
-        if ($toDo > $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']])
+        if ($toDo > ($twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']] + 1))
         {
             $startingLimit = $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']];
             self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         } else {
-            $startingLimit = $toDo;
+            $startingLimit = $toDo + 1;
             self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         }
         
@@ -830,7 +830,7 @@ class twitch
         self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
         
         // Iterate until we have everything grabbed we want to have
-        while (($toDo > 0) || ($limit == -1))
+        while ((($toDo > ($twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']] + 1)) && ($toDo > 0)) || ($limit == -1))
         {
             // check to see if return was 0, this indicates a staus return
             if ($return == 0)
@@ -864,11 +864,11 @@ class twitch
                         if (($key != 'next') && ($key != 'self') && (is_array($value)))
                         {
                             $object[$counter] = $value;
-                            $counter ++;                        
-                        }                    
-                    }                              
+                            $counter ++;
+                        }
+                    }
                 }
-            }                   
+            }
             
             // Calculate our returns and our expected returns
             $expectedReturns = $startingLimit * $iterations - (1 * ($iterations - 1));
@@ -1077,7 +1077,7 @@ class twitch
                 {
                     $get['game'] = $game;
                     self::generateOutput($functionName, 'Game added to GET array', 2);
-                }                
+                }
             }
             
             self::generateOutput($functionName, 'New query built, passing to GET:', 3);
@@ -1098,18 +1098,21 @@ class twitch
         
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
-        {            
+        {
             foreach ($return as $set)
             {
-                foreach ($set as $key => $value)
+                if (is_array($set))
                 {
-                    if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                    foreach ($set as $key => $value)
                     {
-                        $object[$counter] = $value;
-                        $counter ++;                        
-                    }                    
+                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        {
+                            $object[$counter] = $value;
+                            $counter ++;
+                        }
+                    }
                 }
-            }           
+            }
         }
         
         self::generateOutput($functionName, 'Total returned rows: ' . $counter, 3);
@@ -1155,7 +1158,7 @@ class twitch
     private function get_iteratedNested($functionName, $url, $options, $limit, $offset, $arrayKey, $arrayKey2, $authKey = null, $hls = null, $direction = null, $channels = null, $embedable = null, $client_id = null, $broadcasts = null, $period = null)
     {
         global $twitch_configuration;
-        $functionName = 'ITERATION-' . $functionName;
+        $functionName = 'ITERATION_NESTED-' . $functionName;
         
         self::generateOutput($functionName, 'starting Iteration sequence', 1);
         self::generateOutput($functionName, 'Calculating parameters', 3); 
@@ -1212,12 +1215,12 @@ class twitch
         }
         
         // Calculate the starting limit
-        if ($toDo > $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']])
+        if ($toDo > ($twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']] + 1))
         {
             $startingLimit = $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']];
             self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         } else {
-            $startingLimit = $toDo;
+            $startingLimit = $toDo + 1;
             self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         }
         
@@ -1302,7 +1305,7 @@ class twitch
         self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
         
         // Iterate until we have everything grabbed we want to have
-        while (($toDo > 0) || ($limit == -1))
+        while ((($toDo > ($twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']] + 1)) && ($toDo > 0)) || ($limit == -1))
         {
             // check to see if return was 0, this indicates a staus return
             if ($return == 0)
@@ -1319,7 +1322,6 @@ class twitch
             }
             
             $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
-            
             $grabbedRows += $currentReturnRows;
 
             foreach ($return as $set)
@@ -1331,11 +1333,11 @@ class twitch
                         if (($key != 'next') && ($key != 'self') && (is_array($value)))
                         {
                             $object[$counter] = $value;
-                            $counter ++;                        
-                        }                    
-                    }                              
+                            $counter ++;
+                        }
+                    }
                 }
-            }                   
+            }
             
             // Calculate our returns and our expected returns
             $expectedReturns = $startingLimit * $iterations - (1 * ($iterations - 1));
@@ -1544,7 +1546,7 @@ class twitch
                 {
                     $get['game'] = $game;
                     self::generateOutput($functionName, 'Game added to GET array', 2);
-                }                
+                }
             }
             
             self::generateOutput($functionName, 'New query built, passing to GET:', 3);
@@ -1565,18 +1567,21 @@ class twitch
         
         // check to see if the loop was skipped
         if ((empty($object)) && (!empty($return)))
-        {            
+        {
             foreach ($return as $set)
             {
-                foreach ($set as $key => $value)
+                if (is_array($set))
                 {
-                    if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                    foreach ($set as $key => $value)
                     {
-                        $object[$counter] = $value;
-                        $counter ++;                        
-                    }                    
+                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        {
+                            $object[$counter] = $value;
+                            $counter ++;
+                        }
+                    }
                 }
-            }           
+            }
         }
         
         self::generateOutput($functionName, 'Total returned rows: ' . $counter, 3);
@@ -2815,6 +2820,7 @@ class twitch
         {
             $key = $follower['user'][$twitch_configuration['KEY_NAME']];
             $followers[$key] = $follower;
+            self::generateOutput($functionName, 'Setting key: ' . $key, 3);
         }
         
         // Clean up
@@ -3619,7 +3625,7 @@ class twitch
     }
     
     /**
-     * Checks to see if a user is subscribed to a specified channel
+     * Checks to see if a user is subscribed to a specified channel from the channel side
      * 
      * @param $user - [string] Username of the use check against
      * @param $chan - [string] Channel name of the channel to check against
@@ -3628,7 +3634,7 @@ class twitch
      * 
      * @return $subscribed - [bool] the status of the user subscription
      */ 
-    public function checkUserSubscription($user, $chan, $authKey, $code)
+    public function checkChannelSubscription($user, $chan, $authKey, $code)
     {
         $requiredAuth = 'channel_subscriptions';
         $functionName = 'CHECK_SUBSCRIPTION';
@@ -3695,16 +3701,14 @@ class twitch
         $get = array('oauth_token' => $authKey);
         
         // Build our cURL query and store the array
-        $subscribed = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $subscribed = json_decode(self::cURL_get($url, $get, $options, true), true);
         
         // Check the return
-        if (!empty($subscribed))
+        if ($subscribed)
         {
-            self::generateOutput($functionName, 'User ' . $user . ' is subscribed to channel ' . $chan, 3);
-            $subscribed = true;
+            
         } else {
-            self::generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan . ' or system was unavailable', 3);
-            $subscribed = false;
+            
         }
         
         // Clean up quickly
