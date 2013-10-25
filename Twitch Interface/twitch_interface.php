@@ -880,14 +880,7 @@ class twitch
                 {
                     foreach ($value as $k => $v)
                     {
-                        if ($k == 0)
-                        {
-                            $object[$counter] = $v;
-                            $counter ++;
-                            continue;
-                        }
-                        
-                        if (($k == '_links') || ($k == '_total') || (is_array($v) != true))
+                        if (($k === '_links') || ($k === '_total') || !(is_array($v)))
                         {
                             continue;
                         }
@@ -1130,14 +1123,7 @@ class twitch
             {
                 foreach ($value as $k => $v)
                 {
-                    if ($k == 0)
-                    {
-                        $object[$counter] = $v;
-                        $counter ++;
-                        continue;
-                    }
-                    
-                    if (($k == '_links') || ($k == '_total') || (is_array($v) != true))
+                    if (($k === '_links') || ($k === '_total') || !(is_array($v)))
                     {
                         continue;
                     }
@@ -1363,14 +1349,7 @@ class twitch
                 {
                     foreach ($value as $k => $v)
                     {
-                        if ($k == 0)
-                        {
-                            $object[$counter] = $v;
-                            $counter ++;
-                            continue;
-                        }
-                        
-                        if (($k == '_links') || ($k == '_total') || (is_array($v) != true))
+                        if (($k === '_links') || ($k === '_total') || !(is_array($v)))
                         {
                             continue;
                         }
@@ -1613,14 +1592,7 @@ class twitch
             {
                 foreach ($value as $k => $v)
                 {
-                    if ($k == 0)
-                    {
-                        $object[$counter] = $v;
-                        $counter ++;
-                        continue;
-                    }
-                    
-                    if (($k == '_links') || ($k == '_total') || (is_array($v) != true))
+                    if (($k === '_links') || ($k === '_total') || !(is_array($v)))
                     {
                         continue;
                     }
