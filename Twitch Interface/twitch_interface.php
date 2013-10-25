@@ -736,7 +736,6 @@ class twitch
                 $offset = 0;
             }
         }
-        $offset -= 1;
         
         self::generateOutput($functionName, 'Offset set to: ' . $offset, 2);
         
