@@ -736,6 +736,7 @@ class twitch
                 $offset = 0;
             }
         }
+        $offset -= 1;
         
         self::generateOutput($functionName, 'Offset set to: ' . $offset, 2);
         
@@ -759,7 +760,7 @@ class twitch
             $startingLimit = $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']];
             self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         } else {
-            $startingLimit = $toDo + 1;
+            $startingLimit = $toDo;
             self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         }
         
@@ -846,7 +847,6 @@ class twitch
         
         self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
         self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
-        self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
         
         // Iterate until we have everything grabbed we want to have
         while ((($toDo > ($twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']] + 1)) && ($toDo > 0)) || ($limit == -1))
@@ -874,17 +874,27 @@ class twitch
             
             $grabbedRows += $currentReturnRows;
 
-            foreach ($return as $set)
+            // Return the data we requested into the array
+            foreach ($return as $key => $value)
             {
-                if (is_array($set)) // Skip a singular _link object that is not an array
+                if (is_array($value) && ($key != '_links') && ($key != '_total')) // Skip some of the data we don't need
                 {
-                    foreach ($set as $key => $value)
+                    foreach ($value as $k => $v)
                     {
-                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        if ($k == 0)
                         {
-                            $object[$counter] = $value;
+                            $object[$counter] = $v;
                             $counter ++;
+                            continue;
                         }
+                        
+                        if (($k == '_links') || ($k == '_total') || (is_array($v) != true))
+                        {
+                            continue;
+                        }
+                        
+                        $object[$counter] = $v;
+                        $counter ++;
                     }
                 }
             }
@@ -1109,33 +1119,41 @@ class twitch
             
             self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
             self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 3);
-            self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
             self::generateOutput($functionName, 'End of iteration sequence', 3);
         }
         
         self::generateOutput($functionName, 'Exited Iteration', 3);
         
         // Run this one last time, a little redundant, but we could have skipped a return
-        foreach ($return as $set)
+        foreach ($return as $key => $value)
         {
-            if (is_array($set))
+            if (is_array($value) && ($key != '_links') && ($key != '_total')) // Skip some of the data we don't need
             {
-                foreach ($set as $key => $value)
+                foreach ($value as $k => $v)
                 {
-                    if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                    if ($k == 0)
                     {
-                        $object[$counter] = $value;
+                        $object[$counter] = $v;
                         $counter ++;
+                        continue;
                     }
+                    
+                    if (($k == '_links') || ($k == '_total') || (is_array($v) != true))
+                    {
+                        continue;
+                    }
+                    
+                    $object[$counter] = $v;
+                    $counter ++;
                 }
             }
         }
         
-        self::generateOutput($functionName, 'Total returned rows: ' . $counter, 3);
+        self::generateOutput($functionName, 'Total returned rows: ' . ($counter - 1), 3);
         
         // Clean up
         self::generateOutput($functionName, 'Cleaning memory', 3);
-        unset($functionName, $url, $options, $limit, $offset, $arrayKey, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns);
+        unset($functionName, $url, $options, $limit, $offset, $arrayKey, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns, $k, $v);
         
         if (empty($object))
         {
@@ -1318,7 +1336,6 @@ class twitch
         
         self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
         self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
-        self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
         
         // Iterate until we have everything grabbed we want to have
         while ((($toDo > ($twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']] + 1)) && ($toDo > 0)) || ($limit == -1))
@@ -1340,17 +1357,27 @@ class twitch
             $currentReturnRows = count($return[$arrayKey][$arrayKey2]);
             $grabbedRows += $currentReturnRows;
 
-            foreach ($return as $set)
+            // Return the data we requested into the array
+            foreach ($return as $key => $value)
             {
-                if (is_array($set)) // Skip a singular _link object that is not an array
+                if (is_array($value) && ($key != '_links') && ($key != '_total')) // Skip some of the data we don't need
                 {
-                    foreach ($set as $key => $value)
+                    foreach ($value as $k => $v)
                     {
-                        if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                        if ($k == 0)
                         {
-                            $object[$counter] = $value;
+                            $object[$counter] = $v;
                             $counter ++;
+                            continue;
                         }
+                        
+                        if (($k == '_links') || ($k == '_total') || (is_array($v) != true))
+                        {
+                            continue;
+                        }
+                        
+                        $object[$counter] = $v;
+                        $counter ++;
                     }
                 }
             }
@@ -1575,24 +1602,32 @@ class twitch
             
             self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
             self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 3);
-            self::generateOutput($functionName, 'Current return flushed: ' . json_encode($return), 4);
             self::generateOutput($functionName, 'End of iteration sequence', 3);
         }
         
         self::generateOutput($functionName, 'Exited Iteration', 3);
         
         // Run this one last time, a little redundant, but we could have skipped a return
-        foreach ($return as $set)
+        foreach ($return as $key => $value)
         {
-            if (is_array($set))
+            if (is_array($value) && ($key != '_links') && ($key != '_total')) // Skip some of the data we don't need
             {
-                foreach ($set as $key => $value)
+                foreach ($value as $k => $v)
                 {
-                    if (($key != 'next') && ($key != 'self') && (is_array($value)))
+                    if ($k == 0)
                     {
-                        $object[$counter] = $value;
+                        $object[$counter] = $v;
                         $counter ++;
+                        continue;
                     }
+                    
+                    if (($k == '_links') || ($k == '_total') || (is_array($v) != true))
+                    {
+                        continue;
+                    }
+                    
+                    $object[$counter] = $v;
+                    $counter ++;
                 }
             }
         }
@@ -1601,7 +1636,7 @@ class twitch
                 
         // Clean up
         self::generateOutput($functionName, 'Cleaning memory', 3);
-        unset($functionName, $url, $options, $limit, $offset, $arrayKey, $arrayKey2, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns);
+        unset($functionName, $url, $options, $limit, $offset, $arrayKey, $arrayKey2, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns, $k, $v);
         
         if (empty($object))
         {
