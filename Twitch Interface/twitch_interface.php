@@ -892,8 +892,8 @@ class twitch
             }
             
             // Calculate our returns and our expected returns
-            $expectedReturns = $startingLimit * $iterations - (1 * ($iterations - 1));
-            $currentReturns = $counter;
+            $expectedReturns = $startingLimit * $iterations;
+            $currentReturns = $counter - 1;
 
             
             // Have we gotten everything we requested?
@@ -1361,8 +1361,8 @@ class twitch
             }
             
             // Calculate our returns and our expected returns
-            $expectedReturns = $startingLimit * $iterations - (1 * ($iterations - 1));
-            $currentReturns = $counter;
+            $expectedReturns = $startingLimit * $iterations;
+            $currentReturns = $counter - 1;
 
             
             // Have we gotten everything we requested?
