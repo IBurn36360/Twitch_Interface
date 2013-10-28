@@ -16,19 +16,69 @@
  * 
  * A copy of the GNU GPLV3 license can be found at http://www.gnu.org/licenses/
  * or can be found in the folder distributed with the software.
- * 
  */ 
  
 class phpBBTwitch // Provides all functions to interact with the interface from phpBB's end
 {
-    public function postError()
+    public function postError($errNo, $errStr)
+    {
+        global $db;
+        
+        $sql = 'INSERT INTO ' . MOD_TWITCH_INTERFACE_ERROR_LOG . ' VALUES(' . time() . ', ' . $db->sql_escape($errNo) . ', ' . $db->sql_escape($errStr) . ');';
+        $db->sql_query($sql);
+    }
+    
+    public function postOutput($function, $errStr)
+    {
+        global $db;
+        
+        $sql = 'INSERT INTO ' . MOD_TWITCH_INTERFACE_OUTPUT_LOG . '(\'time\', \'errno\', \'errstr\') VALUES(' . time() . ', ' . $db->sql_escape($errNo) . ', \'' . $db->sql_escape($errStr) . '\');';
+        $db->sql_query($sql);        
+    }
+    
+    public function getLiveChannels()
     {
         
     }
     
-    public function postOutput()
+    // Our cron task handler
+    public function cronJob($cronTasks = array(), $params = array())
     {
+        // Keep track of where we are in the array set
+        $counter = 0;
         
+        // Switch through our que of tasks to do and apply the target params to the case
+        foreach ($cronTasks as $task)
+        {
+            switch($task)
+            {
+                // The only task that will be performed on a timer.
+                case 'getLive':
+                    self::getLiveChannels($params[$counter]);
+                    break;
+                
+                // Added to the que on request
+                case 'cleanOutput':
+                    self::cleanOutput();
+                    break;
+                    
+                // Added to the que on request
+                case 'cleanErrors':
+                    self::cleanErrors();
+                    break;
+                    
+                // Likely the most expensive call to be made as this is done on a que.
+                case 'addFollows':
+                    self::addFollows($params[$counter]);
+                    break;
+                
+                // A catch case, break here for now
+                default:
+                    break;                
+            }
+            
+            $counter ++;
+        }
     }
 }
 ?>
