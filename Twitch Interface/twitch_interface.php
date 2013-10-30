@@ -1348,7 +1348,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -1454,7 +1454,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -1553,7 +1553,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -1684,7 +1684,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -1779,7 +1779,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -1882,7 +1882,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -1996,7 +1996,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -2091,7 +2091,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -2308,7 +2308,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -2474,7 +2474,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -2567,7 +2567,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -2980,7 +2980,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -3125,7 +3125,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -3226,7 +3226,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -3328,7 +3328,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
@@ -3519,7 +3519,7 @@ class twitch
             // Check the array of scopes
             foreach ($auth['scopes'] as $type)
             {
-                if ($type = $requiredAuth)
+                if ($type == $requiredAuth)
                 {
                     // We found the scope, we are good then
                     $authSuccessful = true;
