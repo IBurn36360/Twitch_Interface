@@ -1219,7 +1219,7 @@ class twitch
         {
             self::generateOutput($functionName, 'Token valid', 3);
             $token['token'] = $authToken;
-            $token['scopes'] = $result['authorization']['scopes'];
+            $token['scopes'] = $result['token']['authorization']['scopes'];
             $token['name'] = $result['token']['user_name'];
         } else {
             self::generateOutput($functionName, 'Token not valid', 3);
