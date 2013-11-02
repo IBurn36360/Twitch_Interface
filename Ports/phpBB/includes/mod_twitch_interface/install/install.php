@@ -37,8 +37,10 @@ if (!$auth->acl_get('a_'))
 	}
 }
 
-// Set up nneded tools
+// Set up needed tools
+include($phpbb_root_path . 'includes/mod_twitch_interface/install/install_common.php');
 $db_tools 	= new phpbb_db_tools($db);
+$install    = new twitchInterfaceInstaller();
 $modules 	= new acp_modules();
 $auth_admin = new auth_admin();
 ?>

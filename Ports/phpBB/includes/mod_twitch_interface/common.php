@@ -25,6 +25,9 @@ if (!defined('IN_PHPBB'))
     exit;
 }
 
+// On start, asume we are installed correctly, check later
+define('TWITCH_INTERFACE_INSTALLED', true);
+
 // Assume we installed properly and set all of our database constants here
 define('MOD_TWITCH_INTERFACE_CONFIG',          $table_prefix . 'mod_twitch_interface_config');          // Configuration information (Overrides the defauls in the file)
 define('MOD_TWITCH_INTERFACE_OUTPUT_LOG',      $table_prefix . 'mod_twitch_interface_output_log');      // The output log from the interface
@@ -37,6 +40,17 @@ require('./interface_compat.php'); // Builds the compatability with the interfac
 require('./interface.php');        // The base interface itself, is short circuited to stop errors
 
 // Now grab our config data
+if (!$db_tools->sql_table_exists(MOD_TWITCH_INTERFACE_CONFIG))
+{
+    trigger_error();
+    define('TWITCH_INTERFACE_INSTALLED', false);
+}
 
-
+if (!defined('TWITCH_INTERFACE_INSTALLED'))
+{
+    trigger_error();
+} else {
+    // define all of our accessor functions and load all of our data
+    
+}
 ?>

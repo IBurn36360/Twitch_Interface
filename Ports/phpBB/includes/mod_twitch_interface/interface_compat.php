@@ -24,7 +24,7 @@ class phpBBTwitch // Provides all functions to interact with the interface from 
     {
         global $db;
         
-        $sql = 'INSERT INTO ' . MOD_TWITCH_INTERFACE_ERROR_LOG . ' VALUES(' . time() . ', ' . $db->sql_escape($errNo) . ', ' . $db->sql_escape($errStr) . ');';
+        $sql = 'INSERT INTO ' . MOD_TWITCH_INTERFACE_ERROR_LOG . '(\'time\', \'errno\', \'errstr\') VALUES(' . time() . ', ' . $db->sql_escape($errNo) . ', \'' . $db->sql_escape($errStr) . '\');';
         $db->sql_query($sql);
     }
     
@@ -32,17 +32,41 @@ class phpBBTwitch // Provides all functions to interact with the interface from 
     {
         global $db;
         
-        $sql = 'INSERT INTO ' . MOD_TWITCH_INTERFACE_OUTPUT_LOG . '(\'time\', \'errno\', \'errstr\') VALUES(' . time() . ', ' . $db->sql_escape($errNo) . ', \'' . $db->sql_escape($errStr) . '\');';
+        $sql = 'INSERT INTO ' . MOD_TWITCH_INTERFACE_OUTPUT_LOG . '(\'time\', \'errstr\') VALUES(' . time() . ', \'' . $db->sql_escape($errStr) . '\');';
         $db->sql_query($sql);        
     }
     
-    public function getLiveChannels()
+    public function getLiveChannels($channels = array(), $embedable = false, $hls = false)
+    {
+        $live = twitch::getStreamsObjects(null, $channels, -1, 0, $embedable, $hls);
+
+        return $live;
+    }
+    
+    public function cleanOutput()
+    {
+        $sql = 'DELETE * FROM ' . MOD_TWITCH_INTERFACE_OUTPUT_LOG . ';';
+        $db->sql_query($sql);
+        
+        add_log('admin', 'LOG_MOD_TWITCH_OUTPUT_CLEARED', 'output');
+    }
+    
+    public function cleanErrors ()
+    {
+        $sql = 'DELETE * FROM ' . MOD_TWITCH_INTERFACE_ERROR_LOG . ';';
+        $db->sql_query($sql);
+        
+        add_log('admin', 'LOG_MOD_TWITCH_OUTPUT_CLEARED', 'error');
+    }
+    
+    // Expensive function, will sort through the array of params and add challen to user's follows list
+    public function addFollows($params = array())
     {
         
     }
-    
+        
     // Our cron task handler
-    public function cronJob($cronTasks = array(), $params = array())
+    public function cron($cronTasks = array(), $params = array())
     {
         // Keep track of where we are in the array set
         $counter = 0;
