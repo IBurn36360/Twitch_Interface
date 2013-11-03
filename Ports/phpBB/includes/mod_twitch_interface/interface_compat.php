@@ -79,26 +79,26 @@ class phpBBTwitch // Provides all functions to interact with the interface from 
                 // The only task that will be performed on a timer.
                 case 'getLive':
                     self::getLiveChannels($params[$counter]);
-                    break;
+                break;
                 
                 // Added to the que on request
                 case 'cleanOutput':
                     self::cleanOutput();
-                    break;
+                break;
                     
                 // Added to the que on request
                 case 'cleanErrors':
                     self::cleanErrors();
-                    break;
+                break;
                     
                 // Likely the most expensive call to be made as this is done on a que.
                 case 'addFollows':
                     self::addFollows($params[$counter]);
-                    break;
+                break;
                 
                 // A catch case, break here for now
                 default:
-                    break;                
+                break;                
             }
             
             $counter ++;
