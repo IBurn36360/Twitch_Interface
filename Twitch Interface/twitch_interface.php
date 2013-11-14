@@ -195,7 +195,7 @@ class twitch
         global $twitch_configuration, $twitch_clientKey;
         $functionName = 'GET';
         
-        self::generateOutput($functionName, 'Starting GET query', 1);
+        $this->generateOutput($functionName, 'Starting GET query', 1);
         
         // Specify the header
         if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
@@ -215,12 +215,12 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::generateOutput($functionName, 'Header row => ' . $row, 3);
+            $this->generateOutput($functionName, 'Header row => ' . $row, 3);
         }
         
         $cURL_URL = rtrim($url . '?' . http_build_query($get), '?');
         
-        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
+        $this->generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
         $defaults = array(
             CURLOPT_URL => $cURL_URL, 
@@ -235,24 +235,24 @@ class twitch
         
         if (empty($options))
         {
-            self::generateOutput($functionName, 'No additional options set', 3);
+            $this->generateOutput($functionName, 'No additional options set', 3);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::generateOutput($functionName, 'Options set as an array', 3);
+            $this->generateOutput($functionName, 'Options set as an array', 3);
             curl_setopt_array($handle, ($options + $defaults));
         } else { // nope, set them one at a time
             foreach (($defaults + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::generateOutput($functionName, 'Options set as individual values', 3);
+                $this->generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::generateOutput($functionName, 'Command GET => URL: ' . $cURL_URL, 2);
+        $this->generateOutput($functionName, 'Command GET => URL: ' . $cURL_URL, 2);
         
         foreach ($get as $param => $val)
         {
@@ -260,10 +260,10 @@ class twitch
             {
                 foreach ($val as $key => $value)
                 {
-                    self::generateOutput($functionName, 'GET option: [' . $param . '] ' . $key . '=>' . $value, 2);
+                    $this->generateOutput($functionName, 'GET option: [' . $param . '] ' . $key . '=>' . $value, 2);
                 }
             } else {
-                self::generateOutput($functionName, 'GET option: ' . $param . '=>' . $val, 2);
+                $this->generateOutput($functionName, 'GET option: ' . $param . '=>' . $val, 2);
             }
         }
         
@@ -275,7 +275,7 @@ class twitch
         {
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            self::generateError($errNo, $errStr, $result);
+            $this->generateError($errNo, $errStr, $result);
         }
         
         // Check to see if we got a null return and return 0 if the query nulled out
@@ -286,21 +286,21 @@ class twitch
         
         curl_close($handle);
         
-        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
-        self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
+        $this->generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
+        $this->generateOutput($functionName, 'Raw Return: ' . $result, 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($url, $get, $options, $debug, $header, $cURL_URL, $defaults, $key, $opt, $k, $v, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::generateOutput($functionName, 'Returning HTTPD status', 3);
+            $this->generateOutput($functionName, 'Returning HTTPD status', 3);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::generateOutput($functionName, 'Returning result', 3);
+            $this->generateOutput($functionName, 'Returning result', 3);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -323,7 +323,7 @@ class twitch
         $functionName = 'POST';
         $postfields = '';
         
-        self::generateOutput($functionName, 'Starting POST query', 1);
+        $this->generateOutput($functionName, 'Starting POST query', 1);
         
         // Specify the header
         if ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
@@ -343,10 +343,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::generateOutput($functionName, 'Header row => ' . $row, 3);
+            $this->generateOutput($functionName, 'Header row => ' . $row, 3);
         }
         
-        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
+        $this->generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
         // Custom build the post fields
         foreach ($post as $field => $value)
@@ -373,24 +373,24 @@ class twitch
         
         if (empty($options))
         {
-            self::generateOutput($functionName, 'No additional options set', 3);
+            $this->generateOutput($functionName, 'No additional options set', 3);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::generateOutput($functionName, 'Options set as an array', 3);
+            $this->generateOutput($functionName, 'Options set as an array', 3);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::generateOutput($functionName, 'Options set as individual values', 3);
+                $this->generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::generateOutput($functionName, 'command POST => URL: ' . $url, 2);
+        $this->generateOutput($functionName, 'command POST => URL: ' . $url, 2);
         
         foreach ($post as $param => $val)
         {
@@ -398,10 +398,10 @@ class twitch
             {
                 foreach ($val as $key => $value)
                 {
-                    self::generateOutput($functionName, 'POST option: [' . $param . '] ' . $key . '=>' . $value, 2);
+                    $this->generateOutput($functionName, 'POST option: [' . $param . '] ' . $key . '=>' . $value, 2);
                 }
             } else {
-                self::generateOutput($functionName, 'POST option: ' . $param . '=>' . $val, 2);
+                $this->generateOutput($functionName, 'POST option: ' . $param . '=>' . $val, 2);
             }
         }
         
@@ -413,26 +413,26 @@ class twitch
         {
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            self::generateError($errNo, $errStr, $result); 
+            $this->generateError($errNo, $errStr, $result); 
         }
         
         curl_close($handle);
         
-        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
-        self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
+        $this->generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
+        $this->generateOutput($functionName, 'Raw Return: ' . $result, 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($url, $post, $options, $debug, $postfields, $header, $field, $value, $postfields, $default, $errStr, $errNo, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::generateOutput($functionName, 'Returning HTTPD status', 3);
+            $this->generateOutput($functionName, 'Returning HTTPD status', 3);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::generateOutput($functionName, 'Returning result', 3);
+            $this->generateOutput($functionName, 'Returning result', 3);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -454,7 +454,7 @@ class twitch
         $functionName = 'PUT';
         $postfields = '';
         
-        self::generateOutput($functionName, 'Starting PUT query', 1);
+        $this->generateOutput($functionName, 'Starting PUT query', 1);
         
         // Specify the header
         if ((array_key_exists('oauth_token', $put) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
@@ -474,10 +474,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::generateOutput($functionName, 'Header row => ' . $row, 3);
+            $this->generateOutput($functionName, 'Header row => ' . $row, 3);
         }
         
-        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
+        $this->generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
         // Custom build the post fields
         $postfields = (is_array($put)) ? http_build_query($put) : $put;
@@ -499,24 +499,24 @@ class twitch
         
         if (empty($options))
         {
-            self::generateOutput($functionName, 'No additional options set', 3);
+            $this->generateOutput($functionName, 'No additional options set', 3);
         }
         
         $handle = curl_init();
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::generateOutput($functionName, 'Options set as an array', 3);
+            $this->generateOutput($functionName, 'Options set as an array', 3);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::generateOutput($functionName, 'Options set as individual values', 3);
+                $this->generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::generateOutput($functionName, 'command PUT => URL: ' . $url, 2);
+        $this->generateOutput($functionName, 'command PUT => URL: ' . $url, 2);
         
         foreach ($put as $param => $val)
         {
@@ -524,10 +524,10 @@ class twitch
             {
                 foreach ($val as $key => $value)
                 {
-                    self::generateOutput($functionName, 'PUT option: [' . $param . '] ' . $key . '=>' . $value, 2);
+                    $this->generateOutput($functionName, 'PUT option: [' . $param . '] ' . $key . '=>' . $value, 2);
                 }
             } else {
-                self::generateOutput($functionName, 'PUT option: ' . $param . '=>' . $val, 2);
+                $this->generateOutput($functionName, 'PUT option: ' . $param . '=>' . $val, 2);
             }
         }
         
@@ -538,26 +538,26 @@ class twitch
         { 
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            self::generateError($errNo, $errStr, $result); 
+            $this->generateError($errNo, $errStr, $result); 
         }
 
         curl_close($handle);
         
-        self::generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
-        self::generateOutput($functionName, 'Raw Return: ' . $result, 4);
+        $this->generateOutput($functionName, 'Status Returned: ' . $httpdStatus, 3);
+        $this->generateOutput($functionName, 'Raw Return: ' . $result, 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($url, $put, $options, $debug, $postfields, $header, $field, $value, $postfields, $default, $errStr, $errNo, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::generateOutput($functionName, 'Returning HTTPD status', 3);
+            $this->generateOutput($functionName, 'Returning HTTPD status', 3);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::generateOutput($functionName, 'Returning result', 3);
+            $this->generateOutput($functionName, 'Returning result', 3);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -578,7 +578,7 @@ class twitch
         global $twitch_configuration, $twitch_clientKey;
         $functionName = 'DELETE';
         
-        self::generateOutput($functionName, 'Starting DELETE query', 1);
+        $this->generateOutput($functionName, 'Starting DELETE query', 1);
         
         // Specify the header
         if ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
@@ -598,10 +598,10 @@ class twitch
         // Send the header info to the output
         foreach ($header as $row)
         {
-            self::generateOutput($functionName, 'Header row => ' . $row, 3);
+            $this->generateOutput($functionName, 'Header row => ' . $row, 3);
         }
         
-        self::generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
+        $this->generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
         $default = array(
             CURLOPT_URL => $url,
@@ -618,17 +618,17 @@ class twitch
         
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
-            self::generateOutput($functionName, 'Options set as an array', 3);
+            $this->generateOutput($functionName, 'Options set as an array', 3);
             curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
             foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
-                self::generateOutput($functionName, 'Options set as individual values', 3);
+                $this->generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
             }
         }
         
-        self::generateOutput($functionName, 'command DELETE => URL: ' . $url, 2);
+        $this->generateOutput($functionName, 'command DELETE => URL: ' . $url, 2);
         
         foreach ($post as $param => $val)
         {
@@ -636,10 +636,10 @@ class twitch
             {
                 foreach ($val as $key => $value)
                 {
-                    self::generateOutput($functionName, 'DELETE option: [' . $param . '] ' . $key . '=>' . $value, 2);
+                    $this->generateOutput($functionName, 'DELETE option: [' . $param . '] ' . $key . '=>' . $value, 2);
                 }
             } else {
-                self::generateOutput($functionName, 'DELETE option: ' . $param . '=>' . $val, 2);
+                $this->generateOutput($functionName, 'DELETE option: ' . $param . '=>' . $val, 2);
             }
         }        
         
@@ -649,20 +649,20 @@ class twitch
         curl_close($handle); 
         ob_end_clean();
         
-        self::generateOutput($functionName, 'Status returned: ' . $httpdStatus, 3);   
+        $this->generateOutput($functionName, 'Status returned: ' . $httpdStatus, 3);   
 
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);        
+        $this->generateOutput($functionName, 'Cleaning memory', 3);        
         unset($url, $post, $options, $header, $handle, $default, $key, $opt, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
         {
-            self::generateOutput($functionName, 'Returning HTTPD status', 3);
+            $this->generateOutput($functionName, 'Returning HTTPD status', 3);
             unset($result, $functionName);
             return $httpdStatus;
         } else {
-            self::generateOutput($functionName, 'Returning result', 3);
+            $this->generateOutput($functionName, 'Returning result', 3);
             unset($httpdStatus, $functionName);
             return $result; 
         }
@@ -699,9 +699,9 @@ class twitch
         global $twitch_configuration;
         $functionName = 'ITERATION-' . $functionName;
         
-        self::generateOutput($functionName, 'starting Iteration sequence', 1);
-        self::generateOutput($functionName, 'Calculating parameters', 3); 
-        self::generateOutput($functionName, 'Limit recieved as: ' . $limit, 2);
+        $this->generateOutput($functionName, 'starting Iteration sequence', 1);
+        $this->generateOutput($functionName, 'Calculating parameters', 3); 
+        $this->generateOutput($functionName, 'Limit recieved as: ' . $limit, 2);
         
         // Check to make sure limit is an int
         if ((gettype($limit) != 'integer') && (gettype($limit) != 'double') && (gettype($limit) != 'float'))
@@ -719,8 +719,8 @@ class twitch
             }
         }
         
-        self::generateOutput($functionName, 'Limit set to: ' . $limit, 2);
-        self::generateOutput($functionName, 'Offset recieved as: ' . $offset, 2);
+        $this->generateOutput($functionName, 'Limit set to: ' . $limit, 2);
+        $this->generateOutput($functionName, 'Offset recieved as: ' . $offset, 2);
         
         // Perform the same check on the offset
         if ((gettype($offset) != 'integer') && (gettype($offset) != 'double') && (gettype($offset) != 'float'))
@@ -737,7 +737,7 @@ class twitch
             }
         }
         
-        self::generateOutput($functionName, 'Offset set to: ' . $offset, 2);
+        $this->generateOutput($functionName, 'Offset set to: ' . $offset, 2);
         
         // Init some vars  
         $grabbedRows = 0;
@@ -757,10 +757,10 @@ class twitch
         if ($toDo > ($twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']] + 1))
         {
             $startingLimit = $twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']];
-            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
+            $this->generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         } else {
             $startingLimit = $toDo;
-            self::generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
+            $this->generateOutput($functionName, 'Starting Limit set to: ' . $startingLimit, 2);
         }
         
         // Build our GET array for the first iteration, these values will always be supplied
@@ -771,17 +771,17 @@ class twitch
         if ($authKey != null) 
         {
             $get['oauth_token'] = $authKey;
-            self::generateOutput($functionName, 'Auth Key added to GET array', 2);
+            $this->generateOutput($functionName, 'Auth Key added to GET array', 2);
         }
         if ($hls != null)
         {
             $get['hls'] = $hls;
-            self::generateOutput($functionName, 'HLS added to GET array', 2);            
+            $this->generateOutput($functionName, 'HLS added to GET array', 2);            
         }
         if ($direction != null)
         {
             $get['direction'] = $direction;
-            self::generateOutput($functionName, 'Direction added to GET array', 2);   
+            $this->generateOutput($functionName, 'Direction added to GET array', 2);   
         }
         if ($channels != null)
         {
@@ -791,43 +791,43 @@ class twitch
                 $channelBlock = rtrim($channelBlock, ','); 
                 $get['channel'] = $channelBlock;
             }
-            self::generateOutput($functionName, 'Channels added to GET array', 2);
+            $this->generateOutput($functionName, 'Channels added to GET array', 2);
         }
         if ($embedable != null)
         {
             $get['embedable'] = $embedable;
-            self::generateOutput($functionName, 'Embedable added to GET array', 2);
+            $this->generateOutput($functionName, 'Embedable added to GET array', 2);
         }
         if ($client_id != null)
         {
             $get['client_id'] = $client_id;
-            self::generateOutput($functionName, 'Client ID added to GET array', 2);
+            $this->generateOutput($functionName, 'Client ID added to GET array', 2);
         }
         if ($broadcasts != null)
         {
             $get['broadcasts'] = $broadcasts;
-            self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
+            $this->generateOutput($functionName, 'Broadcasts only added to GET array', 2);
         }
         if ($period != null)
         {
             $get['period'] = $period;
-            self::generateOutput($functionName, 'Period added to GET array', 2);
+            $this->generateOutput($functionName, 'Period added to GET array', 2);
         }
         if ($game != null)
         {
             $get['game'] = $game;
-            self::generateOutput($functionName, 'Game added to GET array', 2);
+            $this->generateOutput($functionName, 'Game added to GET array', 2);
         }
         
         // Build our cURL query and store the array
-        $return = json_decode(self::cURL_get($url, $get, $options), true);
+        $return = json_decode($this->cURL_get($url, $get, $options), true);
 
         // check to see if return was 0, this indicates a staus return
         if ($return == 0)
         {
             for ($i = 1; $i <= $twitch_configuration['RETRY_COUNTER']; $i++)
             {
-                $return = json_decode(self::cURL_get($url, $get, $options), true);
+                $return = json_decode($this->cURL_get($url, $get, $options), true);
                 
                 if ($return != 0)
                 {
@@ -844,8 +844,8 @@ class twitch
             $currentReturnRows = count($return);
         }
         
-        self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
-        self::generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
+        $this->generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
+        $this->generateOutput($functionName, 'Current return rows: ' . $currentReturnRows, 3);
         
         // Iterate until we have everything grabbed we want to have
         while ((($toDo > ($twitch_configuration[$twitch_configuration['CALL_LIMIT_SETTING']] + 1)) && ($toDo > 0)) || ($limit == -1))
@@ -855,7 +855,7 @@ class twitch
             {
                 for ($i = 1; $i <= $twitch_configuration['RETRY_COUNTER']; $i++)
                 {
-                    $return = json_decode(self::cURL_get($url, $get, $options), true);
+                    $return = json_decode($this->cURL_get($url, $get, $options), true);
                     
                     if ($return != 0)
                     {
@@ -899,17 +899,17 @@ class twitch
             // Have we gotten everything we requested?
             if ($toDo <= 0)
             {
-                self::generateOutput($functionName, 'All items requested returned, breaking iteration', 3);
+                $this->generateOutput($functionName, 'All items requested returned, breaking iteration', 3);
                 break;
             }
             
-            self::generateOutput($functionName, 'Current counter: ' . $currentReturns, 3);
-            self::generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 3);
+            $this->generateOutput($functionName, 'Current counter: ' . $currentReturns, 3);
+            $this->generateOutput($functionName, 'Expected counter: ' . $expectedReturns, 3);
             
             // Are we no longer getting data? (Some fancy math here)
             if ($currentReturns != $expectedReturns)
             {
-                self::generateOutput($functionName, 'Expected number of returns not met, breaking', 3);
+                $this->generateOutput($functionName, 'Expected number of returns not met, breaking', 3);
                 break;
             }
             
@@ -923,13 +923,13 @@ class twitch
                 $toDo = 2; // Catch this, it will drop one return
             }
             
-            self::generateOutput($functionName, 'Returns to grab: ' . $toDo, 3);
-            self::generateOutput($functionName, 'Calculating new Parameters', 3);
+            $this->generateOutput($functionName, 'Returns to grab: ' . $toDo, 3);
+            $this->generateOutput($functionName, 'Calculating new Parameters', 3);
             
             // Check how many we have left
             if (($toDo > $startingLimit) && ($toDo > 0) && ($limit != -1))
             {
-                self::generateOutput($functionName, 'Continuing iteration', 3);
+                $this->generateOutput($functionName, 'Continuing iteration', 3);
                 
                 $get = array('limit' => $currentReturns + $startingLimit,
                     'offset' => $currentReturns);
@@ -938,17 +938,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::generateOutput($functionName, 'Auth Key added to GET array', 2);
+                    $this->generateOutput($functionName, 'Auth Key added to GET array', 2);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::generateOutput($functionName, 'HLS added to GET array', 2);            
+                    $this->generateOutput($functionName, 'HLS added to GET array', 2);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::generateOutput($functionName, 'Direction added to GET array', 2);   
+                    $this->generateOutput($functionName, 'Direction added to GET array', 2);   
                 }
                 if ($channels != null)
                 {
@@ -958,35 +958,35 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::generateOutput($functionName, 'Channels added to GET array', 2);
+                    $this->generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::generateOutput($functionName, 'Embedable added to GET array', 2);
+                    $this->generateOutput($functionName, 'Embedable added to GET array', 2);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::generateOutput($functionName, 'Client ID added to GET array', 2);
+                    $this->generateOutput($functionName, 'Client ID added to GET array', 2);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
+                    $this->generateOutput($functionName, 'Broadcasts only added to GET array', 2);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::generateOutput($functionName, 'Period added to GET array', 2);
+                    $this->generateOutput($functionName, 'Period added to GET array', 2);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::generateOutput($functionName, 'Game added to GET array', 2);
+                    $this->generateOutput($functionName, 'Game added to GET array', 2);
                 }
             } elseif ($limit == -1) {
-                 self::generateOutput($functionName, 'Continuing iteration', 3);
+                 $this->generateOutput($functionName, 'Continuing iteration', 3);
                 
                 $get = array('limit' => $currentReturns + $startingLimit,
                     'offset' => $currentReturns);
@@ -995,17 +995,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::generateOutput($functionName, 'Auth Key added to GET array', 2);
+                    $this->generateOutput($functionName, 'Auth Key added to GET array', 2);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::generateOutput($functionName, 'HLS added to GET array', 2);            
+                    $this->generateOutput($functionName, 'HLS added to GET array', 2);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::generateOutput($functionName, 'Direction added to GET array', 2);   
+                    $this->generateOutput($functionName, 'Direction added to GET array', 2);   
                 }
                 if ($channels != null)
                 {
@@ -1015,35 +1015,35 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::generateOutput($functionName, 'Channels added to GET array', 2);
+                    $this->generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::generateOutput($functionName, 'Embedable added to GET array', 2);
+                    $this->generateOutput($functionName, 'Embedable added to GET array', 2);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::generateOutput($functionName, 'Client ID added to GET array', 2);
+                    $this->generateOutput($functionName, 'Client ID added to GET array', 2);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
+                    $this->generateOutput($functionName, 'Broadcasts only added to GET array', 2);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::generateOutput($functionName, 'Period added to GET array', 2);
+                    $this->generateOutput($functionName, 'Period added to GET array', 2);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::generateOutput($functionName, 'Game added to GET array', 2);
+                    $this->generateOutput($functionName, 'Game added to GET array', 2);
                 }                
             } else { // Last return in a limited case
-                self::generateOutput($functionName, 'Last return to grab', 3);
+                $this->generateOutput($functionName, 'Last return to grab', 3);
                 
                 $get = array('limit' => $toDo + 1,
                     'offset' => $currentReturns);
@@ -1052,17 +1052,17 @@ class twitch
                 if ($authKey != null) 
                 {
                     $get['oauth_token'] = $authKey;
-                    self::generateOutput($functionName, 'Auth Key added to GET array', 2);
+                    $this->generateOutput($functionName, 'Auth Key added to GET array', 2);
                 }
                 if ($hls != null)
                 {
                     $get['hls'] = $hls;
-                    self::generateOutput($functionName, 'HLS added to GET array', 2);            
+                    $this->generateOutput($functionName, 'HLS added to GET array', 2);            
                 }
                 if ($direction != null)
                 {
                     $get['direction'] = $direction;
-                    self::generateOutput($functionName, 'Direction added to GET array', 2);   
+                    $this->generateOutput($functionName, 'Direction added to GET array', 2);   
                 }
                 if ($channels != null)
                 {
@@ -1072,49 +1072,49 @@ class twitch
                         $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
-                    self::generateOutput($functionName, 'Channels added to GET array', 2);
+                    $this->generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
                 {
                     $get['embedable'] = $embedable;
-                    self::generateOutput($functionName, 'Embedable added to GET array', 2);
+                    $this->generateOutput($functionName, 'Embedable added to GET array', 2);
                 }
                 if ($client_id != null)
                 {
                     $get['client_id'] = $client_id;
-                    self::generateOutput($functionName, 'Client ID added to GET array', 2);
+                    $this->generateOutput($functionName, 'Client ID added to GET array', 2);
                 }
                 if ($broadcasts != null)
                 {
                     $get['broadcasts'] = $broadcasts;
-                    self::generateOutput($functionName, 'Broadcasts only added to GET array', 2);
+                    $this->generateOutput($functionName, 'Broadcasts only added to GET array', 2);
                 }
                 if ($period != null)
                 {
                     $get['period'] = $period;
-                    self::generateOutput($functionName, 'Period added to GET array', 2);
+                    $this->generateOutput($functionName, 'Period added to GET array', 2);
                 }
                 if ($game != null)
                 {
                     $get['game'] = $game;
-                    self::generateOutput($functionName, 'Game added to GET array', 2);
+                    $this->generateOutput($functionName, 'Game added to GET array', 2);
                 }
             }
             
-            self::generateOutput($functionName, 'New query built, passing to GET:', 3);
+            $this->generateOutput($functionName, 'New query built, passing to GET:', 3);
             
             // Run a new query
             unset($return); // unset for a clean return
-            $return = json_decode(self::cURL_get($url, $get, $options), true);
+            $return = json_decode($this->cURL_get($url, $get, $options), true);
             
             $iterations ++;
             
-            self::generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
-            self::generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 3);
-            self::generateOutput($functionName, 'End of iteration sequence', 3);
+            $this->generateOutput($functionName, 'Iterations Completed: ' . $iterations, 3);
+            $this->generateOutput($functionName, 'Current rows returned: ' . $currentReturnRows, 3);
+            $this->generateOutput($functionName, 'End of iteration sequence', 3);
         }
         
-        self::generateOutput($functionName, 'Exited Iteration', 3);
+        $this->generateOutput($functionName, 'Exited Iteration', 3);
         
         // Run this one last time, a little redundant, but we could have skipped a return
         foreach ($return as $key => $value)
@@ -1134,10 +1134,10 @@ class twitch
             }
         }
         
-        self::generateOutput($functionName, 'Total returned rows: ' . ($counter - 1), 3);
+        $this->generateOutput($functionName, 'Total returned rows: ' . ($counter - 1), 3);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($functionName, $url, $options, $limit, $offset, $arrayKey, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns, $k, $v);
         
         if (empty($object))
@@ -1160,7 +1160,7 @@ class twitch
         global $twitch_clientKey, $twitch_clientSecret, $twitch_clientUrl;
         
         $functionName = 'Generate_Auth';
-        self::generateOutput($functionName, 'Generating auth token', 1);
+        $this->generateOutput($functionName, 'Generating auth token', 1);
         
         $url = 'https://api.twitch.tv/kraken/oauth2/token';
         $post = array(
@@ -1172,21 +1172,21 @@ class twitch
         );
         $options = array();
         
-        $result = json_decode(self::cURL_post($url, $post, $options, false), true);
+        $result = json_decode($this->cURL_post($url, $post, $options, false), true);
         
         if (array_key_exists('access_token', $result))
         {
             $token['token'] = $result['access_token'];
             $token['scopes'] = $result['scope'];
-            self::generateOutput($functionName, 'Access token returned: ' . $token['token'], 3);            
+            $this->generateOutput($functionName, 'Access token returned: ' . $token['token'], 3);            
         } else {
             $token['token'] = false;
             $token['grants'] = array();
-            self::generateOutput($functionName, 'Access token not returned', 3);
+            $this->generateOutput($functionName, 'Access token not returned', 3);
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($code, $functionName, $url, $post, $options, $result);
         
         return $token;
@@ -1205,7 +1205,7 @@ class twitch
         global $twitch_clientKey, $twitch_clientSecret, $twitch_clientUrl;
         
         $functionName = 'Generate_Token';
-        self::generateOutput($functionName, 'Checking OAuth token', 1);
+        $this->generateOutput($functionName, 'Checking OAuth token', 1);
         
         $url = 'https://api.twitch.tv/kraken';
         $post = array(
@@ -1213,23 +1213,23 @@ class twitch
         );
         $options = array();
         
-        $result = json_decode(self::cURL_post($url, $post, $options, false), true);
+        $result = json_decode($this->cURL_post($url, $post, $options, false), true);
         
         if ($result['token']['valid'])
         {
-            self::generateOutput($functionName, 'Token valid', 3);
+            $this->generateOutput($functionName, 'Token valid', 3);
             $token['token'] = $authToken;
             $token['scopes'] = $result['token']['authorization']['scopes'];
             $token['name'] = $result['token']['user_name'];
         } else {
-            self::generateOutput($functionName, 'Token not valid', 3);
+            $this->generateOutput($functionName, 'Token not valid', 3);
             $token['token'] = false;
             $token['scopes'] = array();
             $token['name'] = '';
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($authToken, $functionName, $url, $post, $options, $result);
         
         return $token;     
@@ -1249,7 +1249,7 @@ class twitch
         $scopes = '';
         $functionName = 'Request_Auth';
         
-        self::generateOutput($functionName, 'Generating redirect URL', 1);
+        $this->generateOutput($functionName, 'Generating redirect URL', 1);
         
         foreach ($grantType as $scope)
         {
@@ -1265,7 +1265,7 @@ class twitch
             'scope=' . $scopes;
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($grantType, $scopes, $functionName, $scope);
         
         return $urlRedirect;
@@ -1282,12 +1282,12 @@ class twitch
     {
         $functionName = 'RETRIEVE_CODE';
         
-        self::generateOutput($functionName, 'Retrieving code from URL String', 1);
+        $this->generateOutput($functionName, 'Retrieving code from URL String', 1);
         
         $code = getURLParamValue($url, 'code');
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($functionName);
         
         return $code;
@@ -1311,14 +1311,14 @@ class twitch
         $functionName = 'GET_BLOCKED';
         $requiredAuth = 'user_blocks_read';
         
-        self::generateOutput($functionName, 'Attempting to pull a complete list of blocked users for the channel: ' . $chan, 1);
+        $this->generateOutput($functionName, 'Attempting to pull a complete list of blocked users for the channel: ' . $chan, 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -1326,20 +1326,20 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                         return array(); // return out here, match the fail state of the call
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 return array(); // return out after the error is passed, match the fail tate of the call
             }
             
@@ -1359,12 +1359,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return array(); // Match the fail state of the call so users are not thrown off
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -1374,9 +1374,9 @@ class twitch
         $usernamesObject = array();
         $counter = 0;
         
-        $usernamesObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'blocks', $authKey);
+        $usernamesObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'blocks', $authKey);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($usernamesObject), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($usernamesObject), 4);
         
         // Set the array
         foreach ($usernamesObject as $user)
@@ -1388,11 +1388,11 @@ class twitch
         // Was anything returned?  If not, put some output
         if (empty($usernames))
         {
-            self::generateOutput($functionName, 'No blocked users returned for channel: ' . $chan, 3);
+            $this->generateOutput($functionName, 'No blocked users returned for channel: ' . $chan, 3);
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($return, $options, $url, $get, $limit, $usernamesObject, $key, $k, $value, $v, $functionName);
         
         // Return out our unkeyed or empty array
@@ -1416,14 +1416,14 @@ class twitch
         $functionName = 'ADD_BLOCKED';
         $requiredAuth = 'user_blocks_edit';
         
-        self::generateOutput($functionName, 'Attempting to add ' . $username . ' to ' . $chan . '\'s list of blocked users', 1);
+        $this->generateOutput($functionName, 'Attempting to add ' . $username . ' to ' . $chan . '\'s list of blocked users', 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -1431,20 +1431,20 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                         return false; // return out here, match the fail state of the call
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return false; // return out after the error is passed, match the fail state of the call
             }
@@ -1465,12 +1465,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return false; // match fail state
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
                 
@@ -1478,20 +1478,20 @@ class twitch
         $options = array();
         $post = array('oauth_token' => $authKey);
             
-        $result = self::cURL_put($url, $post, $options, true);
+        $result = $this->cURL_put($url, $post, $options, true);
         
         // What did we get returned status wise?
         if ($result = 200)
         {
-            self::generateOutput($functionName, 'Successfully blocked channel ' . $username, 3);
+            $this->generateOutput($functionName, 'Successfully blocked channel ' . $username, 3);
             $success = true;
         } else {
-            self::generateOutput($functionName, 'Unsuccessfully blocked channel ' . $username, 3);
+            $this->generateOutput($functionName, 'Unsuccessfully blocked channel ' . $username, 3);
             $success = false;
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $username, $authKey, $code, $result, $functionName, $requiredAuth, $auth, $authSuccessful, $type, $url, $options, $post);
         
         // Post handles successs, so pass the info on
@@ -1515,14 +1515,14 @@ class twitch
         $functionName = 'REMOVE_BLOCKED';
         $requiredAuth = 'user_blocks_edit';
         
-        self::generateOutput($functionName, 'Attempting to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 1);
+        $this->generateOutput($functionName, 'Attempting to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -1530,20 +1530,20 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                         return false; // return out here, match the fail state of the call
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return false; // return out after the error is passed, match the fail state of the call
             }
@@ -1564,12 +1564,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return false; // match fail state
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -1579,21 +1579,21 @@ class twitch
             'username' => $username,
             'oauth_token' => $authKey);
             
-        $success = self::cURL_delete($url, $post, $options);
+        $success = $this->cURL_delete($url, $post, $options);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($success), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($success), 4);
         
         if ($success == '204')
         {
-            self::generateOutput($functionName, 'Successfully removed ' . $username . ' from ' . $chan . '\'s list of blocked users', 3);
+            $this->generateOutput($functionName, 'Successfully removed ' . $username . ' from ' . $chan . '\'s list of blocked users', 3);
         } else if ($success == '422') {
-            self::generateOutput($functionName, 'Service unavailable or delete failed', 3);
+            $this->generateOutput($functionName, 'Service unavailable or delete failed', 3);
         } else {
-            self::generateOutput($functionName, 'Failed to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 3);
+            $this->generateOutput($functionName, 'Failed to remove ' . $username . ' from ' . $chan . '\'s list of blocked users', 3);
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $username, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         // Bascally we either deleted or they were never there
@@ -1610,20 +1610,20 @@ class twitch
     public function getChannelObject($chan)
     {
         $functionName = 'GET_CHANNEL';
-        self::generateOutput($functionName, 'Grabbing channel object for channel: ' . $chan, 1);
+        $this->generateOutput($functionName, 'Grabbing channel object for channel: ' . $chan, 1);
         
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan;
         $get = array();
         $options = array();
         
-        self::generateOutput($functionName, 'Grabbing channel object for ' . $chan, 3);
+        $this->generateOutput($functionName, 'Grabbing channel object for ' . $chan, 3);
         
-        $object = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $object = json_decode($this->cURL_get($url, $get, $options, false), true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $functionName, $url, $get, $options);
         
         if (!is_array($object))
@@ -1646,14 +1646,14 @@ class twitch
     {
         $functionName = 'GET_CHANNEL_AUTHED';
         $requiredAuth = 'channel_read';
-        self::generateOutput($functionName, 'Grabbing authenticated channel object', 1);
+        $this->generateOutput($functionName, 'Grabbing authenticated channel object', 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -1661,20 +1661,20 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                         return array();
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return array(); // return out after the error is passed
             }
@@ -1695,12 +1695,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return array();
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -1708,12 +1708,12 @@ class twitch
         $get = array('oauth_token' => $authKey);
         $options = array();
 
-        $object = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $object = json_decode($this->cURL_get($url, $get, $options, false), true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($authKey, $code, $auth, $authSuccessful, $type, $url, $get, $options);
         
         if (!is_array($object))
@@ -1741,14 +1741,14 @@ class twitch
         
         $functionName = 'GET_EDITORS';
         $requiredAuth = 'channel_read';
-        self::generateOutput($functionName, 'Grabbing editors for ' . $chan . '\'s channel', 1);
+        $this->generateOutput($functionName, 'Grabbing editors for ' . $chan . '\'s channel', 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -1756,20 +1756,20 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                         return array();
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return array(); // return out after the error is passed
             }
@@ -1790,12 +1790,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return array();
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -1805,9 +1805,9 @@ class twitch
         $editors = array();
         $editorsObject = array();
             
-        $editorsObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'users', $authKey);
+        $editorsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'users', $authKey);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($editorsObject), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($editorsObject), 4);
         
         foreach ($editorsObject as $editor)
         {
@@ -1817,11 +1817,11 @@ class twitch
         // Was anything returned?  If not, put some output
         if (empty($editors))
         {
-            self::generateOutput($functionName, 'No editors returned for channel: ' . $chan, 3);
+            $this->generateOutput($functionName, 'No editors returned for channel: ' . $chan, 3);
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $limit, $offset, $authKey, $code, $auth, $authSuccessful, $type, $functionName, $url, $options, $counter, $editor, $editorsObject);
         
         return $editors;
@@ -1844,14 +1844,14 @@ class twitch
         $requiredAuth = 'channel_editor';
         $functionName = 'UPDATE_CHANNEL';
         
-        self::generateOutput($functionName, 'Updating Channel object', 1);
+        $this->generateOutput($functionName, 'Updating Channel object', 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -1859,20 +1859,20 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                         return false;
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return false; // return out after the error is passed
             }
@@ -1893,12 +1893,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return false;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -1910,25 +1910,25 @@ class twitch
         
         if ($title != null || '')
         {
-            self::generateOutput($functionName, 'New title added to array: ' . $title, 2);
+            $this->generateOutput($functionName, 'New title added to array: ' . $title, 2);
             $updatedObjects['channel']['status'] = $title;
         } 
         
         if ($game  != null || '')
         {
-            self::generateOutput($functionName, 'New game added to array: ' . $game, 2);
+            $this->generateOutput($functionName, 'New game added to array: ' . $game, 2);
             $updatedObjects['channel']['game'] = $game;
         } 
         
         if ($delay != null || '')
         {
-            self::generateOutput($functionName, 'New Stream Delay added to array: ' . $delay, 2);
+            $this->generateOutput($functionName, 'New Stream Delay added to array: ' . $delay, 2);
             $updatedObjects['channel']['delay'] = $delay;
         } 
         
-        $result = self::cURL_put($url, $updatedObjects, $options, true);
+        $result = $this->cURL_put($url, $updatedObjects, $options, true);
         
-        self::generateOutput($functionName, 'Status return: ' . $result, 4);
+        $this->generateOutput($functionName, 'Status return: ' . $result, 4);
         
         if (($result != 404) || ($result != 400))
         {
@@ -1938,7 +1938,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $authKey, $code, $title, $game, $delay, $auth, $authSuccessful, $type, $url, $updatedObjects, $options, $functionName);        
         
         return $result;
@@ -1958,14 +1958,14 @@ class twitch
         $requiredAuth = 'channel_stream';
         $functionName = 'RESET_STREAM_KEY';
         
-        self::generateOutput($functionName, 'Resetting stream key for channel: ' . $chan, 1);
+        $this->generateOutput($functionName, 'Resetting stream key for channel: ' . $chan, 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -1973,20 +1973,20 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                         return false;
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return false; // return out after the error is passed
             }
@@ -2007,12 +2007,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return false;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -2020,9 +2020,9 @@ class twitch
         $options = array();
         $post = array('oauth_token' => $authKey);
         
-        $result = self::cURL_delete($url, $post, $options, true);
+        $result = $this->cURL_delete($url, $post, $options, true);
         
-        self::generateOutput($functionName, 'Status return: ' . $result, 3);
+        $this->generateOutput($functionName, 'Status return: ' . $result, 3);
         
         if ($result == 204)
         {
@@ -2032,7 +2032,7 @@ class twitch
         }
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2053,14 +2053,14 @@ class twitch
         $functionName = 'START_COMMERCIAL';
         $requiredAuth = 'channel_commercial';
         
-        self::generateOutput($functionName, 'Starting commercial for channel: ' . $chan, 1);
+        $this->generateOutput($functionName, 'Starting commercial for channel: ' . $chan, 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -2068,20 +2068,20 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                         return false;
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return false; // return out after the error is passed
             }
@@ -2102,21 +2102,21 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return false;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
-        self::generateOutput($functionName, 'Commercial time recieved as: ' . $length, 2);
+        $this->generateOutput($functionName, 'Commercial time recieved as: ' . $length, 2);
         
         // Check the length to see if it is valid
         if (($length != 30) && ($length != 60) && ($length != 90))
         {
-            self::generateOutput($functionName, 'Commercial time invalid, set to 30 seconds', 2);
+            $this->generateOutput($functionName, 'Commercial time invalid, set to 30 seconds', 2);
             $length = 30;
         }
         
@@ -2127,21 +2127,21 @@ class twitch
             'length' => $length
         );
         
-        $result = self::cURL_post($url, $post, $options, true);
+        $result = $this->cURL_post($url, $post, $options, true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
         
         if ($result == 204)
         {
-            self::generateOutput($functionName, 'Commercial successfully started', 3);
+            $this->generateOutput($functionName, 'Commercial successfully started', 3);
             $result = true;
         } else {
-            self::generateOutput($functionName, 'Commercial unable to be started', 3);
+            $this->generateOutput($functionName, 'Commercial unable to be started', 3);
             $result = false;
         }
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $authKey, $code, $length, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2160,17 +2160,17 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_EMOTICONS_GLOBAL';
-        self::generateOutput($functionName, 'Grabbing global Twitch emoticons', 1);
+        $this->generateOutput($functionName, 'Grabbing global Twitch emoticons', 1);
         
         $url = 'https://api.twitch.tv/kraken/chat/emoticons';
         $options = array();
         $object = array();
         
-        $objects = self::get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
+        $objects = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($objects), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($objects), 4);
         
-        self::generateOutput($functionName, 'Setting Keys', 3);
+        $this->generateOutput($functionName, 'Setting Keys', 3);
         
         // Set keys
         foreach ($objects as $row)
@@ -2180,7 +2180,7 @@ class twitch
         }
         
         // clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($limit, $offset, $url, $options, $functionName, $objects, $row, $k);
         
         return $object;
@@ -2200,17 +2200,17 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_EMOTICONS';
-        self::generateOutput($functionName, 'Grabbing emoticons for channel: ' . $user, 1);
+        $this->generateOutput($functionName, 'Grabbing emoticons for channel: ' . $user, 1);
         
         $url = 'https://api.twitch.tv/kraken/chat/' . $user . '/emoticons';
         $options = array();
         $object = array();
         
-        $objects = self::get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
+        $objects = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($objects), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($objects), 4);
         
-        self::generateOutput($functionName, 'Setting Keys', 3);
+        $this->generateOutput($functionName, 'Setting Keys', 3);
         
         // Set keys
         foreach ($objects as $row)
@@ -2220,7 +2220,7 @@ class twitch
         }
         
         // clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $limit, $offset, $functionName, $url, $options, $objects, $k, $row);
         
         return $object;
@@ -2239,18 +2239,18 @@ class twitch
     {        
         $functionName = 'GET_BADGES';
         
-        self::generateOutput($functionName, 'Grabbing badges for channel: ' . $chan, 1);
+        $this->generateOutput($functionName, 'Grabbing badges for channel: ' . $chan, 1);
         
         $url = 'https://api.twitch.tv/kraken/chat/' . $chan . '/badges';
         $options = array();
         $get = array();
         
-        $object = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $object = json_decode($this->cURL_get($url, $get, $options, false), true);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($object), 4);
         
         // clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $url, $options, $get, $functionName);        
         
         return $object;                
@@ -2271,14 +2271,14 @@ class twitch
         $requiredAuth = 'chat_login';
         $prefix = 'oauth:';
         
-        self::generateOutput($functionName, 'Generating chat login token', 1);
+        $this->generateOutput($functionName, 'Generating chat login token', 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -2286,19 +2286,19 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return; // return out after the error is passed
             }
@@ -2319,22 +2319,22 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
-        self::generateOutput($functionName, 'Token generated, concating prefix', 3);
+        $this->generateOutput($functionName, 'Token generated, concating prefix', 3);
         $chatToken = $prefix . $authKey;
         
-        self::generateOutput($functionName, 'Prefix added, login credential made: ' . $chatToken, 3);
+        $this->generateOutput($functionName, 'Prefix added, login credential made: ' . $chatToken, 3);
         
         // clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($authKey, $auth, $authSuccessful, $code, $requiredAuth, $functionName, $type);        
         
         return $chatToken;                
@@ -2355,26 +2355,26 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_FOLLOWERS';
-        self::generateOutput($functionName, 'Getting the list of channels followed by channel: ' . $chan, 1);
+        $this->generateOutput($functionName, 'Getting the list of channels followed by channel: ' . $chan, 1);
         
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/follows';
         $options = array();
         $followersObject = array();
         $followers = array();
              
-        $followersObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
+        $followersObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($followersObject), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($followersObject), 4);
         
         foreach ($followersObject as $follower)
         {
             $key = $follower['user'][$twitch_configuration['KEY_NAME']];
             $followers[$key] = $follower;
-            self::generateOutput($functionName, 'Setting key: ' . $key, 3);
+            $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $limit, $offset, $sorting, $follower, $followersObject, $functionName, $key);
         
         // Return out our array
@@ -2396,7 +2396,7 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_FOLLOWS';
-        self::generateOutput($functionName, 'Getting the list of channels following channel: ' . $username, 1);
+        $this->generateOutput($functionName, 'Getting the list of channels following channel: ' . $username, 1);
         
         // Init some vars       
         $channels = array();
@@ -2404,9 +2404,9 @@ class twitch
         $options = array();
             
         // Build our cURL query and store the array
-        $channelsObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
+        $channelsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($channelsObject), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($channelsObject), 4);
         
         foreach ($channelsObject as $channel)
         {
@@ -2415,7 +2415,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($username, $limit, $offset, $sorting, $channelsObject, $channel, $url, $options, $key, $functionName);
         
         // Return out our unkeyed array
@@ -2437,14 +2437,14 @@ class twitch
         $functionName = 'FOLLOW_CHANNEL';
         $requiredAuth = 'user_follows_edit';
         
-        self::generateOutput($functionName, 'Attempting to have channel ' . $user . ' follow the user ' . $chan, 1);      
+        $this->generateOutput($functionName, 'Attempting to have channel ' . $user . ' follow the user ' . $chan, 1);      
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -2452,19 +2452,19 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return; // return out after the error is passed
             }
@@ -2485,12 +2485,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -2498,18 +2498,18 @@ class twitch
         $options = array();
         $post = array('oauth_token' => $authKey);
         
-        $result = self::cURL_put($url, $post, $options, false);
+        $result = $this->cURL_put($url, $post, $options, false);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
         
         if ($result['status'] == 404)
         {
-            self::generateOutput($functionName, 'Unable to follow channel.  Channel not found', 3);
+            $this->generateOutput($functionName, 'Unable to follow channel.  Channel not found', 3);
             $result = false;
         }
 
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $post, $functionName);
         
         return $result;
@@ -2530,14 +2530,14 @@ class twitch
         $functionName = 'UNFOLLOW_CHANNEL';
         $requiredAuth = 'user_follows_edit';
         
-        self::generateOutput($functionName, 'Attempting have channel ' . $user . ' unfollow channel ' . $chan, 1);
+        $this->generateOutput($functionName, 'Attempting have channel ' . $user . ' unfollow channel ' . $chan, 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -2545,19 +2545,19 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return; // return out after the error is passed
             }
@@ -2578,12 +2578,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -2591,21 +2591,21 @@ class twitch
         $options = array();
         $delete = array('oauth_token' => $authKey);
         
-        $result = self::cURL_delete($url, $delete, $options, false);
+        $result = $this->cURL_delete($url, $delete, $options, false);
         
-        self::generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $delete);
         
         if ($result['status'] == 404)
         {
-            self::generateOutput($functionName, 'Successfully unfollowed channel', 3);
+            $this->generateOutput($functionName, 'Successfully unfollowed channel', 3);
             unset($functionName);
             return true;
         } else {
-            self::generateOutput($functionName, 'Unsuccessfully unfollowed channel', 3);
+            $this->generateOutput($functionName, 'Unsuccessfully unfollowed channel', 3);
             unset($functionName);
             return false;
         }
@@ -2625,7 +2625,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_LARGEST_GAME';
         
-        self::generateOutput($functionName, 'Attempting to get a list of the channels currently live to limit sorted by viewer count', 1);
+        $this->generateOutput($functionName, 'Attempting to get a list of the channels currently live to limit sorted by viewer count', 1);
         
         // Init some vars       
         $gamesObject = array();
@@ -2633,7 +2633,7 @@ class twitch
         $url = 'https://api.twitch.tv/kraken/games/top';
         $options = array();
         
-        $gamesObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'top', null, $hls);
+        $gamesObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'top', null, $hls);
         
         // Strip out only the usernames from our array set
         foreach ($gamesObject as $game)
@@ -2643,7 +2643,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($limit, $offset, $hls, $url, $options, $gamesObject, $key, $game, $functionName);
         
         return $games;
@@ -2662,7 +2662,7 @@ class twitch
         global $twitch_configuration;
 
         $functionName = 'SEARCH_GAME';
-        self::generateOutput($functionName, 'Searching all game catagories for the string: ' . $query, 1);
+        $this->generateOutput($functionName, 'Searching all game catagories for the string: ' . $query, 1);
         
         $url = 'https://api.twitch.tv/kraken/search/games';
         $get = array(
@@ -2673,7 +2673,7 @@ class twitch
         $result = array();
         $object = array();
         
-        $result = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $result = json_decode($this->cURL_get($url, $get, $options, false), true);
         
         foreach ($result as $key => $value)
         {
@@ -2688,7 +2688,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($query, $live, $url, $get, $options, $result, $k, $key, $value, $game, $functionName);
     
         return $object;
@@ -2705,13 +2705,13 @@ class twitch
     {
         $functionName = 'GET_STREAM_OBJECT';
         
-        self::generateOutput($functionName, 'Getting the stream object for channel ' . $chan, 1);
+        $this->generateOutput($functionName, 'Getting the stream object for channel ' . $chan, 1);
         
         $url = 'https://api.twitch.tv/kraken/streams/' . $chan;
         $get = array();
         $options = array();
         
-        $result = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $result = json_decode($this->cURL_get($url, $get, $options, false), true);
         
         if ($result['stream'] != null)
         {
@@ -2721,7 +2721,7 @@ class twitch
         }
         
         // Clean up
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $url, $get, $result, $functionName);
         
         return $object;
@@ -2746,7 +2746,7 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_STREAM_OBJECTS';
-        self::generateOutput($functionName, 'Attempting to get stream objects for the provided parameters', 1);
+        $this->generateOutput($functionName, 'Attempting to get stream objects for the provided parameters', 1);
         
         // Init some vars       
         $url = 'https://api.twitch.tv/kraken/streams';
@@ -2755,7 +2755,7 @@ class twitch
         $streams = array();
         
         // Build our cURL query and store the array
-        $streamsObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'streams', null, $hls, null, $channels, $embedable, $client_id);
+        $streamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'streams', null, $hls, null, $channels, $embedable, $client_id);
         
         // Strip out the data we don't need
         foreach ($streamsObject as $key => $value)
@@ -2772,7 +2772,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($game, $channels, $limit, $offset, $embedable, $hls, $client_id, $url, $options, $streamsObject, $key, $k, $value, $v, $objKey, $functionName);
         
         return $streams;              
@@ -2792,7 +2792,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_FEATURED';
         
-        self::generateOutput($functionName, 'Getting all featured streamers to limit', 1);
+        $this->generateOutput($functionName, 'Getting all featured streamers to limit', 1);
         
         // Init some vars
         $featured = array();          
@@ -2800,7 +2800,7 @@ class twitch
         $options = array();
         
         // Build our cURL query and store the array
-        $featuredObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'featured');
+        $featuredObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'featured');
         
         // Strip out the uneeded data
         foreach ($featuredObject as $key => $value)
@@ -2813,7 +2813,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($limit, $offset, $embedable, $hls, $url, $options, $featuredObject, $key, $value, $k, $functionName);
         
         return $featured;           
@@ -2830,14 +2830,14 @@ class twitch
     {
         $functionName = 'GET_STATISTICS';
         
-        self::generateOutput($functionName, 'Getting current statistics for Twitch', 1);
+        $this->generateOutput($functionName, 'Getting current statistics for Twitch', 1);
         
         $statistics = array();
         $url = 'https://api.twitch.tv/kraken/streams/summary';
         $get = array();
         $options = array();
         
-        $result = json_decode(self::cURL_get($url, $get, $options), true);
+        $result = json_decode($this->cURL_get($url, $get, $options), true);
         
         // A cheap way of making sure an array is always returned
         foreach ($result as $key => $value)
@@ -2846,7 +2846,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($hls, $url, $get, $options, $result, $key, $value, $functionName);
         
         return $statistics;        
@@ -2863,7 +2863,7 @@ class twitch
     {
         $functionName = 'GET_VIDEO-ID';
         
-        self::generateOutput($functionName, 'Getting the video object for the video with the ID: ' . $id, 1);
+        $this->generateOutput($functionName, 'Getting the video object for the video with the ID: ' . $id, 1);
         
         // init some vars
         $object = array();
@@ -2871,7 +2871,7 @@ class twitch
         $get = array();
         $options = array();
         
-        $result = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $result = json_decode($this->cURL_get($url, $get, $options, false), true);
         
         if (!empty($result) && ($result['status'] != '404'))
         {
@@ -2880,7 +2880,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($id, $functionName, $url, $get, $options, $result);
         
         return $object;             
@@ -2901,7 +2901,7 @@ class twitch
         global $twitch_configuration;
         $functionName = 'GET_VIDEO-CHANNEL';
         
-        self::generateOutput($functionName, 'Getting the vido objects for channel: ' . $chan, 1);
+        $this->generateOutput($functionName, 'Getting the vido objects for channel: ' . $chan, 1);
         
         // Init some vars
         $videoObjects = array();     
@@ -2910,7 +2910,7 @@ class twitch
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/videos';
             
         // Build our cURL query and store the array
-        $videos = self::get_iterated($functionName, $url, $options, $limit, $offset, 'videos', null, null, null, null, null, null, $boradcastsOnly);
+        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', null, null, null, null, null, null, $boradcastsOnly);
         
         // Key the data
         foreach ($videos as $video)
@@ -2920,7 +2920,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $limit, $offset, $boradcastsOnly, $functionName, $video, $videos, $key, $options, $url);
         
         return $videoObjects;                  
@@ -2943,14 +2943,14 @@ class twitch
         $requiredAuth = 'user_read';
         $functionName = 'GET_VIDEO-FOLLOWED';
         
-        self::generateOutput($functionName, 'Grabbing all video objects for the channels using the code: ' . $code, 1);
+        $this->generateOutput($functionName, 'Grabbing all video objects for the channels using the code: ' . $code, 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -2958,19 +2958,19 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return; // return out after the error is passed
             }
@@ -2991,12 +2991,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -3007,7 +3007,7 @@ class twitch
         $options = array();
         
         // Build our cURL query and store the array
-        $videos = self::get_iterated($functionName, $url, $options, $limit, $offset, 'videos', $authKey);
+        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', $authKey);
         
         // Set our keys
         foreach ($videos as $video)
@@ -3017,7 +3017,7 @@ class twitch
         }
 
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($limit, $offset, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $videos, $video, $url, $options, $key);
         
         return $videosObject;      
@@ -3038,7 +3038,7 @@ class twitch
         global $twitch_configuration;
         
         $functionName = 'GET_TOP_VIDEOS';
-        self::generateOutput($functionName, 'Grabbing all of the top videos to limit', 1);
+        $this->generateOutput($functionName, 'Grabbing all of the top videos to limit', 1);
         
         // check the period to make sure it is valid
         if (($period != 'week') && ($period != 'month') && ($period != 'all'))
@@ -3053,7 +3053,7 @@ class twitch
         $options = array();
             
         // Build our cURL query and store the array
-        $videos = self::get_iterated($functionName, $url, $options, $limit, $offset, 'videos', null, null, null, null, null, null, null, $period, $game);
+        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', null, null, null, null, null, null, null, $period, $game);
         
         // Set our keys
         foreach ($videos as $video)
@@ -3063,7 +3063,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($game, $limit, $offset, $period, $functionName, $video, $videos, $key, $url, $options);
         
         return $videosObject;         
@@ -3088,14 +3088,14 @@ class twitch
         $requiredAuth = 'channel_subscriptions';
         $functionName = 'GET_SUBSCRIBERS';
         
-        self::generateOutput($functionName, 'Getting the list of subcribers to channel: ' . $chan, 1);      
+        $this->generateOutput($functionName, 'Getting the list of subcribers to channel: ' . $chan, 1);      
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -3103,19 +3103,19 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return; // return out after the error is passed
             }
@@ -3136,12 +3136,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -3158,7 +3158,7 @@ class twitch
         $options = array();
         
         // Build our cURL query and store the array
-        $subscribersObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'subscriptions', $authKey, null, $direction);
+        $subscribersObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'subscriptions', $authKey, null, $direction);
         
         // Set the keys and array
         foreach ($subscribersObject as $subscriber)
@@ -3168,7 +3168,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($chan, $limit, $offset, $direction, $authKey, $code, $requiredAuth, $authKey, $auth, $authSuccessful, $type, $subscriber, $subscribersObject, $key, $url, $options);
         
         return $subscribers;
@@ -3189,14 +3189,14 @@ class twitch
         $requiredAuth = 'channel_subscriptions';
         $functionName = 'CHECK_CHANNEL_SUBSCRIPTION';
         
-        self::generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
+        $this->generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -3204,19 +3204,19 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return; // return out after the error is passed
             }
@@ -3237,12 +3237,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -3251,26 +3251,26 @@ class twitch
         $get = array('oauth_token' => $authKey);
         
         // Build our cURL query and store the array
-        $subscribed = json_decode(self::cURL_get($url, $get, $options, true), true);
+        $subscribed = json_decode($this->cURL_get($url, $get, $options, true), true);
         
         // Check the return
         if ($subscribed == 403)
         {
-            self::generateOutput($functionName, 'Authentication failed to have access to channel account.  Please check channel ' . $chan . ' access.', 3);
+            $this->generateOutput($functionName, 'Authentication failed to have access to channel account.  Please check channel ' . $chan . ' access.', 3);
             $subscribed = false;
         } elseif ($subscribed == 422) {
-            self::generateOutput($functionName, 'Channel ' . $chan . ' does not have subscription program available', 3);
+            $this->generateOutput($functionName, 'Channel ' . $chan . ' does not have subscription program available', 3);
             $subscribed = false;
         } elseif ($subscribed == 404) {
-            self::generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan, 3);
+            $this->generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan, 3);
             $subscribed = false;
         } else {
-            self::generateOutput($functionName, 'User ' . $user . ' is subscribed to channel' . $chan, 3);
+            $this->generateOutput($functionName, 'User ' . $user . ' is subscribed to channel' . $chan, 3);
             $subscribed = true;
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $chan, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $url, $options, $get);
         
         return $subscribed;
@@ -3291,14 +3291,14 @@ class twitch
         $requiredAuth = 'user_subscriptions';
         $functionName = 'CHECK_USER_SUBSCRIPTION';
         
-        self::generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
+        $this->generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -3306,19 +3306,19 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return; // return out after the error is passed
             }
@@ -3339,12 +3339,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -3353,26 +3353,26 @@ class twitch
         $get = array('oauth_token' => $authKey);
         
         // Build our cURL query and store the array
-        $subscribed = json_decode(self::cURL_get($url, $get, $options, true), true);
+        $subscribed = json_decode($this->cURL_get($url, $get, $options, true), true);
         
         // Check the return
         if ($subscribed == 403)
         {
-            self::generateOutput($functionName, 'Authentication failed to have access to channel account.  Please check user ' . $user . '\'s access.', 3);
+            $this->generateOutput($functionName, 'Authentication failed to have access to channel account.  Please check user ' . $user . '\'s access.', 3);
             $subscribed = false;
         } elseif ($subscribed == 422) {
-            self::generateOutput($functionName, 'Channel ' . $chan . ' does not have subscription program available', 3);
+            $this->generateOutput($functionName, 'Channel ' . $chan . ' does not have subscription program available', 3);
             $subscribed = false;
         } elseif ($subscribed == 404) {
-            self::generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan, 3);
+            $this->generateOutput($functionName, 'User ' . $user . ' is not subscribed to channel ' . $chan, 3);
             $subscribed = false;
         } else {
-            self::generateOutput($functionName, 'User ' . $user . ' is subscribed to channel ' . $chan, 3);
+            $this->generateOutput($functionName, 'User ' . $user . ' is subscribed to channel ' . $chan, 3);
             $subscribed = true;
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning memory', 3);
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $chan, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $url, $options, $get);
         
         return $subscribed;
@@ -3391,7 +3391,7 @@ class twitch
         global $twitch_configuration;        
         $functionName = 'GET_TEAMS';
         
-        self::generateOutput($functionName, 'Grabbing all available teams objects', 1);
+        $this->generateOutput($functionName, 'Grabbing all available teams objects', 1);
         
         // Init some vars       
         $teams = array();        
@@ -3399,7 +3399,7 @@ class twitch
         $options = array();
         
         // Build our cURL query and store the array
-        $teamsObject = self::get_iterated($functionName, $url, $options, $limit, $offset, 'teams');
+        $teamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'teams');
         
         // Transfer to teams
         foreach ($teamsObject as $team)
@@ -3409,7 +3409,7 @@ class twitch
         }
         
         // Clean up quickly
-        self::generateOutput($functionName, 'Cleaning Memory', 3);
+        $this->generateOutput($functionName, 'Cleaning Memory', 3);
         unset($limit, $offset, $teamsObject, $team, $url, $options, $key);
         
         return $teams;
@@ -3425,17 +3425,17 @@ class twitch
     public function getTeam($team)
     {
         $functionName = 'GET_USEROBJECT';
-        self::generateOutput($functionName, 'Attempting to get the team object for user: ' . $team, 1);
+        $this->generateOutput($functionName, 'Attempting to get the team object for user: ' . $team, 1);
         
         $url = 'https://api.twitch.tv/kraken/teams/' . $team;
         $options = array();
         $get = array('team' => $team);
         
         // Build our cURL query and store the array
-        $teamObject = json_decode(self::cURL_get($url, $get, $options, false), true);
+        $teamObject = json_decode($this->cURL_get($url, $get, $options, false), true);
 
         //clean up
-        self::generateOutput($functionName, 'Cleaning Memory', 3);
+        $this->generateOutput($functionName, 'Cleaning Memory', 3);
         unset($team, $url, $options, $get, $functionName);
         
         return $teamObject;
@@ -3451,18 +3451,18 @@ class twitch
     public function getUserObject($user)
     {
         $functionName = 'GET_USEROBJECT';
-        self::generateOutput($functionName, 'Attempting to get the user object for user: ' . $user, 1);
+        $this->generateOutput($functionName, 'Attempting to get the user object for user: ' . $user, 1);
         
         $url = 'https://api.twitch.tv/kraken/users/' . $user;
         $options = array();
         $get = array();
         
         // Build our cURL query and store the array
-        $userObject = json_decode(self::cURL_get($url, $get, $options, false), true);
-        self::generateOutput($functionName, 'Raw return: ' . $userObject, 4);
+        $userObject = json_decode($this->cURL_get($url, $get, $options, false), true);
+        $this->generateOutput($functionName, 'Raw return: ' . $userObject, 4);
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning Memory', 3);
+        $this->generateOutput($functionName, 'Cleaning Memory', 3);
         unset($user, $url, $options, $get, $functionName);
         
         return $userObject;          
@@ -3482,14 +3482,14 @@ class twitch
         $functionName = 'GET_USEROBJECT-AUTH';
         $requiredAuth = 'user_read';
         
-        self::generateOutput($functionName, 'Attempting to get the authenticated user object for user: ' . $user, 1);
+        $this->generateOutput($functionName, 'Attempting to get the authenticated user object for user: ' . $user, 1);
         
         // We were supplied an OAuth token. check it for validity and scopes
         if (($authKey != null || '') || ($code != null || false))
         {
             if ($authKey != null || '')
             {
-                $check = self::checkToken($authKey);
+                $check = $this->checkToken($authKey);
                 
                 if ($check["token"] != false)
                 {
@@ -3497,19 +3497,19 @@ class twitch
                 } else { // attempt to generate one
                     if ($code != null || '')
                     {
-                        $auth = self::generateToken($code); // Assume generation and check later for failure
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
                     } else {
-                        self::generateError(400, 'Existing token expired and no code available for generation.');
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
                     }
                 }
             } else { // Assume the code was given instead and generate if we can
-                $auth = self::generateToken($code); // Assume generation and check later for failure
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
             }
             
             // check to see if we recieved a token after all of that checking
             if ($auth['token'] == false) // check the token value
             {
-                self::generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
                 return; // return out after the error is passed
             }
@@ -3530,12 +3530,12 @@ class twitch
             // Did we fail?
             if (!$authSuccessful)
             {
-                self::generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
                 return null;
             }
             
             // Assign our key
-            self::generateOutput($functionName, 'Required scope found in array', 3);
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
             $authKey = $auth['token'];
         }
         
@@ -3544,11 +3544,11 @@ class twitch
         $get = array('oauth_token' => $authKey);
         
         // Build our cURL query and store the array
-        $userObject = json_decode(self::cURL_get($url, $get, $options, false), true);
-        self::generateOutput($functionName, 'Raw return: ' . $userObject, 4);
+        $userObject = json_decode($this->cURL_get($url, $get, $options, false), true);
+        $this->generateOutput($functionName, 'Raw return: ' . $userObject, 4);
         
         //clean up
-        self::generateOutput($functionName, 'Cleaning Memory', 3);
+        $this->generateOutput($functionName, 'Cleaning Memory', 3);
         unset($user, $url, $options, $get, $authKey, $auth, $authSuccessful, $type, $functionName, $code);
         
         return $userObject;
