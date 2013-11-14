@@ -198,18 +198,13 @@ class twitch
         $this->generateOutput($functionName, 'Starting GET query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
+        $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json'); // Always included
+        $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1 || true)) ? array_merge($header, array('Authorization: OAuth ' . $get['oauth_token'])) : $header;
+        $header = ($twitch_clientKey !== '' || ' ') ? array_merge($header, array('Client-ID: ' . $twitch_clientKey)) : $header;
+        
+        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1 || true))
         {
-            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $get['oauth_token'],
-                'Client-ID: ' . $twitch_clientKey);
             unset($get['oauth_token']);
-        } elseif ((array_key_exists('oauth_token', $get) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
-            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $get['oauth_token']);
-            unset($get['oauth_token']);            
-        } else {
-           $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json');
         }
         
         // Send the header info to the output
@@ -326,18 +321,13 @@ class twitch
         $this->generateOutput($functionName, 'Starting POST query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
+        $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json'); // Always included
+        $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1 || true)) ? array_merge($header, array('Authorization: OAuth ' . $get['oauth_token'])) : $header;
+        $header = ($twitch_clientKey !== '' || ' ') ? array_merge($header, array('Client-ID: ' . $twitch_clientKey)) : $header;
+        
+        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1 || true))
         {
-            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $post['oauth_token'],
-                'Client-ID: ' . $twitch_clientKey);
-            unset($post['oauth_token']);
-        } elseif ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
-            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $post['oauth_token']);
-            unset($post['oauth_token']);            
-        } else {
-           $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json');
+            unset($get['oauth_token']);
         }
                 
         // Send the header info to the output
@@ -457,18 +447,13 @@ class twitch
         $this->generateOutput($functionName, 'Starting PUT query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $put) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
+        $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json'); // Always included
+        $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1 || true)) ? array_merge($header, array('Authorization: OAuth ' . $get['oauth_token'])) : $header;
+        $header = ($twitch_clientKey !== '' || ' ') ? array_merge($header, array('Client-ID: ' . $twitch_clientKey)) : $header;
+        
+        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1 || true))
         {
-            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $put['oauth_token'],
-                'Client-ID: ' . $twitch_clientKey);
-            unset($put['oauth_token']);
-        } elseif ((array_key_exists('oauth_token', $put) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
-            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $put['oauth_token']);
-            unset($put['oauth_token']);            
-        } else {
-           $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json');
+            unset($get['oauth_token']);
         }
                 
         // Send the header info to the output
@@ -581,18 +566,13 @@ class twitch
         $this->generateOutput($functionName, 'Starting DELETE query', 1);
         
         // Specify the header
-        if ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ($twitch_clientKey != '' || null || ' '))
+        $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json'); // Always included
+        $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1 || true)) ? array_merge($header, array('Authorization: OAuth ' . $get['oauth_token'])) : $header;
+        $header = ($twitch_clientKey !== '' || ' ') ? array_merge($header, array('Client-ID: ' . $twitch_clientKey)) : $header;
+        
+        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1 || true))
         {
-            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $post['oauth_token'],
-                'Client-ID: ' . $twitch_clientKey);
-            unset($post['oauth_token']);
-        } elseif ((array_key_exists('oauth_token', $post) == 1) && ($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER')) {
-            $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json',
-                'Authorization: OAuth ' . $post['oauth_token']);
-            unset($post['oauth_token']);            
-        } else {
-           $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json');
+            unset($get['oauth_token']);
         }
                 
         // Send the header info to the output
