@@ -202,7 +202,7 @@ class twitch
         $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $get) === 1) || (array_key_exists('oauth_token', $get) === true))) ? array_merge($header, array('Authorization: OAuth ' . $get['oauth_token'])) : $header ;
         $header = (($twitch_clientKey !== '') && ($twitch_clientKey !== ' ')) ? array_merge($header, array('Client-ID: ' . $twitch_clientKey)) : $header;
 
-        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $get) === 1))
+        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $get) === 1) || (array_key_exists('oauth_token', $get) === true)))
         {
             unset($get['oauth_token']);
         }
@@ -274,7 +274,7 @@ class twitch
         }
         
         // Check to see if we got a null return and return 0 if the query nulled out
-        if ($httpdStatus == 0)
+        if (($httpdStatus === 0) || ($httpdStatus === 503))
         {
             $returnStatus = true;
         }
@@ -322,10 +322,10 @@ class twitch
         
         // Specify the header
         $header = array('Accept: application/vnd.twitchtv.v' . $twitch_configuration['API_VERSION'] . '+json'); // Always included
-        $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $post) === 1) || (array_key_exists('oauth_token', $post) === true))) ? array_merge($header, array('Authorization: OAuth ' . $post['oauth_token'])) : $header ;
+        $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $post) === 1) || (array_key_exists('oauth_token', $post) === true))) ? array_merge($header, array('Authorization: OAuth ' . $post['oauth_token'])) : $header;
         $header = (($twitch_clientKey !== '') && ($twitch_clientKey !== ' ')) ? array_merge($header, array('Client-ID: ' . $twitch_clientKey)) : $header;
         
-        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $post) === 1))
+        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $post) === 1) || (array_key_exists('oauth_token', $post) === true)))
         {
             unset($post['oauth_token']);
         }
@@ -451,7 +451,7 @@ class twitch
         $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $put) === 1) || (array_key_exists('oauth_token', $put) === true))) ? array_merge($header, array('Authorization: OAuth ' . $put['oauth_token'])) : $header ;
         $header = (($twitch_clientKey !== '') && ($twitch_clientKey !== ' ')) ? array_merge($header, array('Client-ID: ' . $twitch_clientKey)) : $header;
         
-        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $put) === 1))
+        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $put) === 1) || (array_key_exists('oauth_token', $put) === true)))
         {
             unset($put['oauth_token']);
         }
@@ -570,7 +570,7 @@ class twitch
         $header = (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $post) === 1) || (array_key_exists('oauth_token', $post) === true))) ? array_merge($header, array('Authorization: OAuth ' . $post['oauth_token'])) : $header ;
         $header = (($twitch_clientKey !== '') && ($twitch_clientKey !== ' ')) ? array_merge($header, array('Client-ID: ' . $twitch_clientKey)) : $header;
         
-        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && (array_key_exists('oauth_token', $post) === 1))
+        if (($twitch_configuration['TOKEN_SEND_METHOD'] == 'HEADER') && ((array_key_exists('oauth_token', $post) === 1) || (array_key_exists('oauth_token', $post) === true)))
         {
             unset($post['oauth_token']);
         }
@@ -719,7 +719,8 @@ class twitch
         
         $this->generateOutput($functionName, 'Offset set to: ' . $offset, 2);
         
-        // Init some vars  
+        // Init some vars
+        $channelBlock = '';
         $grabbedRows = 0;
         $toDo = 0;
         $currentReturnRows = 0;
@@ -768,9 +769,10 @@ class twitch
             foreach ($channels as $channel)
             {
                 $channelBlock .= $channel . ',';
-                $channelBlock = rtrim($channelBlock, ','); 
                 $get['channel'] = $channelBlock;
             }
+            
+            $channelBlock = rtrim($channelBlock, ','); 
             $this->generateOutput($functionName, 'Channels added to GET array', 2);
         }
         if ($embedable != null)
@@ -1133,13 +1135,13 @@ class twitch
      * 
      * @param $code - [string] String of auth code used to grant authorization
      * 
-     * @return$token - The generated token and the array of all scopes returned with the token, keyed
+     * @return $token - The generated token and the array of all scopes returned with the token, keyed
      */
     public function generateToken($code)
     {
         global $twitch_clientKey, $twitch_clientSecret, $twitch_clientUrl;
         
-        $functionName = 'Generate_Auth';
+        $functionName = 'Generate_Token';
         $this->generateOutput($functionName, 'Generating auth token', 1);
         
         $url = 'https://api.twitch.tv/kraken/oauth2/token';
@@ -1175,16 +1177,16 @@ class twitch
     /**
      * Checks a token for validity and access grants available.
      * 
-     * $authToken - [string] The token that you want to check
+     * @param $authToken - [string] The token that you want to check
      * 
-     * $authToken - [array} Either the provided token and the array of scopes if it was valid or false as the token and an empty array of scopes
+     * @return $authToken - [array] Either the provided token and the array of scopes if it was valid or false as the token and an empty array of scopes
      */
      
      public function checkToken($authToken)
      {
         global $twitch_clientKey, $twitch_clientSecret, $twitch_clientUrl;
         
-        $functionName = 'Generate_Token';
+        $functionName = 'Check_Token';
         $this->generateOutput($functionName, 'Checking OAuth token', 1);
         
         $url = 'https://api.twitch.tv/kraken';
@@ -1193,7 +1195,7 @@ class twitch
         );
         $options = array();
         
-        $result = json_decode($this->cURL_post($url, $post, $options, false), true);
+        $result = json_decode($this->cURL_get($url, $post, $options, false), true);
         
         if ($result['token']['valid'])
         {
@@ -1361,6 +1363,7 @@ class twitch
         // Set the array
         foreach ($usernamesObject as $user)
         {
+            $this->generateOutput($functionName, 'Setting Key for username: ' . $user['user'][$twitch_configuration['KEY_NAME']], 3);
             $usernames[$counter] = $user['user'][$twitch_configuration['KEY_NAME']];
             $counter ++;
         }
@@ -1553,10 +1556,9 @@ class twitch
             $authKey = $auth['token'];
         }
         
-        $url = 'https://api.twitch.tv/kraken/users/' . $chan . '/blocks';
+        $url = 'https://api.twitch.tv/kraken/users/' . $chan . '/blocks/' . $username;
         $options = array();
         $post = array(
-            'username' => $username,
             'oauth_token' => $authKey);
             
         $success = $this->cURL_delete($url, $post, $options);
@@ -1779,7 +1781,7 @@ class twitch
             $authKey = $auth['token'];
         }
         
-        $url = 'https://api.twitch.tv/kraken/users/' . $chan . '/editors';
+        $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/editors';
         $options = array(); // For things where I don't put in any default data, I will leave the end user the capability to configure here
         $counter = 0;
         $editors = array();
@@ -2094,7 +2096,7 @@ class twitch
         $this->generateOutput($functionName, 'Commercial time recieved as: ' . $length, 2);
         
         // Check the length to see if it is valid
-        if (($length != 30) && ($length != 60) && ($length != 90))
+        if ($length % 30 == 0)
         {
             $this->generateOutput($functionName, 'Commercial time invalid, set to 30 seconds', 2);
             $length = 30;
@@ -2392,6 +2394,7 @@ class twitch
         {
             $key = $channel['channel'][$twitch_configuration['KEY_NAME']];
             $channels[$key] = $channel;
+            $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
         }
         
         // Clean up
@@ -2410,7 +2413,7 @@ class twitch
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
      * 
-     * @return $success - [mixed] The updated follow object or false of the channel was not found
+     * @return $success - [bool] Success of the query
      */ 
     public function followChan($user, $chan, $authKey, $code)
     {
@@ -2478,14 +2481,17 @@ class twitch
         $options = array();
         $post = array('oauth_token' => $authKey);
         
-        $result = $this->cURL_put($url, $post, $options, false);
+        $result = $this->cURL_put($url, $post, $options, true);
         
-        $this->generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . $result, 4);
         
-        if ($result['status'] == 404)
+        if ($result == 200)
         {
+            $this->generateOutput($functionName, 'Sucessfully followed channel.', 3);
+            $result = true;              
+        } else {
             $this->generateOutput($functionName, 'Unable to follow channel.  Channel not found', 3);
-            $result = false;
+            $result = false;            
         }
 
         // Clean up
@@ -2571,15 +2577,15 @@ class twitch
         $options = array();
         $delete = array('oauth_token' => $authKey);
         
-        $result = $this->cURL_delete($url, $delete, $options, false);
+        $result = $this->cURL_delete($url, $delete, $options, true);
         
-        $this->generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
+        $this->generateOutput($functionName, 'Raw return: ' . $result, 4);
         
         // Clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
         unset($user, $chan, $authKey, $code, $auth, $authSuccessful, $type, $url, $options, $delete);
         
-        if ($result['status'] == 404)
+        if ($result == 204)
         {
             $this->generateOutput($functionName, 'Successfully unfollowed channel', 3);
             unset($functionName);
@@ -2620,6 +2626,7 @@ class twitch
         {
             $key = $game['game']['name'];
             $games[$key] = $game;
+            $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
         }
         
         // Clean up quickly
@@ -2654,17 +2661,23 @@ class twitch
         $object = array();
         
         $result = json_decode($this->cURL_get($url, $get, $options, false), true);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
         
         foreach ($result as $key => $value)
         {
-            foreach ($value as $game)
+            if ($key !== '_links')
             {
-                $k = $game['name'];
-                if ($k != 'h')
+                foreach ($value as $game)
                 {
-                    $object[$k] = $game;
-                }
+                    $k = $game['name'];
+                    if ($k != 'h')
+                    {
+                        $this->generateOutput($functionName, 'Setting key: ' . $k, 3);
+                        $object[$k] = $game;
+                    }
+                }                
             }
+
         }
         
         // Clean up
@@ -2814,20 +2827,22 @@ class twitch
         
         $statistics = array();
         $url = 'https://api.twitch.tv/kraken/streams/summary';
-        $get = array();
+        $get = array(
+            'hls' => $hls);
         $options = array();
         
         $result = json_decode($this->cURL_get($url, $get, $options), true);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
         
-        // A cheap way of making sure an array is always returned
-        foreach ($result as $key => $value)
+        if (is_array($result) && !empty($result))
         {
-            $statistics[$key] = $value;
+            $this->generateOutput($functionName, 'Statistics transfered', 3);
+            $statistics = $result;
         }
 
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($hls, $url, $get, $options, $result, $key, $value, $functionName);
+        unset($hls, $url, $get, $options, $key, $value, $functionName, $result);
         
         return $statistics;        
     }
@@ -2853,10 +2868,13 @@ class twitch
         
         $result = json_decode($this->cURL_get($url, $get, $options, false), true);
         
-        if (!empty($result) && ($result['status'] != '404'))
+        // A safe way of checking that the video was returned
+        if (!empty($result) && array_key_exists('_id', $result))
         {
             // Set the key and the array
             $object[$id] = $result;            
+        } else {
+            $object[$id] = array();
         }
 
         // Clean up quickly
@@ -2897,6 +2915,7 @@ class twitch
         {
             $key = $video['_id'];
             $videoObjects[$key] = $video;
+            $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
         }
         
         // Clean up quickly
@@ -2994,6 +3013,7 @@ class twitch
         {
             $key = $video['_id'];
             $videosObject[$key] = $video;
+            $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
         }
 
         // Clean up quickly
@@ -3040,6 +3060,7 @@ class twitch
         {
             $key = $video['_id'];
             $videosObject[$key] = $video;
+            $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
         }
         
         // Clean up quickly
@@ -3386,6 +3407,7 @@ class twitch
         {
             $key = $team[$twitch_configuration['KEY_NAME']];
             $teams[$key] = $team;
+            $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
         }
         
         // Clean up quickly
@@ -3409,7 +3431,7 @@ class twitch
         
         $url = 'https://api.twitch.tv/kraken/teams/' . $team;
         $options = array();
-        $get = array('team' => $team);
+        $get = array();
         
         // Build our cURL query and store the array
         $teamObject = json_decode($this->cURL_get($url, $get, $options, false), true);
@@ -3525,7 +3547,7 @@ class twitch
         
         // Build our cURL query and store the array
         $userObject = json_decode($this->cURL_get($url, $get, $options, false), true);
-        $this->generateOutput($functionName, 'Raw return: ' . $userObject, 4);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($userObject), 4);
         
         //clean up
         $this->generateOutput($functionName, 'Cleaning Memory', 3);
