@@ -41,7 +41,10 @@ Generates an OAuth token for use in authenticated calls or may be called standal
 ### Example Call 
 
 ```php
-$testToken = twitch::generateToken('abcdefghijklmnopqrstuvwxyz12345');
+// Instancize the class as an object
+$interface = new twitch;
+
+$testToken = $interface->generateToken('abcdefghijklmnopqrstuvwxyz12345');
 ```
 
 ### Example Return
@@ -97,7 +100,10 @@ Does several functions, first, checks the validity of a token, of it is valid, w
 ### Example Call 
 
 ```php
-$testToken = twitch::checkToken('jaxvvop7l6oypwg8bwk38nsozliakd3');
+// Instancize the class as an object
+$interface = new twitch;
+
+$testToken = $interface->checkToken('jaxvvop7l6oypwg8bwk38nsozliakd3');
 ```
 
 ### Example Return
@@ -156,7 +162,10 @@ Generates an authorization URL to redirect your user to the Twitch page for your
 ### Example Call  
 
 ```php
-$redirectURL = twitch::generateAuthorizationURL(array('user_read', 'user_blocks_edit'));
+// Instancize the class as an object
+$interface = new twitch;
+
+$redirectURL = $interface->generateAuthorizationURL(array('user_read', 'user_blocks_edit'));
 ```
 
 ### Example Return
@@ -193,7 +202,10 @@ Grabs the authorization code out of a string URL, useful if you do not have your
 ### Example Call  
 
 ```php
-$code = twitch::retrieveRedirectCode('http://www.testurl.com/return.php?client_id=1234123412341234123412341234123&redirect_uri=http://www.testurl.com/return.php&scope=user_read+user_blocks_edit?code=1234123412341234123412341234123');
+// Instancize the class as an object
+$interface = new twitch;
+
+$code = $interface->retrieveRedirectCode('http://www.testurl.com/return.php?client_id=1234123412341234123412341234123&redirect_uri=http://www.testurl.com/return.php&scope=user_read+user_blocks_edit?code=1234123412341234123412341234123');
 ```
 
 ### Example Return
