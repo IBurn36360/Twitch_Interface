@@ -43,7 +43,10 @@ Grabs a channel object containing all publicallly available data for that channe
 ### Example Call 
 
 ```php
-$testObject = twitch::getChannelObject('testChannel1');
+// Instancize the class as an object
+$interface = new twitch;
+
+$testObject = $interface->getChannelObject('testChannel1');
 ```
 
 ### Example Return
@@ -138,7 +141,10 @@ Grabs an authenticated channel object.  Contains some sensitive information spec
 ### Example Call 
 
 ```php
-$testObject = twitch::getChannelObject_Authd('jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+// Instancize the class as an object
+$interface = new twitch;
+
+$testObject = $interface->getChannelObject_Authd('jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
 ```
 
 ### Example Return
@@ -261,7 +267,10 @@ Grabs a list of all editors to the specified channel.  This call uses the [KEY_N
 ### Example Call 
 
 ```php
-$editors = twitch::getEditors('testChannel1', -1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+// Instancize the class as an object
+$interface = new twitch;
+
+$editors = $interface->getEditors('testChannel1', -1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
 ```
 
 ### Example Return
@@ -354,7 +363,10 @@ Attempts to update the specified channel with any of the following parameters: T
 ### Example Call 
 
 ```php
-$success = twitch::updateChannelobject('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', 'Test Title', 'Test Game', 'Test Delay');
+// Instancize the class as an object
+$interface = new twitch;
+
+$success = $interface->updateChannelobject('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', 'Test Title', 'Test Game', 'Test Delay');
 ```
 
 ### Example Return
@@ -421,7 +433,10 @@ Attempts to reset the stream key of the specified channel.
 ### Example Call 
 
 ```php
-$success = twitch::resetStreamKey('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+// Instancize the class as an object
+$interface = new twitch;
+
+$success = $interface->resetStreamKey('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
 ```
 
 ### Example Return
@@ -495,7 +510,10 @@ Attempts to run a commercial on the specified channel.
 ### Example Call 
 
 ```php
-$success = twitch::startCommercial()('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', 30);
+// Instancize the class as an object
+$interface = new twitch;
+
+$success = $interface->startCommercial()('testChannel1', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', 30);
 ```
 
 ### Example Return
