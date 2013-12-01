@@ -6,14 +6,14 @@ These calls handle everything about authentication, generation of tokens and che
 
 | Call | Description |
 | ---- | ----------- |
-| [twitch::generateToken()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchgeneratetoken) | Generates an OAuth token. |
-| [twitch::checkToken()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchchecktoken) | Checks what scopes a provided OAuth token is allowed and the state of it |
-| [twitch::generateAuthorizationURL()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchgenerateauthorizationurl) | Generates an authorization URL for a user to authorize your application. |
-| [twitch::retrieveRedirectCode()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchretrieveredirectcode) | Retrieves the code out of a string URL if the code was not properly returned on redirect. |  
+| [generateToken()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchgeneratetoken) | Generates an OAuth token. |
+| [checkToken()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchchecktoken) | Checks what scopes a provided OAuth token is allowed and the state of it |
+| [generateAuthorizationURL()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchgenerateauthorizationurl) | Generates an authorization URL for a user to authorize your application. |
+| [retrieveRedirectCode()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#twitchretrieveredirectcode) | Retrieves the code out of a string URL if the code was not properly returned on redirect. |  
 
 ***  
 
-## `twitch::generateToken()`  
+## `generateToken()`  
 
 Generates an OAuth token for use in authenticated calls or may be called standalone to generate a token manually. Returns an unkeyed array with the first row returned as the OAuth token and the second the array of all returned scopes. 
 
@@ -72,7 +72,7 @@ If no token was returned:
 
 ***  
 
-## `twitch::checkToken()`  
+## `checkToken()`  
 
 Does several functions, first, checks the validity of a token, of it is valid, will also return the array of all scopes granted to the token.  
 
@@ -134,7 +134,7 @@ If the token was no longer valid:
 
 ***  
 
-## `twitch::generateAuthorizationURL()`  
+## `generateAuthorizationURL()`  
 
 Generates an authorization URL to redirect your user to the Twitch page for your application.
 
@@ -174,7 +174,7 @@ $redirectURL = $interface->generateAuthorizationURL(array('user_read', 'user_blo
 "https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_secret=1234123412341234123412341234123&client_id=1234123412341234123412341234123&redirect_uri=http://www.testurl.com/return.php&scope=user_read+user_blocks_edit"
 ```
 
-## `twitch::retrieveRedirectCode()`  
+## `retrieveRedirectCode()`  
 
 Grabs the authorization code out of a string URL, useful if you do not have your URL parameters handled, or if you want to have users manually put in the code themselves.  This function is positionally insensitive, meaning that the order of parameters does NOT matter.
 
