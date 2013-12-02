@@ -40,7 +40,7 @@ Attempts to grab a list of all games currently streamed in order of current view
         </tr>
         <tr>
             <td><code>$hls</code></td>
-            <td>Required</td>
+            <td>Optional</td>
             <td>string</td>
             <td>Sets the query to only return streams abiding by HLS standards.</td>
         </tr>  
