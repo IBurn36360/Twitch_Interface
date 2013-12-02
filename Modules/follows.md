@@ -8,8 +8,8 @@ These calls handle queries about follows.  This includes getting list of followe
 | ---- | ----------- |
 | [getFollowers()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md#getfollowers) | Grabs a list of the users following the specified channel. |
 | [getFollows()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md#getfollows) | Grabs a list of the channels followed by a specified user. |
-| [followChan()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md#followChan) | Attempts to add a target channel to a subject users follows list. |
-| [unfollowChan()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md#unfollowChan) | Attempts to remove a target channel from a subject users follows list. |
+| [followChan()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md#followchan) | Attempts to add a target channel to a subject users follows list. |
+| [unfollowChan()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md#unfollowchan) | Attempts to remove a target channel from a subject users follows list. |
 
 ***  
 
