@@ -6,9 +6,9 @@ These calls handle everything reguarding blocked users.  This includes listing t
 
 | Call | Description |
 | ---- | ----------- |
-| [getBlockedUsers()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#twitchgetblockedusers) | Grabs a list of all blocked user objects to limit or end of list. |
-| [addBlockedUser()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#twitchaddblockeduser) | Attempts to add a user to your list of blocked users. |
-| [removeBlockedUser()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#twitchremoveblockeduser) | Attempts to remove a user from your list of blocked users. |
+| [getBlockedUsers()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#getblockedusers) | Grabs a list of all blocked user objects to limit or end of list. |
+| [addBlockedUser()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#addblockeduser) | Attempts to add a user to your list of blocked users. |
+| [removeBlockedUser()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#removeblockeduser) | Attempts to remove a user from your list of blocked users. |
 
 ***  
 

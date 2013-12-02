@@ -6,12 +6,12 @@ These calls handle everything about getting channel data and updating channel da
 
 | Call | Description |
 | ---- | ----------- |
-| [getChannelObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgetchannelobject) | Gets an unauthenticated channel object for the target channel. |
-| [getChannelObject_Authd()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgetchannelobject_authd) | Gets an authenticated channel object using an OAuth token as the identifying parameter. |
-| [getEditors()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchgeteditors) | Grabs a list of all editors to targe channel. |
-| [updateChannelObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchupdatechannelobject) | Updates the target channel with new information. |
-| [resetStreamKey()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchresetstreamkey) | Attempts to reset target channels stream key and have a new one generated. |
-| [startCommercial()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#twitchstartcommercial) | Attempts to start a commercial on target channel. |
+| [getChannelObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#getchannelobject) | Gets an unauthenticated channel object for the target channel. |
+| [getChannelObject_Authd()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#getchannelobject_authd) | Gets an authenticated channel object using an OAuth token as the identifying parameter. |
+| [getEditors()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#geteditors) | Grabs a list of all editors to targe channel. |
+| [updateChannelObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#updatechannelobject) | Updates the target channel with new information. |
+| [resetStreamKey()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#resetstreamkey) | Attempts to reset target channels stream key and have a new one generated. |
+| [startCommercial()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#startcommercial) | Attempts to start a commercial on target channel. |
 
 ***  
 
@@ -215,7 +215,7 @@ If authentication failure:
 
 ## `getEditors()` 
 
-Grabs a list of all editors to the specified channel.  This call uses the [KEY_NAME](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch_configuration) config option to determine what name to use as the row return.
+Grabs a list of all editors to the specified channel.  This call uses the [KEY_NAME](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#_configuration) config option to determine what name to use as the row return.
 
 <code>Authenticated: </code> channel_read
 
