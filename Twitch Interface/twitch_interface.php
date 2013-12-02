@@ -2367,7 +2367,7 @@ class twitch
      * 
      * @return $follows - [array] An unkeyed array of all followers to limit
      */ 
-    public function getFollowers($chan, $limit, $offset, $sorting = 'desc')
+    public function getFollowers($chan, $limit = -1, $offset = 0, $sorting = 'desc')
     {
         global $twitch_configuration;
         
@@ -2408,7 +2408,7 @@ class twitch
      * 
      * @return $channels - [array] An unkeyed array of all followed channels to limit
      */ 
-    public function getFollows($username, $limit, $offset, $sorting = 'desc')
+    public function getFollows($username, $limit = -1, $offset = 0, $sorting = 'desc')
     {
         global $twitch_configuration;
         
