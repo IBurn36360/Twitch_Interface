@@ -242,7 +242,7 @@ If successful:
 true
 ```
 
-If service was unavailable or an error occured (includes):
+If service was unavailable or an error occured (includes authentication errors):
 
 ```json
 false
@@ -307,7 +307,7 @@ If successful:
 true
 ```
 
-If service was unavailable or an error occured (includes):
+If service was unavailable or an error occured (includes authentication errors):
 
 ```json
 false
