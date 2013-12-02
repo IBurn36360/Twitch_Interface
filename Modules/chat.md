@@ -6,10 +6,10 @@ These calls handle everything about getting chat related information
 
 | Call | Description |
 | ---- | ----------- |
-| [chat_getEmoticonsGlobal()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chatgetemoticonsglobal) | Gets a list of all currently registered and cached amoticons. |
-| [chat_getEmoticons()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chatgetemoticons) | Grabs a list of all emoticons publically available on Twitch including any sub emotes for their channel. |
-| [chat_getBadges()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chatgetbadges) | Gets all badge related data for the specified channel. |
-| [chat_generateToken()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chatgeneratetoken) | Generates an IRC login token. |  
+| [chat_getEmoticonsGlobal()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chat_getemoticonsglobal) | Gets a list of all currently registered and cached amoticons. |
+| [chat_getEmoticons()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chat_getemoticons) | Grabs a list of all emoticons publically available on Twitch including any sub emotes for their channel. |
+| [chat_getBadges()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chat_getbadges) | Gets all badge related data for the specified channel. |
+| [chat_generateToken()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chat_generatetoken) | Generates an IRC login token. |  
 
 ***  
 
