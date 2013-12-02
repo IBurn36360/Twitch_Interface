@@ -821,7 +821,24 @@ class twitch
         // How many returns did we get?
         if ($arrayKey != null)
         {
-            $currentReturnRows = count($return[$arrayKey]);
+            if ((array_key_exists($arrayKey, $return) == 1) || (array_key_exists($arrayKey, $return) == true))
+            {
+                $currentReturnRows = count($return[$arrayKey]);
+            } else {
+                // Retry the call if we can
+                for ($i = 1; $i <= $twitch_configuration['RETRY_COUNTER']; $i++)
+                {
+                    $this->generateOutput($functionName, 'Retrying call', 3);
+                    $return = json_decode($this->cURL_get($url, $get, $options), true);
+                    
+                    if ((array_key_exists($arrayKey, $return) == 1) || (array_key_exists($arrayKey, $return) == true))
+                    {
+                        $currentReturnRows = count($return[$arrayKey]);
+                        break;
+                    }
+                }                
+            }
+            
         } else {
             $currentReturnRows = count($return);
         }
@@ -846,9 +863,27 @@ class twitch
                 }
             }
             
+            // How many returns did we get?
             if ($arrayKey != null)
             {
-                $currentReturnRows = count($return[$arrayKey]);
+                if ((array_key_exists($arrayKey, $return) == 1) || (array_key_exists($arrayKey, $return) == true))
+                {
+                    $currentReturnRows = count($return[$arrayKey]);
+                } else {
+                    // Retry the call if we can
+                    for ($i = 1; $i <= $twitch_configuration['RETRY_COUNTER']; $i++)
+                    {
+                        $this->generateOutput($functionName, 'Retrying call', 3);
+                        $return = json_decode($this->cURL_get($url, $get, $options), true);
+                        
+                        if ((array_key_exists($arrayKey, $return) == 1) || (array_key_exists($arrayKey, $return) == true))
+                        {
+                            $currentReturnRows = count($return[$arrayKey]);
+                            break;
+                        }
+                    }                
+                }
+                
             } else {
                 $currentReturnRows = count($return);
             }
@@ -2137,7 +2172,7 @@ class twitch
      * 
      * @return $object - [array] Keyed array of all returned data for the emoticins, including the supplied regex match used to parse it
      */ 
-    public function chat_getEmoticonsGlobal($limit, $offset)
+    public function chat_getEmoticonsGlobal($limit = -1, $offset = 0)
     {
         global $twitch_configuration;
         
@@ -2177,7 +2212,7 @@ class twitch
      * 
      * @return $object - [array] Keyed array of all returned data for the emoticons
      */ 
-    public function chat_getEmoticons($user, $limit, $offset)
+    public function chat_getEmoticons($user, $limit = -1, $offset = 0)
     {
         global $twitch_configuration;
         
