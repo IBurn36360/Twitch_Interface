@@ -15,7 +15,7 @@ These calls handle everything about getting chat related information
 
 ## `chat_getEmoticonsGlobal()` 
 
-Grabs a list of all currentlt cached emoticons available on twitch.   
+Grabs a list of all currently cached emoticons available on twitch.   
 
 ### Params
 
@@ -28,7 +28,7 @@ Grabs a list of all currentlt cached emoticons available on twitch.
             <th width=99%>Description</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody>   
         <tr>
             <td><code>$limit</code></td>
             <td>Optional</td>
@@ -40,7 +40,7 @@ Grabs a list of all currentlt cached emoticons available on twitch.
             <td>Optional</td>
             <td>string</td>
             <td>The starting offset of the list.<br />  (This does NOT work, this is in preparation for a possible future requirement)</td>
-        </tr>
+        </tr>    
     </tbody>
 </table>
 
