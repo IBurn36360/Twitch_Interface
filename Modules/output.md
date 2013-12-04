@@ -6,8 +6,8 @@ These functions aid in generating errors and function output.  These calls are, 
 
 | Call | Description |
 | ---- | ----------- |
-| [generateError()]() | Handles output for all errors encountered by the interface.  Almost all error output is authentication issues. |
-| [generateOutput()]() | Handles all function output, including function init and walkthrough.  Refer to the [output config](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch_debuglevels) for more information. |
+| [generateError()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md#generateerror) | Handles output for all errors encountered by the interface.  Almost all error output is authentication issues. |
+| [generateOutput()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md#generateoutput) | Handles all function output, including function init and walkthrough.  Refer to the [output config](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch_debuglevels) for more information. |
 
 ***
 
@@ -60,12 +60,12 @@ Writing to a file
         // Enter your output format code here
         
         // Check to see if the file exists
-        if (!file_exists('./output_log.php'))
+        if (!file_exists('./error_log.php'))
         {
-            $handle = @fopen('./output_log.php', 'a');
+            $handle = @fopen('./error_log.php', 'a');
             fwrite($handle, '<?php exit; ?>' . "\n");
         } else {
-            $handle = @fopen('./output_log.php', 'a');
+            $handle = @fopen('./error_log.php', 'a');
         }
         
         // Write the log
@@ -108,7 +108,7 @@ Handles output for all errors encountered by the interface.  Almost all error ou
             <td><code>$outputLevel</code></td>
             <td>Optional</td>
             <td>int</td>
-            <td>The required level of output requred for the output to be parsed. Refer to the [Debug Levels](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch_debuglevels)</td>
+            <td>The required level of output requred for the output to be parsed. Refer to the [debug level configuration](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch_debuglevels).</td>
         </tr>
     </tbody>
 </table>
