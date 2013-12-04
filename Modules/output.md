@@ -108,7 +108,7 @@ Handles output for all errors encountered by the interface.  Almost all error ou
             <td><code>$outputLevel</code></td>
             <td>Optional</td>
             <td>int</td>
-            <td>The required level of output requred for the output to be parsed. Refer to the [debug level configuration](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch_debuglevels).</td>
+            <td>The required level of output requred for the output to be parsed. Refer to the <a href="https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch_debuglevels">debug level configuration</a>.</td>
         </tr>
     </tbody>
 </table>
