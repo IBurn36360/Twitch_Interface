@@ -58,8 +58,7 @@ $topGames = $interface->getLargestGame(-1, 0, true);
 
 If Successful:
 ```json
-"League of Legends": [
-{
+"League of Legends": {
   "game": {
     "name": "League of Legends",
     "box": {
