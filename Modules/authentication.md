@@ -15,7 +15,7 @@ These calls handle everything about authentication, generation of tokens and che
 
 ## `generateToken()`  
 
-Generates an OAuth token for use in authenticated calls or may be called standalone to generate a token manually. Returns an unkeyed array with the first row returned as the OAuth token and the second the array of all returned scopes. 
+Generates an OAuth token for use in authenticated calls or may be called standalone to generate a token manually.  
 
 ### Parameters  
 
