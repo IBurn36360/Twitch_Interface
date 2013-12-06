@@ -336,7 +336,7 @@ $videos = $interface->getTopVideos('League of Legends', -1, 0, 'month');
 If successful:
 
 ```json
-"c2023831: {
+"c2023831": {
   "recorded_at": "2013-03-13T09:51:31Z",
   "preview": "http://static-cdn.jtvnw.net/jtv.thumbs/archive-377199700-320x240.jpg",
   "description": "dat trist jump",
