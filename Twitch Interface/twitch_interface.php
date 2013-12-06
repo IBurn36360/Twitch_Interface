@@ -3100,7 +3100,7 @@ class twitch
     }
     
     /**
-     * Gets a lits of all isers subscribed to a channel
+     * Gets a lits of all users subscribed to a channel
      * 
      * @param $chan - [string] Channel name to grab the subscribers list of
      * @param $limit - [int] Limit of channel objects to return

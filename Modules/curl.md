@@ -186,7 +186,7 @@ Handles all cURL DELETE style calls.
             <td><code>$returnStatus</code></td>
             <td>optional</td>
             <td>bool</td>
-            <td>Sets the function to return the int HTTPD status of the call.<br />Is automatically set to tru on 503 returns and 0 returns.</td>
+            <td>Sets the function to return the int HTTPD status of the call.</td>
         </tr>
     </tbody>
 </table>
