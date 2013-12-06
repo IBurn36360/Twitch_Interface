@@ -6,9 +6,9 @@ These functions aid the Interface
 
 | Call | Description |
 | ---- | ----------- |
-| [getURLParamValue()]() | Retrieves the value of a passed parameter in a URL string, positionally insensitive. |
-| [getURLParams()]() | Grabs an array of all URL parameters and values. |
-| [get_iterated()]() | This function iterates through calls. |
+| [getURLParamValue()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/helpers.md#geturlparamvalue) | Retrieves the value of a passed parameter in a URL string, positionally insensitive. |
+| [getURLParams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/helpers.md#geturlparams) | Grabs an array of all URL parameters and values. |
+| [get_iterated()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/helpers.md#get_iterated) | This function iterates through calls. |
 
 ***  
 
