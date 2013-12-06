@@ -136,7 +136,7 @@ $videos = $interface->getVideo_channel('vanillatv', 10, 0, false);
 If successful:
 
 ```json
-"a296529186": {
+"a296529186": [
   "title": "ETF2L Week 1: Epsilon vs. Dignitas",
   "recorded_at": "2011-10-02T19:57:06Z",
   "_id": "a296529186",
@@ -150,8 +150,8 @@ If successful:
   "length": 23,
   "game": "Team Fortress 2"
   "description": null
-},
-"a296526250": {
+],
+"a296526250": [
   "title": "ETF2L Week 1: Epsilon vs. Dignitas",
   "recorded_at": "2011-10-02T19:01:23Z",
   "_id": "a296526250",
@@ -165,7 +165,7 @@ If successful:
   "length": 1296,
   "game": "Team Fortress 2",
   "description": null
-},
+],
 ...
 ```
 
@@ -237,7 +237,7 @@ $videos = $interface->getVideo_followed(-1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3'
 If successful:
 
 ```json
-"a296529186": {
+"a296529186": [
   "title": "ETF2L Week 1: Epsilon vs. Dignitas",
   "recorded_at": "2011-10-02T19:57:06Z",
   "_id": "a296529186",
@@ -251,8 +251,8 @@ If successful:
   "length": 23,
   "game": "Team Fortress 2"
   "description": null
-},
-"a296526250": {
+],
+"a296526250": [
   "title": "ETF2L Week 1: Epsilon vs. Dignitas",
   "recorded_at": "2011-10-02T19:01:23Z",
   "_id": "a296526250",
@@ -266,7 +266,7 @@ If successful:
   "length": 1296,
   "game": "Team Fortress 2",
   "description": null
-},
+],
 ...
 ```
 
@@ -336,7 +336,7 @@ $videos = $interface->getTopVideos('League of Legends', -1, 0, 'month');
 If successful:
 
 ```json
-"c2023831: {
+"c2023831": [
   "recorded_at": "2013-03-13T09:51:31Z",
   "preview": "http://static-cdn.jtvnw.net/jtv.thumbs/archive-377199700-320x240.jpg",
   "description": "dat trist jump",
@@ -354,7 +354,7 @@ If successful:
     "channel": "https://api.twitch.tv/kraken/channels/chaoxlol",
     "self": "https://api.twitch.tv/kraken/videos/c2023831"
   }
-},
+],
 ...
 ```
 
