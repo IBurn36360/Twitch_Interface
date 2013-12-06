@@ -6,7 +6,7 @@ This call grabs some base statistics about Twitch
 
 | Call | Description |
 | ---- | ----------- |
-| [getTwitchStatistics()]() | Gets the current viewers and the current live channels for Twitch |
+| [getTwitchStatistics()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/stats.md#gettwitchstatistics) | Gets the current viewers and the current live channels for Twitch |
 
 ***
 
