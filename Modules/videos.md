@@ -6,10 +6,10 @@ These calls handle grabbing information about videos (Highlights and broadcasts)
 
 | Call | Description |
 | ---- | ----------- |
-| [getVideo_ID()]() | Returns the video object for the specified ID. |
-| [getVideo_channel()]() | Returns the video objects of the given channel. |
-| [getVideo_followed()]() | Grabs all videos for all channels a user is following. |
-| [getTopVideos()]() | Gets a list of the top viewed videos by the sorting parameters. |
+| [getVideo_ID()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/videos.md#getvideo_id) | Returns the video object for the specified ID. |
+| [getVideo_channel()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/videos.md#getvideo_channel) | Returns the video objects of the given channel. |
+| [getVideo_followed()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/videos.md#getvideo_followed) | Grabs all videos for all channels a user is following. |
+| [getTopVideos()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/videos.md#gettopvideos) | Gets a list of the top viewed videos by the sorting parameters. |
 
 ***
 
