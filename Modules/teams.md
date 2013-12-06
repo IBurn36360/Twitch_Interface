@@ -4,8 +4,8 @@ These calls handle querying about teams.
 
 | Call | Description |
 | ---- | ----------- |
-| [getTeams()]() | Gets the team objects for all active teams. |
-| [getTeam()]() | Grabs the team object for the supplied team. |
+| [getTeams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/teams.md#getteams) | Gets the team objects for all active teams. |
+| [getTeam()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/teams.md#getteam) | Grabs the team object for the supplied team. |
 
 ***
 
