@@ -6,10 +6,10 @@ This is the light weight cURL implimentation that the interface uses.  All calls
 
 | Call | Description |
 | ---- | ----------- |
-| [cURL_get()]() | Handles all cURL GET style calls. |
-| [cURL_post()]() | Handles all cURL POST style calls. |
-| [cURL_put()]() | Handles all cURL PUT style calls. |
-| [cURL_delete()]() | Handles all cURL DELETE style calls. |
+| [cURL_get()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/curl.md#curl_get) | Handles all cURL GET style calls. |
+| [cURL_post()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/curl.md#curl_post) | Handles all cURL POST style calls. |
+| [cURL_put()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/curl.md#curl_put) | Handles all cURL PUT style calls. |
+| [cURL_delete()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/curl.md#curl_delete) | Handles all cURL DELETE style calls. |
 
 ***
 
