@@ -4,9 +4,9 @@ These calls handle grabbing subscriber lists and checking if a user is suscribed
 
 | Call | Description |
 | ---- | ----------- |
-| [getChannelSubscribers()]() | Gets a lits of all users subscribed to a channel. |
-| [checkChannelSubscription()]() | Checks to see if a user is subscribed to a specified channel from the channel side. |
-| [checkUserSubscription()]() | Checks to see if a user is subscribed to a specified channel from the user side |
+| [getChannelSubscribers()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/subscriptions.md#getchannelsubscribers) | Gets a lits of all users subscribed to a channel. |
+| [checkChannelSubscription()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/subscriptions.md#checkchannelsubscription) | Checks to see if a user is subscribed to a specified channel from the channel side. |
+| [checkUserSubscription()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/subscriptions.md#checkusersubscription) | Checks to see if a user is subscribed to a specified channel from the user side |
 
 ***
 
