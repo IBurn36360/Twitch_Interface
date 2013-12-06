@@ -65,7 +65,9 @@ If service available:
 
 If the channel was not found or the service is unavailable:
 ```json
-
+{
+    
+}
 ```
 
 ***
@@ -140,5 +142,7 @@ If service available:
 
 If the channel was not found or the service is unavailable:
 ```json
-
+{
+    
+}
 ```

@@ -148,7 +148,6 @@ If service available:
   "display_name": "Evil Geniuses",
   "name": "eg"
 }
-...
 ```
 
 If service unavailable:

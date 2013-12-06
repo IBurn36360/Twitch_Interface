@@ -175,6 +175,7 @@ If channel does not exist or service unavailable:
 {
     
 }
+```
 
 ***
 
@@ -275,6 +276,7 @@ If there are no videos or the service was unavailable:
 {
     
 }
+```
 
 ***
 
@@ -362,3 +364,4 @@ If there are no videos or the service was unavailable:
 {
     
 }
+```
