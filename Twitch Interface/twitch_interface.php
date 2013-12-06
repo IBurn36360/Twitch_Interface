@@ -265,18 +265,12 @@ class twitch
         $result = curl_exec($handle);
         $httpdStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         
-        // Check to see if the call existed
-        if ($httpdStatus == 404) 
+        // Check our HTTPD status that was returned for error returns
+        if (($httpdStatus == 404) || ($httpdStatus == 0) || ($httpdStatus == 503)) 
         {
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            $this->generateError($errNo, $errStr, $result);
-        }
-        
-        // Check to see if we got a null return and return 0 if the query nulled out
-        if (($httpdStatus === 0) || ($httpdStatus === 503))
-        {
-            $returnStatus = true;
+            $this->generateError($errNo, $errStr);
         }
         
         curl_close($handle);
@@ -398,12 +392,12 @@ class twitch
         $result = curl_exec($handle);
         $httpdStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         
-        // Check the HTTP error
-        if ($httpdStatus == 404 || 0) 
+        // Check our HTTPD status that was returned for error returns
+        if (($httpdStatus == 404) || ($httpdStatus == 0) || ($httpdStatus == 503)) 
         {
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            $this->generateError($errNo, $errStr, $result); 
+            $this->generateError($errNo, $errStr);
         }
         
         curl_close($handle);
@@ -519,11 +513,12 @@ class twitch
         $result = curl_exec($handle);
         $httpdStatus = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         
-        if (!gettype($result) == 'array') 
-        { 
+        // Check our HTTPD status that was returned for error returns
+        if (($httpdStatus == 404) || ($httpdStatus == 0) || ($httpdStatus == 503)) 
+        {
             $errStr = curl_error($handle);
             $errNo = curl_errno($handle);
-            $this->generateError($errNo, $errStr, $result); 
+            $this->generateError($errNo, $errStr);
         }
 
         curl_close($handle);
@@ -2712,7 +2707,6 @@ class twitch
                     }
                 }                
             }
-
         }
         
         // Clean up

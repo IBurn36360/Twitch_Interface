@@ -39,13 +39,13 @@ Grabs a list of the users following the specified channel.
             <td><code>$limit</code></td>
             <td>Optional</td>
             <td>string</td>
-            <td>The high limit of editors to grab.<br /> (This does NOT work, this is in preparation for a possible future requirement)</td>
+            <td>The high limit of editors to grab.</td>
         </tr>            
         <tr>
             <td><code>$offset</code></td>
             <td>Optional</td>
             <td>string</td>
-            <td>The starting offset of the list.<br />  (This does NOT work, this is in preparation for a possible future requirement)</td>
+            <td>The starting offset of the list.</td>
         </tr>
         <tr>
             <td><code>$sorting</code></td>
@@ -124,13 +124,13 @@ Grabs a list of the channels followed by a specified user.
             <td><code>$limit</code></td>
             <td>Optional</td>
             <td>string</td>
-            <td>The high limit of editors to grab.<br /> (This does NOT work, this is in preparation for a possible future requirement)</td>
+            <td>The high limit of editors to grab.</td>
         </tr>            
         <tr>
             <td><code>$offset</code></td>
             <td>Optional</td>
             <td>string</td>
-            <td>The starting offset of the list.<br />  (This does NOT work, this is in preparation for a possible future requirement)</td>
+            <td>The starting offset of the list.</td>
         </tr>
         <tr>
             <td><code>$sorting</code></td>

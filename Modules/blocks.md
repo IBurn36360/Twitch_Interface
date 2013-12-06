@@ -46,7 +46,7 @@ Attempts to grab a list of all blocked user objects to limit or end of listing.
             <td><code>$offset</code></td>
             <td>optional <br />(defaults to 0)</td>
             <td>int</td>
-            <td>The numbeer of rows to offset the call by.  For instance, if the integer 50 is supplied, will skip over the first 50 returns completely and then apply the limit for the calls.</td>
+            <td>The number of rows to offset the call by.  For instance, if the integer 50 is supplied, will skip over the first 50 returns completely and then apply the limit for the calls.</td>
         </tr>
         <tr>
             <td><code>$authKey</code></td>
