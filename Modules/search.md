@@ -6,7 +6,7 @@ This call allows you to query Twitch for all currently recognized games (From Gi
 
 | Call | Description |
 | ---- | ----------- |
-| searchGameCat() | Searches Twitch's list of all games for the matching string. |
+| [searchGameCat()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/search.md#searchgamecat) | Searches Twitch's list of all games for the matching string. |
 
 ***
 
