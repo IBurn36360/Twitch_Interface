@@ -967,9 +967,10 @@ class twitch
                     foreach ($channels as $channel)
                     {
                         $channelBlock .= $channel . ',';
-                        $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
+                    
+                    $channelBlock = rtrim($channelBlock, ','); 
                     $this->generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
@@ -1024,9 +1025,10 @@ class twitch
                     foreach ($channels as $channel)
                     {
                         $channelBlock .= $channel . ',';
-                        $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
+                    
+                    $channelBlock = rtrim($channelBlock, ','); 
                     $this->generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
@@ -1081,9 +1083,10 @@ class twitch
                     foreach ($channels as $channel)
                     {
                         $channelBlock .= $channel . ',';
-                        $channelBlock = rtrim($channelBlock, ','); 
                         $get['channel'] = $channelBlock;
                     }
+                    
+                    $channelBlock = rtrim($channelBlock, ','); 
                     $this->generateOutput($functionName, 'Channels added to GET array', 2);
                 }
                 if ($embedable != null)
