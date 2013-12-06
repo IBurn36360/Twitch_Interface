@@ -4,8 +4,8 @@ These calls handle grabbing user data.
 
 | Call | Description |
 | ---- | ----------- |
-| [getUserObject()]() | Grabs an unauthenticated user object for the supplied username. |
-| [getUserObject_Authd()]() | Grabs an authenticated user object for the supplied username.  Contains some sensitive data. |
+| [getUserObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/users.md#getuserobject) | Grabs an unauthenticated user object for the supplied username. |
+| [getUserObject_Authd()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/users.md#getuserobject_authd) | Grabs an authenticated user object for the supplied username.  Contains some sensitive data. |
 
 ***
 
