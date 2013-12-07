@@ -1,6 +1,6 @@
 # Module Directory
 
-### Authentication
+### [Authentication](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -9,7 +9,7 @@
 | [generateAuthorizationURL()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#generateauthorizationurl) | Generates an authorization URL for a user to authorize your application. |
 | [retrieveRedirectCode()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/authentication.md#retrieveredirectcode) | Retrieves the code out of a string URL if the code was not properly returned on redirect. |  
 
-### Blocks
+### [Blocks](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -17,7 +17,7 @@
 | [addBlockedUser()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#addblockeduser) | Attempts to add a user to your list of blocked users. |
 | [removeBlockedUser()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/blocks.md#removeblockeduser) | Attempts to remove a user from your list of blocked users. |
 
-### Channels
+### [Channels](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -28,7 +28,7 @@
 | [resetStreamKey()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#resetstreamkey) | Attempts to reset target channels stream key and have a new one generated. |
 | [startCommercial()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/channels.md#startcommercial) | Attempts to start a commercial on target channel. |
 
-### Chat
+### [Chat](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -37,7 +37,7 @@
 | [chat_getBadges()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chat_getbadges) | Gets all badge related data for the specified channel. |
 | [chat_generateToken()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/chat.md#chat_generatetoken) | Generates an IRC login token. |  
 
-### cURL
+### [cURL](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/curl.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -46,7 +46,7 @@
 | [cURL_put()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/curl.md#curl_put) | Handles all cURL PUT style calls. |
 | [cURL_delete()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/curl.md#curl_delete) | Handles all cURL DELETE style calls. |
 
-### Follows
+### [Follows](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -55,13 +55,13 @@
 | [followChan()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md#followchan) | Attempts to add a target channel to a subject users follows list. |
 | [unfollowChan()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/follows.md#unfollowchan) | Attempts to remove a target channel from a subject users follows list. |
 
-### Games
+### [Games](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/games.md)
 
 | Call | Description |
 | ---- | ----------- |
 | [getLargestGame()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/games.md#getlargestgame) | Attempts to grab a list of all games currently streamed in order of current viewers (descending) |
 
-### Helpers
+### [Helpers](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/helpers.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -69,26 +69,26 @@
 | [getURLParams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/helpers.md#geturlparams) | Grabs an array of all URL parameters and values. |
 | [get_iterated()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/helpers.md#get_iterated) | This function iterates through calls. |
 
-### Output
+### [Output](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md)
 
 | Call | Description |
 | ---- | ----------- |
 | [generateError()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md#generateerror) | Handles output for all errors encountered by the interface.  Almost all error output is authentication issues. |
 | [generateOutput()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md#generateoutput) | Handles all function output, including function init and walkthrough.  Refer to the [output config](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md#twitch_debuglevels) for more information. |
 
-### Search
+### [Search](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/search.md)
 
 | Call | Description |
 | ---- | ----------- |
 | [searchGameCat()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/search.md#searchgamecat) | Searches Twitch's list of all games for the matching string. |
 
-### Stats
+### [Stats](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/stats.md)
 
 | Call | Description |
 | ---- | ----------- |
 | [getTwitchStatistics()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/stats.md#gettwitchstatistics) | Gets the current viewers and the current live channels for Twitch |
 
-### Streams
+### [Streams](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -96,7 +96,7 @@
 | [getStreamsObjects()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getstreamsobjects) | Queries Twitch for the stream objects of multiple channels or by a set of conditions or both. |
 | [getFeaturedStreams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getstreamsobjects-1) | Returns currently featured streamers. |
 
-### Subscriptions
+### [Subscriptions](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/subscriptions.md)
 
 | Call | Description |
 | ---- | ----------- |
@@ -104,21 +104,21 @@
 | [checkChannelSubscription()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/subscriptions.md#checkchannelsubscription) | Checks to see if a user is subscribed to a specified channel from the channel side. |
 | [checkUserSubscription()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/subscriptions.md#checkusersubscription) | Checks to see if a user is subscribed to a specified channel from the user side |
 
-### Teams
+### [Teams](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/teams.md)
 
 | Call | Description |
 | ---- | ----------- |
 | [getTeams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/teams.md#getteams) | Gets the team objects for all active teams. |
 | [getTeam()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/teams.md#getteam) | Grabs the team object for the supplied team. |
 
-### Users
+### [Users](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/users.md)
 
 | Call | Description |
 | ---- | ----------- |
 | [getUserObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/users.md#getuserobject) | Grabs an unauthenticated user object for the supplied username. |
 | [getUserObject_Authd()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/users.md#getuserobject_authd) | Grabs an authenticated user object for the supplied username.  Contains some sensitive data. |
 
-### Videos
+### [Videos](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/videos.md)
 
 | Call | Description |
 | ---- | ----------- |
