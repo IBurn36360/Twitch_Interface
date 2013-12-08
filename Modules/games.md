@@ -43,7 +43,13 @@ Attempts to grab a list of all games currently streamed in order of current view
             <td>Optional</td>
             <td>string</td>
             <td>Sets the query to only return streams abiding by HLS standards.</td>
-        </tr>  
+        </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -53,11 +59,12 @@ Attempts to grab a list of all games currently streamed in order of current view
 // Instancize the class as an object
 $interface = new twitch;
 
-$topGames = $interface->getLargestGame(-1, 0, true);
+$topGames = $interface->getLargestGame(-1, 0, true, true);
 ```
 
 If Successful:
 ```json
+"_total": 89,
 "League of Legends": {
   "game": {
     "name": "League of Legends",
