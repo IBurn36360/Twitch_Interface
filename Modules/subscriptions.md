@@ -64,6 +64,12 @@ Gets a lits of all users subscribed to a channel.
             <td>string</td>
             <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -73,7 +79,7 @@ Gets a lits of all users subscribed to a channel.
 // Instancize the class as an object
 $interface = new twitch;
 
-$subscribers = $interface->getChannelSubscribers('testChannel1', -1, 0, 'desc', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$subscribers = $interface->getChannelSubscribers('testChannel1', -1, 0, 'desc', 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', true);
 ```
 
 ### Example Return
@@ -81,6 +87,7 @@ $subscribers = $interface->getChannelSubscribers('testChannel1', -1, 0, 'desc', 
 If successful:
 
 ```json
+"_total": 448,
 "testuser": {
   "_id": "88d4621871b7274c34d5c3eb5dad6780c8533318",
   "user": {
