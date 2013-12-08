@@ -230,5 +230,11 @@ This function iterates through calls.  You can not interact with this function u
             <td>string</td>
             <td>The game to limit the query to</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
