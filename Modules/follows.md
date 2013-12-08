@@ -52,7 +52,13 @@ Grabs a list of the users following the specified channel.
             <td>$optional</td>
             <td>string</td>
             <td>Sets the sorting option for the query.  Accepts string 'asc' (Ascending order) or string 'desc' (Descending order)</td>
-        </tr>  
+        </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -62,11 +68,12 @@ Grabs a list of the users following the specified channel.
 // Instancize the class as an object
 $interface = new twitch;
 
-$followers = $interface->getFollowers('testchannel1', -1, 0, 'desc');
+$followers = $interface->getFollowers('testchannel1', -1, 0, 'desc', true);
 ```
 
 If successful:
 ```json
+"_total": 184,
 "test_user2": {
   "created_at": "2013-06-02T09:38:45Z",
   "_links": {
@@ -137,7 +144,13 @@ Grabs a list of the channels followed by a specified user.
             <td>$optional</td>
             <td>string</td>
             <td>Sets the sorting option for the query.  Accepts string 'asc' (Ascending order) or string 'desc' (Descending order)</td>
-        </tr>  
+        </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -147,11 +160,12 @@ Grabs a list of the channels followed by a specified user.
 // Instancize the class as an object
 $interface = new twitch;
 
-$followers = $interface->getFollows('testchannel1', -1, 0, 'desc');
+$followers = $interface->getFollows('testchannel1', -1, 0, 'desc', true);
 ```
 
 If successful:
 ```json
+"_total": 70,
 "test_user2": {
   "created_at": "2013-06-02T09:38:45Z",
   "_links": {
