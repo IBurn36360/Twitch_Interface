@@ -119,6 +119,12 @@ Returns the video objects of the given channel.
             <td>bool</td>
             <td>If true, limits query to only past broadcasts, else will return highlights only.</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -128,7 +134,7 @@ Returns the video objects of the given channel.
 // Instancize the class as an object
 $interface = new twitch;
 
-$videos = $interface->getVideo_channel('vanillatv', 10, 0, false);
+$videos = $interface->getVideo_channel('vanillatv', 10, 0, false, true);
 ```
 
 ### Example Return
@@ -136,6 +142,7 @@ $videos = $interface->getVideo_channel('vanillatv', 10, 0, false);
 If successful:
 
 ```json
+"_total": 10,
 "a296529186": {
   "title": "ETF2L Week 1: Epsilon vs. Dignitas",
   "recorded_at": "2011-10-02T19:57:06Z",
@@ -221,6 +228,12 @@ Grabs all videos for all channels a user is following.
             <td>string</td>
             <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
 </table>
 
 ### Example Call 
@@ -229,7 +242,7 @@ Grabs all videos for all channels a user is following.
 // Instancize the class as an object
 $interface = new twitch;
 
-$videos = $interface->getVideo_followed(-1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$videos = $interface->getVideo_followed(-1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', true);
 ```
 
 ### Example Return
@@ -237,6 +250,7 @@ $videos = $interface->getVideo_followed(-1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3'
 If successful:
 
 ```json
+"_total": 58,
 "a296529186": {
   "title": "ETF2L Week 1: Epsilon vs. Dignitas",
   "recorded_at": "2011-10-02T19:57:06Z",
@@ -319,7 +333,13 @@ Gets a list of the top viewed videos by the sorting parameters.
             <td>Optional</td>
             <td>string</td>
             <td>Sets the query to sccept only videos within the specified peroid.  Accepts: <code>week</code> <code>month</code> <code>all</code></td>
-        </tr> 
+        </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
 </table>
 
 ### Example Call 
@@ -336,6 +356,7 @@ $videos = $interface->getTopVideos('League of Legends', -1, 0, 'month');
 If successful:
 
 ```json
+"_total": 1842,
 "c2023831": {
   "recorded_at": "2013-03-13T09:51:31Z",
   "preview": "http://static-cdn.jtvnw.net/jtv.thumbs/archive-377199700-320x240.jpg",
