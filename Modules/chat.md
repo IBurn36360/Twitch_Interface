@@ -40,7 +40,13 @@ Grabs a list of all currently cached emoticons available on twitch.
             <td>Optional</td>
             <td>string</td>
             <td>The starting offset of the list.<br />  (This does NOT work, this is in preparation for a possible future requirement)</td>
-        </tr>    
+        </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -50,12 +56,13 @@ Grabs a list of all currently cached emoticons available on twitch.
 // Instancize the class as an object
 $interface = new twitch;
 
-$allEmotes = $interface->chat_getEmoticonsGlobal();
+$allEmotes = $interface->chat_getEmoticonsGlobal(-1, 0, true);
 ```
 
 If successful:
 
 ```json
+"_total": 1186,
 "\:-?\(": [
     {
       "regex": "\:-?\(",
@@ -121,6 +128,12 @@ Grabs a list of all emoticons publically available on Twitch including any sub e
             <td>string</td>
             <td>The starting offset of the list.<br />  (This does NOT work, this is in preparation for a possible future requirement)</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -130,12 +143,13 @@ Grabs a list of all emoticons publically available on Twitch including any sub e
 // Instancize the class as an object
 $interface = new twitch;
 
-$allEmotes = $interface->chat_getEmoticons('testuser1', -1, 0);
+$allEmotes = $interface->chat_getEmoticons('testuser1', -1, 0, true);
 ```
 
 If successful:
 
 ```json
+"_total": 186,
 "\:-?\(": [
     {
       "regex": "\:-?\(",
