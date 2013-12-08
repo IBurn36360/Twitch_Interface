@@ -261,6 +261,12 @@ Grabs a list of all editors to the specified channel.  This call uses the [KEY_N
             <td>string</td>
             <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -270,7 +276,7 @@ Grabs a list of all editors to the specified channel.  This call uses the [KEY_N
 // Instancize the class as an object
 $interface = new twitch;
 
-$editors = $interface->getEditors('testChannel1', -1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$editors = $interface->getEditors('testChannel1', -1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', true);
 ```
 
 ### Example Return
@@ -279,6 +285,7 @@ If successful:
 
 ```json
 {
+  "_total": 1085,
   "testEditor1",
   "testEditor2",
   ...
