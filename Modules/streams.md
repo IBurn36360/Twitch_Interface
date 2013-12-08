@@ -160,6 +160,12 @@ Queries Twitch for the stream objects of multiple channels or by a set of condit
             <td>string</td>
             <td>Sets the query to accept any and all channels that have authorized the spplied client_id</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -169,7 +175,7 @@ Queries Twitch for the stream objects of multiple channels or by a set of condit
 // Instancize the class as an object
 $interface = new twitch;
 
-$streams = $interface->getStreamsObjects('Diablo III', array('zisss', 'voyboy'), -1, 0);
+$streams = $interface->getStreamsObjects('Diablo III', array('zisss', 'voyboy'), -1, 0, true);
 ```
 
 ### Example Return
@@ -177,6 +183,7 @@ $streams = $interface->getStreamsObjects('Diablo III', array('zisss', 'voyboy'),
 If successful:
 
 ```json
+"_total": 1,
 "zisss": [
     {
       "_id": 5019229776,
@@ -267,6 +274,12 @@ Returns currently featured streamers.
             <td>bool</td>
             <td>Sets the query to only accept streams currently abiding by HLS.</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -276,7 +289,7 @@ Returns currently featured streamers.
 // Instancize the class as an object
 $interface = new twitch;
 
-$featured = $interface->getFeaturedStreams(-1, 0, true);
+$featured = $interface->getFeaturedStreams(-1, 0, true, true);
 ```
 
 ### Example Return
@@ -284,6 +297,7 @@ $featured = $interface->getFeaturedStreams(-1, 0, true);
 If successful:
 
 ```json
+"_total": 29,
 "zisss": [
     {
       "_id": 5019229776,
