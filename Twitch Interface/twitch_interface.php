@@ -668,7 +668,7 @@ class twitch
      * @param $game - [string] The game to limit the query to
      * @param $returnTotal - [bool] Sets iteration to not ignore the _total key
      * 
-     * @return $object - [arary] unkeyed array of data requested or null if no data was returned
+     * @return $object - [arary] unkeyed array of data requested or empty array if no data was returned
      */ 
     private function get_iterated($functionName, $url, $options, $limit, $offset, $arrayKey = null, $authKey = null, $hls = null, $direction = null, $channels = null, $embedable = null, $client_id = null, $broadcasts = null, $period = null, $game = null, $returnTotal = false)
     {
