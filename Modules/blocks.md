@@ -60,6 +60,12 @@ Attempts to grab a list of all blocked user objects to limit or end of listing.
             <td>string</td>
             <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -69,7 +75,7 @@ Attempts to grab a list of all blocked user objects to limit or end of listing.
 // Instancize the class as an object
 $interface = new twitch;
 
-$blockedUsers = $interface->getBlockedUsers('testchannel1', 100, 10, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234');
+$blockedUsers = $interface->getBlockedUsers('testchannel1', 100, 10, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', true);
 ```
 
 ### Example Return
@@ -80,6 +86,7 @@ If successful:
 
 ```json
 {
+  "_total": 90,
   "testuser11": { [Blocks object returned from Twitch]
   },
   "testuser12": {
