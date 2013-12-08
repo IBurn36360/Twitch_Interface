@@ -37,6 +37,12 @@ Gets the team objects for all active teams.
             <td>string</td>
             <td>The starting offset of the list.</td>
         </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
     </tbody>
 </table>
 
@@ -46,7 +52,7 @@ Gets the team objects for all active teams.
 // Instancize the class as an object
 $interface = new twitch;
 
-$teams = $interface->getTeams(-1, 0);
+$teams = $interface->getTeams(-1, 0, true);
 ```
 
 ### Example Return
@@ -54,6 +60,7 @@ $teams = $interface->getTeams(-1, 0);
 If service available:
 
 ```json
+"_total": 178,
 "testteam": {
   "info": "I love working for Twitch!\n\n",
   "_links": {
