@@ -666,10 +666,11 @@ class twitch
      * @param $broadcasts - [bool] Limit returns to only show broadcasts
      * @param $period - [string] The period of time in which  to limit the search for
      * @param $game - [string] The game to limit the query to
+     * @param $returnTotal - [bool] Sets iteration to not ignore the _total key
      * 
      * @return $object - [arary] unkeyed array of data requested or null if no data was returned
      */ 
-    private function get_iterated($functionName, $url, $options, $limit, $offset, $arrayKey = null, $authKey = null, $hls = null, $direction = null, $channels = null, $embedable = null, $client_id = null, $broadcasts = null, $period = null, $game = null)
+    private function get_iterated($functionName, $url, $options, $limit, $offset, $arrayKey = null, $authKey = null, $hls = null, $direction = null, $channels = null, $embedable = null, $client_id = null, $broadcasts = null, $period = null, $game = null, $returnTotal = false)
     {
         global $twitch_configuration;
         $functionName = 'ITERATION-' . $functionName;
@@ -888,17 +889,24 @@ class twitch
             // Return the data we requested into the array
             foreach ($return as $key => $value)
             {
-                if (is_array($value) && ($key != '_links') && ($key != '_total')) // Skip some of the data we don't need
+                if (is_array($value) && ($key != '_links')) // Skip some of the data we don't need
                 {
-                    foreach ($value as $k => $v)
+                    // Are we on the _total key?  As well, have we already set it? (I might revert the key check if it ends up providing odd results)
+                    if ($returnTotal && ($key == '_total') && !key_exists('_total', $object))
                     {
-                        if (($k === '_links') || ($k === '_total') || !(is_array($v)))
+                        $this->generateOutput($functionName, 'Setting _total as the reported value from the API', 3);
+                        $object['_total'] = $value;
+                    } else {
+                        foreach ($value as $k => $v)
                         {
-                            continue;
-                        }
-                        
-                        $object[$counter] = $v;
-                        $counter ++;
+                            if (($k === '_links') || ($k === '_total') || !(is_array($v)))
+                            {
+                                continue;
+                            }
+                            
+                            $object[$counter] = $v;
+                            $counter ++;
+                        }                        
                     }
                 }
             }
@@ -1134,17 +1142,24 @@ class twitch
         // Run this one last time, a little redundant, but we could have skipped a return
         foreach ($return as $key => $value)
         {
-            if (is_array($value) && ($key != '_links') && ($key != '_total')) // Skip some of the data we don't need
+            if (is_array($value) && ($key != '_links')) // Skip some of the data we don't need
             {
-                foreach ($value as $k => $v)
+                // Are we on the _total key?  As well, have we already set it? (I might revert the key check if it ends up providing odd results)
+                if ($returnTotal && ($key == '_total') && !key_exists('_total', $object))
                 {
-                    if (($k === '_links') || ($k === '_total') || !(is_array($v)))
+                    $this->generateOutput($functionName, 'Setting _total as the reported value from the API', 3);
+                    $object['_total'] = $value;
+                } else {
+                    foreach ($value as $k => $v)
                     {
-                        continue;
-                    }
-                    
-                    $object[$counter] = $v;
-                    $counter ++;
+                        if (($k === '_links') || ($k === '_total') || !(is_array($v)))
+                        {
+                            continue;
+                        }
+                        
+                        $object[$counter] = $v;
+                        $counter ++;
+                    }                        
                 }
             }
         }
@@ -1316,10 +1331,11 @@ class twitch
      * @param $offset - [int] The starting offset of the query
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $blockedUsers - Unkeyed array of all blocked users to limit
      */ 
-    public function getBlockedUsers($chan, $limit = -1, $offset = 0, $authKey, $code)
+    public function getBlockedUsers($chan, $limit = -1, $offset = 0, $authKey, $code, $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -1389,13 +1405,30 @@ class twitch
         $usernamesObject = array();
         $counter = 0;
         
-        $usernamesObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'blocks', $authKey);
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
+        $usernamesObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'blocks', $authKey, null, null, null, null, null, null, null, null, $returningTotal);
         
         $this->generateOutput($functionName, 'Raw return: ' . json_encode($usernamesObject), 4);
         
-        // Set the array
-        foreach ($usernamesObject as $user)
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
         {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $usernames['_total'] = count($usernamesObject);
+        }
+        
+        // Set the array
+        foreach ($usernamesObject as $key => $user)
+        {
+            if ($key == '_total')
+            {
+                // It isn't really the user, but this stops code changes
+                $usernames[$key] = $user;
+                continue;
+            }
+            
             $this->generateOutput($functionName, 'Setting Key for username: ' . $user['user'][$twitch_configuration['KEY_NAME']], 3);
             $usernames[$counter] = $user['user'][$twitch_configuration['KEY_NAME']];
             $counter ++;
@@ -1409,7 +1442,7 @@ class twitch
         
         // Clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($return, $options, $url, $get, $limit, $usernamesObject, $key, $k, $value, $v, $functionName);
+        unset($options, $url, $get, $limit, $usernamesObject, $key, $k, $value, $v, $functionName, $returnTotal, $returningTotal);
         
         // Return out our unkeyed or empty array
         return $usernames;
@@ -1747,10 +1780,11 @@ class twitch
      * @param $offset - [int] The initial offset of the query
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $editors - [array] unkeyed array of all editor names
      */ 
-    public function getEditors($chan, $limit = -1, $offset = 0, $authKey, $code)
+    public function getEditors($chan, $limit = -1, $offset = 0, $authKey, $code, $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -1820,12 +1854,28 @@ class twitch
         $editors = array();
         $editorsObject = array();
             
-        $editorsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'users', $authKey);
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+    
+        $editorsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'users', $authKey, null, null, null, null, null, null, null, null, $returningTotal);
         
         $this->generateOutput($functionName, 'Raw return: ' . json_encode($editorsObject), 4);
         
-        foreach ($editorsObject as $editor)
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
         {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $editors['_total'] = count($editorsObject);
+        }
+    
+        foreach ($editorsObject as $key => $editor)
+        {
+            if ($key == '_total')
+            {
+                $usernames[$key] = $user;
+                continue;
+            }
+            
             $editors[$counter] = $editor[$twitch_configuration["KEY_NAME"]];
         }
         
@@ -1837,7 +1887,7 @@ class twitch
         
         // Clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($chan, $limit, $offset, $authKey, $code, $auth, $authSuccessful, $type, $functionName, $url, $options, $counter, $editor, $editorsObject);
+        unset($chan, $limit, $offset, $authKey, $code, $auth, $authSuccessful, $type, $functionName, $url, $options, $counter, $editor, $editorsObject, $returnTotal, $returningTotal, $key);
         
         return $editors;
     }
@@ -2167,10 +2217,11 @@ class twitch
      * 
      * @param $limit - [int] The limit of objets to grab for the query
      * @param $offset - [int] the offest to start the query from
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $object - [array] Keyed array of all returned data for the emoticins, including the supplied regex match used to parse it
      */ 
-    public function chat_getEmoticonsGlobal($limit = -1, $offset = 0)
+    public function chat_getEmoticonsGlobal($limit = -1, $offset = 0, $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -2181,22 +2232,39 @@ class twitch
         $options = array();
         $object = array();
         
-        $objects = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
+        $objects = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons', null, null, null, null, null, null, null, null, null, $returningTotal);
         
         $this->generateOutput($functionName, 'Raw return: ' . json_encode($objects), 4);
+        
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $object['_total'] = count($objects);
+        }
+
         
         $this->generateOutput($functionName, 'Setting Keys', 3);
         
         // Set keys
-        foreach ($objects as $row)
+        foreach ($objects as $key => $row)
         {
+            if ($key == '_total')
+            {
+                $usernames[$key] = $user;
+                continue;
+            }
+            
             $k = $row['regex'];
             $object[$k] = $row;
         }
         
         // clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($limit, $offset, $url, $options, $functionName, $objects, $row, $k);
+        unset($limit, $offset, $url, $options, $functionName, $objects, $row, $k, $key);
         
         return $object;
     }
@@ -2207,10 +2275,11 @@ class twitch
      * @param $user - [string] username to grab emoticons for
      * @param $limit - [int] The limit of objects to grab for the query
      * @param $offest - [int] The offset to start the query from
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $object - [array] Keyed array of all returned data for the emoticons
      */ 
-    public function chat_getEmoticons($user, $limit = -1, $offset = 0)
+    public function chat_getEmoticons($user, $limit = -1, $offset = 0, $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -2221,22 +2290,38 @@ class twitch
         $options = array();
         $object = array();
         
-        $objects = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons');
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
+        $objects = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'emoticons', null, null, null, null, null, null, null, null, null, $returningTotal);
         
         $this->generateOutput($functionName, 'Raw return: ' . json_encode($objects), 4);
+        
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $object['_total'] = count($objects);
+        }
         
         $this->generateOutput($functionName, 'Setting Keys', 3);
         
         // Set keys
-        foreach ($objects as $row)
+        foreach ($objects as $key => $row)
         {
+            if ($key == '_total')
+            {
+                $usernames[$key] = $user;
+                continue;
+            }
+            
             $k = $row['regex'];
             $object[$k] = $row;
         }
         
         // clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($user, $limit, $offset, $functionName, $url, $options, $objects, $k, $row);
+        unset($user, $limit, $offset, $functionName, $url, $options, $objects, $k, $row, $key);
         
         return $object;
     }
@@ -2362,10 +2447,11 @@ class twitch
      * @param $limit - [int] the limit of users
      * @param $offset - [int] The starting offset of the query
      * @param $sorting - [string] Sorting direction, valid options are 'asc' and 'desc'
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $follows - [array] An unkeyed array of all followers to limit
      */ 
-    public function getFollowers($chan, $limit = -1, $offset = 0, $sorting = 'desc')
+    public function getFollowers($chan, $limit = -1, $offset = 0, $sorting = 'desc', $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -2376,13 +2462,29 @@ class twitch
         $options = array();
         $followersObject = array();
         $followers = array();
+        
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
              
-        $followersObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
+        $followersObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'follows', null, null, null, null, null, null, null, null, null, $returningTotal);
         
         $this->generateOutput($functionName, 'Raw return: ' . json_encode($followersObject), 4);
         
-        foreach ($followersObject as $follower)
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
         {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $followers['_total'] = count($followersObject);
+        }
+        
+        foreach ($followersObject as $k => $follower)
+        {
+            if ($k == '_total')
+            {
+                $usernames[$k] = $user;
+                continue;
+            }
+            
             $key = $follower['user'][$twitch_configuration['KEY_NAME']];
             $followers[$key] = $follower;
             $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
@@ -2390,7 +2492,7 @@ class twitch
         
         // Clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($chan, $limit, $offset, $sorting, $follower, $followersObject, $functionName, $key);
+        unset($chan, $limit, $offset, $sorting, $follower, $followersObject, $functionName, $key, $k);
         
         // Return out our array
         return $followers;
@@ -2403,6 +2505,7 @@ class twitch
      * @param $limit - [int] the limit of users
      * @param $offset - [int] The starting offset of the query
      * @param $sorting - [string] Sorting direction, valid options are 'asc' and 'desc'
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $channels - [array] An unkeyed array of all followed channels to limit
      */ 
@@ -2417,14 +2520,30 @@ class twitch
         $channels = array();
         $url = 'https://api.twitch.tv/kraken/users/' . $username . '/follows/channels';
         $options = array();
+        
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
             
         // Build our cURL query and store the array
-        $channelsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'follows');
+        $channelsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'follows', null, null, null, null, null, null, null, null, null, $returningTotal);
         
         $this->generateOutput($functionName, 'Raw return: ' . json_encode($channelsObject), 4);
         
-        foreach ($channelsObject as $channel)
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
         {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $channels['_total'] = count($channelsObject);
+        }
+        
+        foreach ($channelsObject as $k => $channel)
+        {
+            if ($k == '_total')
+            {
+                $usernames[$k] = $user;
+                continue;
+            }
+            
             $key = $channel['channel'][$twitch_configuration['KEY_NAME']];
             $channels[$key] = $channel;
             $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
@@ -2432,7 +2551,7 @@ class twitch
         
         // Clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($username, $limit, $offset, $sorting, $channelsObject, $channel, $url, $options, $key, $functionName);
+        unset($username, $limit, $offset, $sorting, $channelsObject, $channel, $url, $options, $key, $functionName, $k);
         
         // Return out our unkeyed array
         return $channels;        
@@ -2636,10 +2755,11 @@ class twitch
      * @param $limit - [int] Set the limit of objects to grab
      * @param $offset - [int] Sets the initial offset to start the query from
      * @param $hls - [bool] Sets the query only to grab streams using HLS
+     * @param $returnTotal - [bool] Sets iteration to not ignore the _total key
      * 
      * @return $object - [array] A complete array of all channel objects in order based on the sorting rules
      */ 
-    public function getLargestGame($limit = -1, $offset = 0, $hls = false)
+    public function getLargestGame($limit = -1, $offset = 0, $hls = false, $returnTotal = false)
     {
         global $twitch_configuration;
         $functionName = 'GET_LARGEST_GAME';
@@ -2652,11 +2772,28 @@ class twitch
         $url = 'https://api.twitch.tv/kraken/games/top';
         $options = array();
         
-        $gamesObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'top', null, $hls);
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
+        $gamesObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'top', null, $hls, null, null, null, null, null, null, null, $returningTotal);
+        
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $games['_total'] = count($gamesObject);
+        }
         
         // Strip out only the usernames from our array set
-        foreach ($gamesObject as $game)
+        foreach ($gamesObject as $k => $game)
         {
+            if ($k == '_total')
+            {
+                // It isn't really the user, but this stops code changes
+                $games[$k] = $game;
+                continue;
+            }
+            
             $key = $game['game']['name'];
             $games[$key] = $game;
             $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
@@ -2664,7 +2801,7 @@ class twitch
         
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($limit, $offset, $hls, $url, $options, $gamesObject, $key, $game, $functionName);
+        unset($limit, $offset, $hls, $url, $options, $gamesObject, $key, $game, $functionName, $k, $returnTotal, $returningTotal);
         
         return $games;
     }
@@ -2763,10 +2900,11 @@ class twitch
      * @param $embedable - [bool] Limit search to only embedable channels
      * @param $hls - [bool] Limit sear to channels only using hls
      * @param $client_id - [string] Limit searches to only show streams from the applications of the supplied ID
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $object - [array] All returned data for the query parameters
      */ 
-    public function getStreamsObjects($game = null, $channels = array(), $limit = -1, $offset = 0, $embedable = false, $hls = false, $client_id = null)
+    public function getStreamsObjects($game = null, $channels = array(), $limit = -1, $offset = 0, $embedable = false, $hls = false, $client_id = null, $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -2779,12 +2917,29 @@ class twitch
         $streamsObject = array();
         $streams = array();
         
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
         // Build our cURL query and store the array
-        $streamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'streams', null, $hls, null, $channels, $embedable, $client_id);
+        $streamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'streams', null, $hls, null, $channels, $embedable, $client_id, null, null, null, $returningTotal);
+        
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $streams['_total'] = count($streamsObject);
+        }
         
         // Strip out the data we don't need
         foreach ($streamsObject as $key => $value)
         {
+            if ($key == '_total')
+            {
+                // It isn't really the user, but this stops code changes
+                $streams[$key] = $value;
+                continue;
+            }
+            
             foreach ($value as $k => $v)
             {
                 if ($k == 'channel')
@@ -2798,7 +2953,7 @@ class twitch
         
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($game, $channels, $limit, $offset, $embedable, $hls, $client_id, $url, $options, $streamsObject, $key, $k, $value, $v, $objKey, $functionName);
+        unset($game, $channels, $limit, $offset, $embedable, $hls, $client_id, $url, $options, $streamsObject, $key, $k, $value, $v, $objKey, $functionName, $returnTotal, $returningTotal);
         
         return $streams;              
     }
@@ -2809,10 +2964,11 @@ class twitch
      * @param $limit - [int] Limit of channel objects to return
      * @param $offset - [int] Maximum number of objects to return
      * @param $hls - [bool] Limit sear to channels only using hls
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $featuredObject - [array] Array of all stream objects for the query or false if the query fails
      */ 
-    public function getFeaturedStreams($limit, $offset, $hls = false)
+    public function getFeaturedStreams($limit = -1, $offset = 0, $hls = false, $returnTotal = false)
     {
         global $twitch_configuration;
         $functionName = 'GET_FEATURED';
@@ -2824,12 +2980,29 @@ class twitch
         $url = 'https://api.twitch.tv/kraken/streams/featured';
         $options = array();
         
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
         // Build our cURL query and store the array
-        $featuredObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'featured');
+        $featuredObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'featured', null, null, null, null, null, null, null, null, null, $returningTotal);
+        
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $featured['_total'] = count($featuredObject);
+        }
         
         // Strip out the uneeded data
         foreach ($featuredObject as $key => $value)
         {
+            if ($key == '_total')
+            {
+                // It isn't really the user, but this stops code changes
+                $featured[$key] = $value;
+                continue;
+            }
+            
             if (($key != 'self') && ($key != 'next'))
             {
                 $k = $value['stream']['channel'][$twitch_configuration['KEY_NAME']];
@@ -2839,7 +3012,7 @@ class twitch
         
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($limit, $offset, $embedable, $hls, $url, $options, $featuredObject, $key, $value, $k, $functionName);
+        unset($limit, $offset, $embedable, $hls, $url, $options, $featuredObject, $key, $value, $k, $functionName, $returnTotal, $returningTotal);
         
         return $featured;           
     }
@@ -2923,10 +3096,11 @@ class twitch
      * @param $limit - [int] Limit of channel objects to return
      * @param $offset - [int] Maximum number of objects to return
      * @param $boradcastsOnly - [bool] If true, limits query to only past broadcasts, else will return highlights only
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $videoObjects - [array] array of all returned video objects, Key is ID
      */ 
-    public function getVideo_channel($chan, $limit = -1, $offset = 0, $boradcastsOnly = false)
+    public function getVideo_channel($chan, $limit = -1, $offset = 0, $boradcastsOnly = false, $returnTotal = false)
     {
         global $twitch_configuration;
         $functionName = 'GET_VIDEO-CHANNEL';
@@ -2938,13 +3112,30 @@ class twitch
         $videos = array();
         $options = array();
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/videos';
+        
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
             
         // Build our cURL query and store the array
-        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', null, null, null, null, null, null, $boradcastsOnly);
+        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', null, null, null, null, null, null, $boradcastsOnly, null, null, $returningTotal);
+        
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $videoObjects['_total'] = count($videos);
+        }
         
         // Key the data
-        foreach ($videos as $video)
+        foreach ($videos as $k => $video)
         {
+            if ($k == '_total')
+            {
+                // It isn't really the user, but this stops code changes
+                $videoObjects[$key] = $video;
+                continue;
+            }
+            
             $key = $video['_id'];
             $videoObjects[$key] = $video;
             $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
@@ -2952,7 +3143,7 @@ class twitch
         
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($chan, $limit, $offset, $boradcastsOnly, $functionName, $video, $videos, $key, $options, $url);
+        unset($chan, $limit, $offset, $boradcastsOnly, $functionName, $video, $videos, $key, $options, $url, $k, $returnTotal, $returningTotal);
         
         return $videoObjects;                  
     }
@@ -2964,10 +3155,11 @@ class twitch
      * @param $offset - [int] Maximum number of objects to return
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $videosObject - [array] All video objects returned by the query, Key is ID
      */ 
-    public function getVideo_followed($limit = -1, $offset = 0, $authKey, $code)
+    public function getVideo_followed($limit = -1, $offset = 0, $authKey, $code, $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -3037,12 +3229,28 @@ class twitch
         $url = 'https://api.twitch.tv/kraken/videos/followed';
         $options = array();
         
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
         // Build our cURL query and store the array
-        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', $authKey);
+        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', $authKey, null, null, null, null, null, null, null, null, $returningTotal);
+        
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $videosObject['_total'] = count($videos);
+        }
         
         // Set our keys
-        foreach ($videos as $video)
+        foreach ($videos as $k => $video)
         {
+            if ($k == '_total')
+            {
+                $videosObject[$k] = $video;
+                continue;
+            }
+            
             $key = $video['_id'];
             $videosObject[$key] = $video;
             $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
@@ -3050,7 +3258,7 @@ class twitch
 
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($limit, $offset, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $videos, $video, $url, $options, $key);
+        unset($limit, $offset, $authKey, $code, $requiredAuth, $functionName, $auth, $authSuccessful, $authKey, $type, $videos, $video, $url, $options, $key, $k, $returnTotal, $returningTotal);
         
         return $videosObject;      
     }
@@ -3062,10 +3270,11 @@ class twitch
      * @param $limit - [int] Limit of channel objects to return
      * @param $offset - [int] Maximum number of objects to return
      * @param $period - [string] set the period for the query, valid values are 'week', 'month', 'all'
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $videosObject - [array] Array of all returned video objects, Key is ID
      */ 
-    public function getTopVideos($game = '', $limit = -1, $offset = 0, $period = 'week')
+    public function getTopVideos($game = '', $limit = -1, $offset = 0, $period = 'week', $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -3083,13 +3292,29 @@ class twitch
         $videos = array();
         $url = 'https://api.twitch.tv/kraken/videos/top';
         $options = array();
+
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
             
         // Build our cURL query and store the array
-        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', null, null, null, null, null, null, null, $period, $game);
+        $videos = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'videos', null, null, null, null, null, null, null, $period, $game, $returningTotal);
+
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $videosObject['_total'] = count($videos);
+        }
         
         // Set our keys
-        foreach ($videos as $video)
+        foreach ($videos as $k => $video)
         {
+            if ($k == '_total')
+            {
+                $videosObject[$k] = $video;
+                continue;
+            }
+            
             $key = $video['_id'];
             $videosObject[$key] = $video;
             $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
@@ -3097,7 +3322,7 @@ class twitch
         
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($game, $limit, $offset, $period, $functionName, $video, $videos, $key, $url, $options);
+        unset($game, $limit, $offset, $period, $functionName, $video, $videos, $key, $url, $options, $k, $returnTotal, $returningTotal);
         
         return $videosObject;         
     }
@@ -3111,10 +3336,11 @@ class twitch
      * @param $direction - [string] Sorting direction, valid options are 'asc' and 'desc'
      * @param $authKey - [string] Authentication key used for the session
      * @param $code - [string] Code used to generate an Authentication key
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $subscribers - [array] Unkeyed array of all subscribed users
      */ 
-    public function getChannelSubscribers($chan, $limit = -1, $offset = 0, $direction = 'asc', $authKey, $code)
+    public function getChannelSubscribers($chan, $limit = -1, $offset = 0, $direction = 'asc', $authKey, $code, $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -3190,19 +3416,35 @@ class twitch
         $url = 'https://api.twitch.tv/kraken/channels/' . $chan . '/subscriptions';
         $options = array();
         
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
         // Build our cURL query and store the array
-        $subscribersObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'subscriptions', $authKey, null, $direction);
+        $subscribersObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'subscriptions', $authKey, null, $direction, null, null, null, null, null, null, $returningTotal);
+
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $subscribers['_total'] = count($subscribersObject);
+        }
         
         // Set the keys and array
-        foreach ($subscribersObject as $subscriber)
+        foreach ($subscribersObject as $k => $subscriber)
         {
+            if ($k == '_total')
+            {
+                $subscribers[$k] = $subscriber;
+                continue;
+            }
+            
             $key = $subscriber['user'][$twitch_configuration['KEY_NAME']];
             $subscribers[$key] = $subscriber;
         }
         
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($chan, $limit, $offset, $direction, $authKey, $code, $requiredAuth, $authKey, $auth, $authSuccessful, $type, $subscriber, $subscribersObject, $key, $url, $options);
+        unset($chan, $limit, $offset, $direction, $authKey, $code, $requiredAuth, $authKey, $auth, $authSuccessful, $type, $subscriber, $subscribersObject, $key, $url, $options, $k, $returnTotal, $returningTotal);
         
         return $subscribers;
     }
@@ -3416,10 +3658,11 @@ class twitch
      * 
      * @param $limit - [int] Limit of channel objects to return
      * @param $offset - [int] Maximum number of objects to return
+     * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $teams - [array] Keyed array of all team objects.  Key is the team name
      */ 
-    public function getTeams($limit = -1, $offset = 0)
+    public function getTeams($limit = -1, $offset = 0, $returnTotal = false)
     {
         global $twitch_configuration;        
         $functionName = 'GET_TEAMS';
@@ -3431,12 +3674,28 @@ class twitch
         $url = 'https://api.twitch.tv/kraken/teams';
         $options = array();
         
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit == -1) && ($offset == 0)) ? $returnTotal : false;
+        
         // Build our cURL query and store the array
-        $teamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'teams');
+        $teamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'teams', null, null, null, null, null, null, null, null, null, $returningTotal);
+        
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $teams['_total'] = count($teamsObject);
+        }
         
         // Transfer to teams
-        foreach ($teamsObject as $team)
+        foreach ($teamsObject as $k => $team)
         {
+            if ($k == '_total')
+            {
+                $team[$k] = $team;
+                continue;
+            }
+            
             $key = $team[$twitch_configuration['KEY_NAME']];
             $teams[$key] = $team;
             $this->generateOutput($functionName, 'Setting key: ' . $key, 3);
@@ -3444,7 +3703,7 @@ class twitch
         
         // Clean up quickly
         $this->generateOutput($functionName, 'Cleaning Memory', 3);
-        unset($limit, $offset, $teamsObject, $team, $url, $options, $key);
+        unset($limit, $offset, $teamsObject, $team, $url, $options, $key, $k, $returnTotal, $returningTotal);
         
         return $teams;
     }
