@@ -146,6 +146,12 @@ Grabs a list of the channels followed by a specified user.
             <td>Sets the sorting option for the query.  Accepts string 'asc' (Ascending order) or string 'desc' (Descending order)</td>
         </tr>
         <tr>
+            <td><code>$sortBy</code></td>
+            <td>$optional</td>
+            <td>string</td>
+            <td>Sets the sort key.  Accepts 'created_at' and 'last_broadcast'</td>
+        </tr>
+        <tr>
             <td><code>$returnTotal</code></td>
             <td>optional</td>
             <td>bool</td>
