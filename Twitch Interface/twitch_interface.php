@@ -3099,6 +3099,124 @@ class twitch
     }
     
     /**
+     * Grabs the list of online channels that a user is following
+     * 
+     * @param $limit - [int] Limit of channel objects to return
+     * @param $offset - [int] Maximum number of objects to return
+     * @param $authKey - [string] Authentication key used for the session
+     * @param $code - [string] Code used to generate an Authentication key
+     * @param $hls - [bool] Limit sear to channels only using hls
+     * @param $returnTotal - [bool] Returns a _total row in the array
+     * 
+     * @return $videos - [array] array of all followed streams online
+     */ 
+     
+     public function getFollowedStreams($limit = -1, $offset = 0, $authKey, $code, $hls = false, $returnTotal = false)
+     {
+        global $twitch_configuration;
+        
+        $functionName = 'STREAMS_FOLLOWED';
+        $requiredAuth = 'user_read';
+        
+        $this->generateOutput($functionName, 'Attempting to grab all live channels for auth code: ' . $code, 1);
+        
+        // We were supplied an OAuth token. check it for validity and scopes
+        if (($authKey != null || '') || ($code != null || false))
+        {
+            if ($authKey != null || '')
+            {
+                $check = $this->checkToken($authKey);
+                
+                if ($check["token"] != false)
+                {
+                    $auth = $check;
+                } else { // attempt to generate one
+                    if ($code != null || '')
+                    {
+                        $auth = $this->generateToken($code); // Assume generation and check later for failure
+                    } else {
+                        $this->generateError(400, 'Existing token expired and no code available for generation.');
+                    }
+                }
+            } else { // Assume the code was given instead and generate if we can
+                $auth = $this->generateToken($code); // Assume generation and check later for failure
+            }
+            
+            // check to see if we recieved a token after all of that checking
+            if ($auth['token'] == false) // check the token value
+            {
+                $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
+                
+                return; // return out after the error is passed
+            }
+            
+            $authSuccessful = false;
+            
+            // Check the array of scopes
+            foreach ($auth['scopes'] as $type)
+            {
+                if ($type == $requiredAuth)
+                {
+                    // We found the scope, we are good then
+                    $authSuccessful = true;
+                    break;
+                }
+            }
+            
+            // Did we fail?
+            if (!$authSuccessful)
+            {
+                $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
+                return null;
+            }
+            
+            // Assign our key
+            $this->generateOutput($functionName, 'Required scope found in array', 3);
+            $authKey = $auth['token'];
+        }
+        
+        $streams = array();
+        $url = 'https://api.twitch.tv/kraken/streams/followed';
+        $options = array();
+        
+        // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
+        $returningTotal = (($limit != -1) || ($offset != 0)) ? $returnTotal : false;
+        
+        $streamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'streams', $authKey, $hls, null, null, null, null, null, null, null, $returningTotal);
+
+        // Include the total if we were asked to return it (In limitless cases))
+        if ($returnTotal && ($limit == -1) && ($offset == 0))
+        {
+            $this->generateOutput($functionName, 'Including _total as the count of all object', 3);
+            $streams['_total'] = count($streamsObject);
+        }
+        
+        // Strip out the uneeded data
+        foreach ($streamsObject as $key => $value)
+        {
+            if ($key == '_total')
+            {
+                // It isn't really the user, but this stops code changes
+                $streams[$key] = $value;
+                continue;
+            }
+            
+            if (($key != 'self') && ($key != 'next'))
+            {
+                $k = $value['channel'][$twitch_configuration['KEY_NAME']];
+                $this->generateOutput($functionName, 'Setting key: ' . $k, 3);
+                $streams[$k] = $value;
+            }
+        }
+        
+        // Clean up quickly
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
+        unset($limit, $offset, $authKey, $auth, $authSuccessful, $hls, $code, $returnTotal, $requiredAuth, $returningTotal, $k, $key, $value, $url, $options);
+        
+        return $streams;
+     }
+    
+    /**
      * Gets the current viewers and the current live channels for Twitch
      * 
      * @param $hls - [bool] Limit sear to channels only using hls
