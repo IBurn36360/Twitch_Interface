@@ -145,6 +145,12 @@ This is a list of all configuration options found in the interface between lines
             <td>This sets what debug suppression level that the interface will use when checking what output is passed to the user defined functions.  This accepts one of four values: <code>$twitch_debugLevels['FINE']</code>, <code>$twitch_debugLevels['FINER']</code>, <code>$twitch_debugLevels['FINEST']</code> and <code>$twitch_debugLevels['ALL']</code></td>
         </tr>
         <tr>
+            <td>CERT_PATH</td>
+            <td>''</td>
+            <td>String</td>
+            <td>This sets the path to your supplied certificate, either self-signed or corperate signed.  When this is set, changes ALL cURL calls to use true HTTPS and will validate self and peer.</td>
+        </tr>        
+        <tr>
             <td>CALL_LIMIT_DEFAULT</td>
             <td>25</td>
             <td>String</td>
