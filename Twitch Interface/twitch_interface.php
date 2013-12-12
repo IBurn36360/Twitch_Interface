@@ -720,10 +720,11 @@ class twitch
      * @param $period - [string] The period of time in which  to limit the search for
      * @param $game - [string] The game to limit the query to
      * @param $returnTotal - [bool] Sets iteration to not ignore the _total key
+     * @param $sortBy - [string] Sets the sorting key
      * 
      * @return $object - [arary] unkeyed array of data requested or rmpty array if no data was returned
      */ 
-    private function get_iterated($functionName, $url, $options, $limit, $offset, $arrayKey = null, $authKey = null, $hls = null, $direction = null, $channels = null, $embedable = null, $client_id = null, $broadcasts = null, $period = null, $game = null, $returnTotal = false)
+    private function get_iterated($functionName, $url, $options, $limit, $offset, $arrayKey = null, $authKey = null, $hls = null, $direction = null, $channels = null, $embedable = null, $client_id = null, $broadcasts = null, $period = null, $game = null, $returnTotal = false, $sortBy = null)
     {
         global $twitch_configuration;
         $functionName = 'ITERATION-' . $functionName;
@@ -848,6 +849,11 @@ class twitch
         {
             $get['game'] = $game;
             $this->generateOutput($functionName, 'Game added to GET array', 2);
+        }
+        if ($sortBy != null)
+        {
+            $get['sortby'] = $sortBy;
+            $this->generateOutput($functionName, 'Sort By added to GET array', 2);
         }
         if ($returnTotal)
         {
@@ -1059,6 +1065,11 @@ class twitch
                     $get['game'] = $game;
                     $this->generateOutput($functionName, 'Game added to GET array', 2);
                 }
+                if ($sortBy != null)
+                {
+                    $get['sortby'] = $sortBy;
+                    $this->generateOutput($functionName, 'Sort By added to GET array', 2);
+                }
             } elseif ($limit == -1) {
                  $this->generateOutput($functionName, 'Continuing iteration', 3);
                 
@@ -1116,7 +1127,12 @@ class twitch
                 {
                     $get['game'] = $game;
                     $this->generateOutput($functionName, 'Game added to GET array', 2);
-                }                
+                }
+                if ($sortBy != null)
+                {
+                    $get['sortby'] = $sortBy;
+                    $this->generateOutput($functionName, 'Sort By added to GET array', 2);
+                }
             } else { // Last return in a limited case
                 $this->generateOutput($functionName, 'Last return to grab', 3);
                 
@@ -1175,6 +1191,11 @@ class twitch
                     $get['game'] = $game;
                     $this->generateOutput($functionName, 'Game added to GET array', 2);
                 }
+                if ($sortBy != null)
+                {
+                    $get['sortby'] = $sortBy;
+                    $this->generateOutput($functionName, 'Sort By added to GET array', 2);
+                }
             }
             
             $this->generateOutput($functionName, 'New query built, passing to GET:', 3);
@@ -1224,7 +1245,7 @@ class twitch
         
         // Clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($functionName, $url, $options, $limit, $offset, $arrayKey, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns, $k, $v);
+        unset($functionName, $url, $options, $limit, $offset, $arrayKey, $authKey, $hls, $direction, $channels, $embedable, $client_id, $broadcasts, $period, $game, $functionName, $grabbedRows, $currentReturnRows, $counter, $iterations, $toDo, $startingLimit, $channel, $channelBlock, $return, $set, $key, $value, $currentReturns, $expectedReturns, $k, $v, $sortBy);
         
         return $object;
     }
@@ -2560,11 +2581,12 @@ class twitch
      * @param $limit - [int] the limit of users
      * @param $offset - [int] The starting offset of the query
      * @param $sorting - [string] Sorting direction, valid options are 'asc' and 'desc'
+     * @param $sortBy - [string] Sets the sort key.  Accepts 'created_at' and 'last_broadcast'
      * @param $returnTotal - [bool] Returns a _total row in the array
      * 
      * @return $channels - [array] An unkeyed array of all followed channels to limit
      */ 
-    public function getFollows($username, $limit = -1, $offset = 0, $sorting = 'desc', $returnTotal = false)
+    public function getFollows($username, $limit = -1, $offset = 0, $sorting = 'desc', $sortBy = 'created_at', $returnTotal = false)
     {
         global $twitch_configuration;
         
@@ -2576,11 +2598,14 @@ class twitch
         $url = 'https://api.twitch.tv/kraken/users/' . $username . '/follows/channels';
         $options = array();
         
+        // Chck our sortby option
+        $sortBy = ($sortBy == 'last_broadcast') ? $sortBy : 'created_at';
+        
         // Check if we are returning a total and if we are in a limitless return (We can just count at that point and we will always have the correct number)
         $returningTotal = (($limit != -1) || ($offset != 0)) ? $returnTotal : false;
             
         // Build our cURL query and store the array
-        $channelsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'follows', null, null, null, null, null, null, null, null, null, $returningTotal);
+        $channelsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'follows', null, null, null, null, null, null, null, null, null, $returningTotal, $sortBy);
         
         $this->generateOutput($functionName, 'Raw return: ' . json_encode($channelsObject), 4);
         
@@ -2607,7 +2632,7 @@ class twitch
         
         // Clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($username, $limit, $offset, $sorting, $channelsObject, $channel, $url, $options, $key, $functionName, $k);
+        unset($username, $limit, $offset, $sorting, $channelsObject, $channel, $url, $options, $key, $functionName, $k, $sortBy);
         
         // Return out our unkeyed array
         return $channels;        
