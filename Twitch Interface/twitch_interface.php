@@ -74,7 +74,20 @@ if ($twitch_openSSLAvailable)
 {
     // Constants (used in checks)
     $twitch_certValid = false;
+    $certInfoProvided = true;
     $maxCertValidTime = time() + 86400; // Add a day to the check (No call will EVER take that amount of time, but making a new cert or failing the HTTPS is better than trying to use HTTPS without a cert)
+    
+    // Are we provided with all of the info needed to generate a CSR?
+    foreach($twitch_configuration['CERT_ARRAY'] as $row)
+    {
+        // Is the information there?
+        if (is_string($row) && ($row == ''))
+        {
+            // Nope, if even a single value is missing, kick the entire set
+            $certInfoProvided = false;
+            break; // We failed, stop the check
+        }
+    }
     
     // vars (definition)
     $twitch_csrout = '';
@@ -110,32 +123,42 @@ if ($twitch_openSSLAvailable)
     // Both of our attempts to find a valid cert failed, generate with our defaults
     if (!$twitch_certValid)
     {
-        // Time to generate a cert
-        $twitch_privkey = openssl_pkey_new();
-        $twitch_csr = openssl_csr_new($twitch_configuration['CERT_ARRAY'], $twitch_privkey, $twitch_certificateConfig);
-        
-        // Now that we have a request, generate a self-signed
-        $twitch_sscert = openssl_csr_sign($twitch_csr, null, $twitch_privkey, 365, $twitch_certificateConfig);
-        
-        // Pass them off to our holder vars until we write them to files
-        openssl_csr_export($twitch_csr, $twitch_csrout);                                           // passes out to $twitch_csrout
-        openssl_x509_export($twitch_sscert, $twitch_certout);                                      // passes out to $twitch_certout
-        openssl_pkey_export($twitch_privkey, $twitch_pkeyout, $twitch_configuration['CERT_PASS']); // Passes out to $twitch_pkeyout
-        
-        // Write them now, we will be writing 3 files in total, even though we will only be using one of them (Saving everything in case we need to regen something later)
-        // Start with the Private Key
-        $pKeyHandle = @fopen($twitch_configuration['PKEY_PATH'], 'w');
-        @fwrite($pKeyHandle, $twitch_pkeyout);
-        @fclose($pKeyHandle);
-        // Write the certificate
-        $certHandle = @fopen($twitch_configuration['CERT_PATH'], 'w');
-        @fwrite($certHandle, $twitch_certout);
-        @fclose($certHandle);
-        // Write the csr we made (For safety)
-        $csrHandle = @fopen($twitch_configuration['CSR_PATH'], 'w');
-        @fwrite($csrHandle, $twitch_csrout);
-        @fclose($csrHandle);
+        // Were we supplied the information required to generate a cert?
+        if ($certInfoProvided)
+        {
+            // Time to generate a cert
+            $twitch_privkey = openssl_pkey_new();
+            $twitch_csr = openssl_csr_new($twitch_configuration['CERT_ARRAY'], $twitch_privkey, $twitch_certificateConfig);
+            
+            // Now that we have a request, generate a self-signed
+            $twitch_sscert = openssl_csr_sign($twitch_csr, null, $twitch_privkey, 365, $twitch_certificateConfig);
+            
+            // Pass them off to our holder vars until we write them to files
+            openssl_csr_export($twitch_csr, $twitch_csrout);                                           // passes out to $twitch_csrout
+            openssl_x509_export($twitch_sscert, $twitch_certout);                                      // passes out to $twitch_certout
+            openssl_pkey_export($twitch_privkey, $twitch_pkeyout, $twitch_configuration['CERT_PASS']); // Passes out to $twitch_pkeyout
+            
+            // Write them now, we will be writing 3 files in total, even though we will only be using one of them (Saving everything in case we need to regen something later)
+            // Start with the Private Key
+            $pKeyHandle = @fopen($twitch_configuration['PKEY_PATH'], 'w');
+            @fwrite($pKeyHandle, $twitch_pkeyout);
+            @fclose($pKeyHandle);
+            // Write the certificate
+            $certHandle = @fopen($twitch_configuration['CERT_PATH'], 'w');
+            @fwrite($certHandle, $twitch_certout);
+            @fclose($certHandle);
+            // Write the csr we made (For safety)
+            $csrHandle = @fopen($twitch_configuration['CSR_PATH'], 'w');
+            @fwrite($csrHandle, $twitch_csrout);
+            @fclose($csrHandle);
+            
+            // Assume we suceeded for now, set valid to true
+            $twitch_certValid = true;
+        }
     }
+    
+    // Clean up all of our information that has no use anywhere else (good garbage collecting is always your best friend)
+    unset($certInfoProvided, $maxCertValidTime, $row, $twitch_privkey, $twitch_csr, $twitch_sscert, $pKeyHandle, $certHandle, $csrHandle, $certData, $certInfo);
 }
 
 // This is a helper function that I have decided to make available outside of the class scope
