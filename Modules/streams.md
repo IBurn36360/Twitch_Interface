@@ -8,7 +8,8 @@ These calls request the status of channels from Twitch, returning what ones are 
 | ---- | ----------- |
 | [getStreamObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getstreamobject) | Queries Twitch for the stream object of the specified channel. |
 | [getStreamsObjects()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getstreamsobjects) | Queries Twitch for the stream objects of multiple channels or by a set of conditions or both. |
-| [getFeaturedStreams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getstreamsobjects-1) | Returns currently featured streamers. |
+| [getFeaturedStreams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getFeaturedStreams) | Returns currently featured streamers. |
+| [getFollowedStreams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getFollowedStreams) | Grabs the list of online channels that a user is following |
 
 ***
 
@@ -240,7 +241,7 @@ If the channel was not found or the stream was not online:
 
 ***  
 
-## `getStreamsObjects()`  
+## `getFeaturedStreams()`  
 
 Returns currently featured streamers.
 
@@ -350,3 +351,131 @@ If unsuccessful or service unavailable:
     
 }
 ```
+
+***  
+
+## `getFollowedStreams()`  
+
+Grabs the list of online channels that a user is following.
+
+<code>Authenticated: </code> user_read
+
+### Parameters  
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Required?</th>
+            <th width="50">Type</th>
+            <th width=100%>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>$limit</code></td>
+            <td>optional</td>
+            <td>string</td>
+            <td>The high limit of stream objects to grab.</td>
+        </tr>            
+        <tr>
+            <td><code>$offset</code></td>
+            <td>optional</td>
+            <td>string</td>
+            <td>The starting offset of the list.</td>
+        </tr>
+        <tr>
+            <td><code>$authKey</code></td>
+            <td>Required if a valid code is not supplied to <code>$code</code></td>
+            <td>string</td>
+            <td>This is the OAuth token to attempt to use for the call.  This token is checked prior to the call for validity and scope.</td>
+        </tr>
+        <tr>
+            <td><code>$code</code></td>
+            <td>Required if no token was supplied to <code>$authKey</code> or if <code>$authKey</code> was no longer valid.</td>
+            <td>string</td>
+            <td>This is the code used to generate a token from the Kraken API directly.  The token is checked for scope before the call is made</td>
+        </tr>
+        <tr>
+            <td><code>$hls</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Sets the query to only accept streams currently abiding by HLS.</td>
+        </tr>
+        <tr>
+            <td><code>$returnTotal</code></td>
+            <td>optional</td>
+            <td>bool</td>
+            <td>Returns a _total row in the array</td>
+        </tr>
+    </tbody>
+</table>
+
+### Example Call 
+
+```php
+// Instancize the class as an object
+$interface = new twitch;
+
+$featured = $interface->getFollowedStreams(-1, 0, 'jaxvvop7l6oypwg8bwk38nsozliakd3', '1234123412341234123412341234', true, true);
+```
+
+### Example Return
+
+If successful:
+
+```json
+"_total": 15,
+"zisss": [
+    {
+      "_id": 5019229776,
+      "preview": {
+        "medium": "http://static-cdn.jtvnw.net/previews-ttv/live_user_zisss-320x200.jpg",
+        "small": "http://static-cdn.jtvnw.net/previews-ttv/live_user_zisss-80x50.jpg",
+        "large": "http://static-cdn.jtvnw.net/previews-ttv/live_user_zisss-640x400.jpg",
+        "template": "http://static-cdn.jtvnw.net/previews-ttv/live_user_zisss-{width}x{height}.jpg"
+      },
+      "game": "Diablo III",
+      "channel": {
+        "mature": null,
+        "background": "http://static-cdn.jtvnw.net/jtv_user_pictures/zisss-channel_background_image-06a9d8c1113e5b45.jpeg",
+        "updated_at": "2013-03-04T05:27:27Z",
+        "_id": 31795858,
+        "status": "Barb sets giveaway and making 500m DH set... Join Zisspire, earn Zeny, collect prizes!",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/zisss-profile_image-502d7c865c5e3a54-300x300.jpeg",
+        "teams": [ ],
+        "url": "http://www.twitch.tv/zisss",
+        "display_name": "Zisss",
+        "game": "Diablo III",
+        "banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/zisss-channel_header_image-997348d7f0658115-640x125.jpeg",
+        "name": "zisss",
+        "delay": 0,
+        "video_banner": null,
+        "_links": {
+          "chat": "https://api.twitch.tv/kraken/chat/zisss",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/zisss/subscriptions",
+          "features": "https://api.twitch.tv/kraken/channels/zisss/features",
+          "commercial": "https://api.twitch.tv/kraken/channels/zisss/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/zisss/stream_key",
+          "editors": "https://api.twitch.tv/kraken/channels/zisss/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/zisss/videos",
+          "self": "https://api.twitch.tv/kraken/channels/zisss",
+          "follows": "https://api.twitch.tv/kraken/channels/zisss/follows"
+        },
+        "created_at": "2012-07-01T21:09:58Z"
+      },
+      "viewers": 775,
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/zisss"
+      }
+    }
+],    
+```
+
+If unsuccessful or service unavailable or authentication failure:
+```json
+{
+    
+}
+```
+
