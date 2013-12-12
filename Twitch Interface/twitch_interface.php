@@ -232,6 +232,8 @@ class twitch
         // Do we have a certificate to use?  if OpenSSL is available, there will be a certificate
         if ($twitch_configuration['CERT_PATH'] != '')
         {
+            $this->generateOutput($functionName, 'Using supplied certificate for true HTTPS', 3);
+            
             // Overwrite outr defaults to include the SSL cert and options
             array_merge($default, array(
                 CURLOPT_SSL_VERIFYPEER => 1,
@@ -370,6 +372,8 @@ class twitch
         // Do we have a certificate to use?  if OpenSSL is available, there will be a certificate
         if ($twitch_configuration['CERT_PATH'] != '')
         {
+            $this->generateOutput($functionName, 'Using supplied certificate for true HTTPS', 3);
+            
             // Overwrite outr defaults to include the SSL cert and options
             array_merge($default, array(
                 CURLOPT_SSL_VERIFYPEER => 1,
@@ -502,6 +506,8 @@ class twitch
         // Do we have a certificate to use?  if OpenSSL is available, there will be a certificate
         if ($twitch_configuration['CERT_PATH'] != '')
         {
+            $this->generateOutput($functionName, 'Using supplied certificate for true HTTPS', 3);
+            
             // Overwrite outr defaults to include the SSL cert and options
             array_merge($default, array(
                 CURLOPT_SSL_VERIFYPEER => 1,
@@ -626,6 +632,8 @@ class twitch
         // Do we have a certificate to use?  if OpenSSL is available, there will be a certificate
         if ($twitch_configuration['CERT_PATH'] != '')
         {
+            $this->generateOutput($functionName, 'Using supplied certificate for true HTTPS', 3);
+            
             // Overwrite outr defaults to include the SSL cert and options
             array_merge($default, array(
                 CURLOPT_SSL_VERIFYPEER => 1,
