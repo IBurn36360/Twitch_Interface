@@ -19,7 +19,6 @@
 // Make sure we meet our dependency requirements
 if (!extension_loaded('curl')) trigger_error('cURL is not currently installed on your server, please install cURL');
 if (!extension_loaded('json')) trigger_error('PECL JSON or pear JSON is not installed, please install either PECL JSON or compile pear JSON');
-$twitch_openSSLAvailable = (extension_loaded('openssl')) ? true : false ; // Not a dependency, but allows us to generate a self signed key if available
 
 // Define some things in the global scope (yes...global, if you want to make it defined in the class scope, go for it)
 
@@ -50,116 +49,12 @@ $twitch_configuration = array(
     'API_VERSION'             => 3,                // This sets what API version to use.  Specifies that value in the header
     'TOKEN_SEND_METHOD'       => 'HEADER',         // This sets how any OAuth tokens are sent.  Valid options are 'HEADER' and 'QUERY'
     'RETRY_COUNTER'           => 3,                // This sets the number of retries the interface will do when faced with status 0 returns
+    'CERT_PATH'               => '',               // Path to your certificate (if you are supplying one)
     'DEBUG_SUPPRESSION_LEVEL' => $twitch_debugLevels['FINE'], // This sets the maximum debug level that gets to output, ALL sets to display all returns, including RAW JSON returns
     'CALL_LIMIT_DEFAULT'      => '25',
     'CALL_LIMIT_DOUBLE'       => '50',
-    'CALL_LIMIT_MAX'          => '100',
-    'CERT_PATH'               => '',                  // Path to your certificate (if you are supplying one)
-    'CERT_PASS'               => '',                  // Password to access your certificate
-    'PKEY_PATH'               => './twitch_pkey.pem', // Private key Path
-    'CSR_PATH'                => './twitch_csr.csr',  // Path to any saved certificate signing request we make or have made
-    'CERT_ARRAY'              => array(               // Used to generate a csr in the event we are generating a certificate
-        'countryName' => '',
-        'stateOrProvinceName' => '',
-        'localityName' => '',
-        'organizationName' => '',
-        'organizationalUnitName' => '',
-        'commonName' => '',
-        'emailAddress' => ''    
-    )
+    'CALL_LIMIT_MAX'          => '100'
 );
-
-// These config options are only used if OpenSSL is installed and loaded.  if not, no use in even registering them
-if ($twitch_openSSLAvailable)
-{
-    // Constants (used in checks)
-    $twitch_certValid = false;
-    $certInfoProvided = true;
-    $maxCertValidTime = time() + 86400; // Add a day to the check (No call will EVER take that amount of time, but making a new cert or failing the HTTPS is better than trying to use HTTPS without a cert)
-    
-    // Are we provided with all of the info needed to generate a CSR?
-    foreach($twitch_configuration['CERT_ARRAY'] as $row)
-    {
-        // Is the information there?
-        if (is_string($row) && ($row == ''))
-        {
-            // Nope, if even a single value is missing, kick the entire set
-            $certInfoProvided = false;
-            break; // We failed, stop the check
-        }
-    }
-    
-    // vars (definition)
-    $twitch_csrout = '';
-    $twitch_certout = '';
-    $twitch_pkeyout = '';
-    
-    // This information is required to open or use any certificate we try to validate (Not needed if you are supplying your own CA validated cert)
-    $twitch_certificateConfig = array(
-        'private_key_type' => OPENSSL_KEYTYPE_RSA, // only supported key type
-        'private_key_bits' => 512                  // MUST be an int or will hang
-    );
-    
-    // Are we properly configured to know where the cert is?
-    $twitch_configuration['CERT_PATH'] = ($twitch_configuration['CERT_PATH'] !== '') ? $twitch_configuration['CERT_PATH'] : './twitch_cert.crt';
-    
-    // Can we load the cert wherever it has been defined?
-    if (file_exists($twitch_configuration['CERT_PATH']))
-    {
-        // Ok, either at default or wherever it was defined, we have a cert.  Check it
-        $certData = @file_get_contents($twitch_configuration['CERT_PATH']);
-        
-        // Extract all of the info we can out of the cert
-        $certInfo = openssl_x509_parse($certData);
-        
-        // Is the cert going to be valid up until our max time?
-        if ($certInfo['validTo_time_t-to'] >= $maxCertValidTime)
-        {
-            // I may add more checks later.  For now, I only need to know if the cert will be valid date wise
-            $twitch_certValid = true;
-        }
-    }
-    
-    // Both of our attempts to find a valid cert failed, generate with our defaults
-    if (!$twitch_certValid)
-    {
-        // Were we supplied the information required to generate a cert?
-        if ($certInfoProvided)
-        {
-            // Time to generate a cert
-            $twitch_privkey = openssl_pkey_new();
-            $twitch_csr = openssl_csr_new($twitch_configuration['CERT_ARRAY'], $twitch_privkey, $twitch_certificateConfig);
-            
-            // Now that we have a request, generate a self-signed
-            $twitch_sscert = openssl_csr_sign($twitch_csr, null, $twitch_privkey, 365, $twitch_certificateConfig);
-            
-            // Pass them off to our holder vars until we write them to files
-            openssl_csr_export($twitch_csr, $twitch_csrout);                                           // passes out to $twitch_csrout
-            openssl_x509_export($twitch_sscert, $twitch_certout);                                      // passes out to $twitch_certout
-            openssl_pkey_export($twitch_privkey, $twitch_pkeyout, $twitch_configuration['CERT_PASS']); // Passes out to $twitch_pkeyout
-            
-            // Write them now, we will be writing 3 files in total, even though we will only be using one of them (Saving everything in case we need to regen something later)
-            // Start with the Private Key
-            $pKeyHandle = @fopen($twitch_configuration['PKEY_PATH'], 'w');
-            @fwrite($pKeyHandle, $twitch_pkeyout);
-            @fclose($pKeyHandle);
-            // Write the certificate
-            $certHandle = @fopen($twitch_configuration['CERT_PATH'], 'w');
-            @fwrite($certHandle, $twitch_certout);
-            @fclose($certHandle);
-            // Write the csr we made (For safety)
-            $csrHandle = @fopen($twitch_configuration['CSR_PATH'], 'w');
-            @fwrite($csrHandle, $twitch_csrout);
-            @fclose($csrHandle);
-            
-            // Assume we suceeded for now, set valid to true
-            $twitch_certValid = true;
-        }
-    }
-    
-    // Clean up all of our information that has no use anywhere else (good garbage collecting is always your best friend)
-    unset($certInfoProvided, $maxCertValidTime, $row, $twitch_privkey, $twitch_csr, $twitch_sscert, $pKeyHandle, $certHandle, $csrHandle, $certData, $certInfo);
-}
 
 // This is a helper function that I have decided to make available outside of the class scope
 if (!function_exists('getURLParamValue'))
@@ -323,7 +218,7 @@ class twitch
         
         $this->generateOutput($functionName, 'API Version set to: ' . $twitch_configuration['API_VERSION'], 3);
         
-        $defaults = array(
+        $default = array(
             CURLOPT_URL => $cURL_URL, 
             CURLOPT_HEADER => 0, 
             CURLOPT_RETURNTRANSFER => 1,
@@ -335,14 +230,14 @@ class twitch
         );
         
         // Do we have a certificate to use?  if OpenSSL is available, there will be a certificate
-        if ((($twitch_configuration['CERT_PATH'] != '') && (!$twitch_openSSLAvailable)) || ($twitch_certValid && $twitch_openSSLAvailable))
+        if ($twitch_configuration['CERT_PATH'] != '')
         {
             // Overwrite outr defaults to include the SSL cert and options
-            $defaults += array(
+            array_merge($default, array(
                 CURLOPT_SSL_VERIFYPEER => 1,
                 CURLOPT_SSL_VERIFYHOST => 1,
                 CURLOPT_CAINFO         => realpath($twitch_configuration['CERT_PATH']) // This requires the real path of the certificate (Strict, may use CAPATH instead if it causes problems)
-            );
+            ));
         }
         
         if (empty($options))
@@ -355,9 +250,9 @@ class twitch
         if (function_exists('curl_setopt_array')) // Check to see if the function exists
         {
             $this->generateOutput($functionName, 'Options set as an array', 3);
-            curl_setopt_array($handle, ($options + $defaults));
+            curl_setopt_array($handle, ($options + $default));
         } else { // nope, set them one at a time
-            foreach (($defaults + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
+            foreach (($default + $options) as $key => $opt) // Options are set last so you can override anything you don't want to keep from defaults
             {
                 $this->generateOutput($functionName, 'Options set as individual values', 3);
                 curl_setopt($handle, $key, $opt);
@@ -397,7 +292,7 @@ class twitch
         
         // Clean up
         $this->generateOutput($functionName, 'Cleaning memory', 3);
-        unset($url, $get, $options, $debug, $header, $cURL_URL, $defaults, $key, $opt, $k, $v, $handle, $row);
+        unset($url, $get, $options, $debug, $header, $cURL_URL, $default, $key, $opt, $k, $v, $handle, $row);
         
         // Are we returning the HHTPD status?
         if ($returnStatus)
@@ -473,14 +368,14 @@ class twitch
         );
         
         // Do we have a certificate to use?  if OpenSSL is available, there will be a certificate
-        if ((($twitch_configuration['CERT_PATH'] != '') && (!$twitch_openSSLAvailable)) || ($twitch_certValid && $twitch_openSSLAvailable))
+        if ($twitch_configuration['CERT_PATH'] != '')
         {
             // Overwrite outr defaults to include the SSL cert and options
-            $defaults += array(
+            array_merge($default, array(
                 CURLOPT_SSL_VERIFYPEER => 1,
                 CURLOPT_SSL_VERIFYHOST => 1,
                 CURLOPT_CAINFO         => realpath($twitch_configuration['CERT_PATH']) // This requires the real path of the certificate (Strict, may use CAPATH instead if it causes problems)
-            );
+            ));
         }
         
         if (empty($options))
@@ -605,14 +500,14 @@ class twitch
         );
         
         // Do we have a certificate to use?  if OpenSSL is available, there will be a certificate
-        if ((($twitch_configuration['CERT_PATH'] != '') && (!$twitch_openSSLAvailable)) || ($twitch_certValid && $twitch_openSSLAvailable))
+        if ($twitch_configuration['CERT_PATH'] != '')
         {
             // Overwrite outr defaults to include the SSL cert and options
-            $defaults += array(
+            array_merge($default, array(
                 CURLOPT_SSL_VERIFYPEER => 1,
                 CURLOPT_SSL_VERIFYHOST => 1,
                 CURLOPT_CAINFO         => realpath($twitch_configuration['CERT_PATH']) // This requires the real path of the certificate (Strict, may use CAPATH instead if it causes problems)
-            );
+            ));
         }
         
         if (empty($options))
@@ -729,14 +624,14 @@ class twitch
         );
                 
         // Do we have a certificate to use?  if OpenSSL is available, there will be a certificate
-        if ((($twitch_configuration['CERT_PATH'] != '') && (!$twitch_openSSLAvailable)) || ($twitch_certValid && $twitch_openSSLAvailable))
+        if ($twitch_configuration['CERT_PATH'] != '')
         {
             // Overwrite outr defaults to include the SSL cert and options
-            $defaults += array(
+            array_merge($default, array(
                 CURLOPT_SSL_VERIFYPEER => 1,
                 CURLOPT_SSL_VERIFYHOST => 1,
                 CURLOPT_CAINFO         => realpath($twitch_configuration['CERT_PATH']) // This requires the real path of the certificate (Strict, may use CAPATH instead if it causes problems)
-            );
+            ));
         }
         
         $handle = curl_init();
