@@ -3147,7 +3147,7 @@ class twitch
             {
                 $this->generateError(400, 'Auth key not returned, exiting function: ' . $functionName);
                 
-                return; // return out after the error is passed
+                return array(); // return out after the error is passed
             }
             
             $authSuccessful = false;
@@ -3167,7 +3167,7 @@ class twitch
             if (!$authSuccessful)
             {
                 $this->generateError(403, 'Authentication token failed to have permissions for ' . $functionName . '; required Auth: ' . $requiredAuth);
-                return null;
+                return array();
             }
             
             // Assign our key
