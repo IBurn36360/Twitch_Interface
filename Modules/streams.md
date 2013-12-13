@@ -9,7 +9,7 @@ These calls request the status of channels from Twitch, returning what ones are 
 | [getStreamObject()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getstreamobject) | Queries Twitch for the stream object of the specified channel. |
 | [getStreamsObjects()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getstreamsobjects) | Queries Twitch for the stream objects of multiple channels or by a set of conditions or both. |
 | [getFeaturedStreams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getFeaturedStreams) | Returns currently featured streamers. |
-| [getFollowedStreams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getFollowedStreams) | Grabs the list of online channels that a user is following |
+| [getFollowedStreams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/streams.md#getfollowedstreams) | Grabs the list of online channels that a user is following |
 
 ***
 
