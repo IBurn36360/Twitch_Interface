@@ -2888,6 +2888,50 @@ class twitch
     }
     
     /**
+     * Grabs All currently registered Ingest servers and some base stats
+     * 
+     * @return $ingests - [array] All returned ingest servers and the information associated with them
+     */
+    public function getIngests()
+    {
+        $functionName = 'GET_INGESTS';
+        
+        $this->generateOutput($functionName, 'Getting current ingests and ingest statistics for Twitch', 1);
+        
+        $ingests = array();
+        $url = 'https://api.twitch.tv/kraken/ingests';
+        $get = array();
+        $options = array();
+        
+        $result = json_decode($this->cURL_get($url, $get, $options), true);
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($result), 4);
+        
+        if (is_array($result) && !empty($result))
+        {
+            foreach ($result as $key => $value)
+            {
+                if ($key == '_links')
+                {
+                    continue;
+                }
+                
+                foreach ($value as $val)
+                {
+                    $k = $val['name'];
+                    $this->generateOutput($functionName, 'Setting Key: ' . $k, 3);
+                    $ingests[$k] = $val;
+                }
+            }
+        }
+        
+        // Clean up quickly
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
+        unset($url, $get, $options, $key, $value, $val, $functionName, $result, $k);
+        
+        return $ingests;        
+    }        
+    
+    /**
      * Returns an array of all streamers streaming in the supplied game catagory
      * 
      * @param $query - [string] A string parameter to search for
