@@ -29,10 +29,10 @@ For any information about the interface, please look in the module list below (Y
 
 # Advantages
 
-1. Encompases all currently documented API endpoints available in [Twitch's kraken V3](https://github.com/justintv/Twitch-API/tree/master/v3_resources)
+1. Encompass all currently documented API endpoints available in [Twitch's kraken V3](https://github.com/justintv/Twitch-API/tree/master/v3_resources)
 2. Very simple calls: <code>$editors = $interface->getEditors('test_channel_1', -1, 0, 'Your OAuth Token', 'Your Access Code');</code>
 3. Able to grab theoretically unlimited information
-4. Automatically adds your client-id into the header of every call to avoid rate limits (Don't abuse twitch though, they still reserve the right to rate limit you or even deny your application access.  I take no responsability for any actions Twitch may or may not take in order to stop abuse of the API)
+4. Automatically adds your client-id into the header of every call to avoid rate limits (Don't abuse twitch though, they still reserve the right to rate limit you or even deny your application access.  I take no responsibility for any actions Twitch may or may not take in order to stop abuse of the API)
 5. Automatically uses a defined certificate for true HTTPS (Has a workaround in case a certificate is not provided to allow calls to go through properly)
 6. Extremely configurable (See [configuration](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md))
 7. Very light weight both in CPU usage and in memory usage (Developed with a single core system in mind [My machine is single core])
@@ -40,7 +40,7 @@ For any information about the interface, please look in the module list below (Y
 9. Checks on all authenticated calls (Will go as far as to validate that a token has the required scope for the call before attempting it)
 10. Complete function walkthrough output and error output (See [Output](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md))
 11. Built on base calls for dependencies (cURL and JSON Utilities), allowing base versions to be used.
-12. Easy to [install](https://github.com/IBurn36360/Twitch_Interface/blob/master/installation.md) (Composer compatability will be built in once first port is completed)
+12. Easy to [install](https://github.com/IBurn36360/Twitch_Interface/blob/master/installation.md) (Composer compatibility will be built in once first port is completed)
 
 # Module Directory
 
