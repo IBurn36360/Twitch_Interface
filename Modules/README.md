@@ -69,6 +69,12 @@
 | [getURLParams()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/helpers.md#geturlparams) | Grabs an array of all URL parameters and values. |
 | [get_iterated()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/helpers.md#get_iterated) | This function iterates through calls. |
 
+### [Ingests](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/ingests.md)
+
+| Call | Description |
+| ---- | ----------- |
+| [getIngests()](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/ingests.md#getingests) | Grabs All currently registered Ingest servers and some base stats |
+
 ### [Output](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md)
 
 | Call | Description |
