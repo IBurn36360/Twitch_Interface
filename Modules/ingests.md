@@ -35,7 +35,8 @@ If successful:
       "_id": 24 ,
       "url_template": "rtmp://live-ams.twitch.tv/app/{stream_key}",
       "availability":1.0
-    }
+    },
+    ...
 }
 ```
 
