@@ -237,7 +237,7 @@ This function iterates through calls.  You can not interact with this function u
             <td>Returns a _total row in the array</td>
         </tr>
         <tr>
-            <td><code>$returnTotal</code></td>
+            <td><code>$sortBy</code></td>
             <td>optional</td>
             <td>string</td>
             <td>Sets the sorting key</td>
