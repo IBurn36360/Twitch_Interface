@@ -76,6 +76,8 @@ If the channel was not found or the service is unavailable:
 
 Grabs an unauthenticated user object for the supplied username.
 
+<code>Authenticated: </code> user_read
+
 ### Parameters  
 
 <table>
