@@ -3000,7 +3000,7 @@ class twitch
         
         $result = json_decode($this->cURL_get($url, $get, $options, false), true);
         
-        if ($result['stream'] != null)
+        if ($result != null)
         {
             $object = $result['stream'];
         } else {
