@@ -41,6 +41,10 @@ For any information about the interface, please look in the module list below (Y
 10. Complete function walkthrough output and error output (See [Output](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md))
 11. Built on base calls for dependencies (cURL and JSON Utilities), allowing base versions to be used.
 12. Easy to [install](https://github.com/IBurn36360/Twitch_Interface/blob/master/installation.md) (Composer compatibility will be built in once first port is completed)
+ 
+# News
+
+<code>2-15-2014:</code> The API is fully covered as far as V3 of Twitch's Kraken API is documented or as far as I feel needs to be supported (I have no intention of supporting either depreciated or unofficial API endpoints).  This does not mean I will no longer work on this and as soon as anything on the API changes/becomes avaiable, I will update the interface accordingly.
 
 # Module Directory
 
