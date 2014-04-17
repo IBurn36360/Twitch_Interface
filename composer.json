@@ -1,8 +1,8 @@
 {
   "name": "IBurn36360/Twitch_Interface",
+  "description": "A complete library used to interact with all of twitch.tv's Kraken API",
   "version" : "1.0.0",
   "type": "library",
-  "description": "A complete library used to interact with all of twitch.tv's Kraken API",
   "homepage": "https://github.com/IBurn36360/Twitch_Interface",
   "time": "2014-04-17",
   "license": "GPL-3.0",
