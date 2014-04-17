@@ -1,0 +1,28 @@
+{
+  "name": "IBurn36360/Twitch_Interface",
+  "version" : "1.0.0",
+  "type": "library",
+  "description": "A complete library used to interact with all of twitch.tv's Kraken API",
+  "homepage": "https://github.com/IBurn36360/Twitch_Interface",
+  "time": "2014-04-17",
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Anthony Diaz",
+      "email": "iburn36360@gmail.com",
+      "homepage": "https://github.com/IBurn36360/",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "iburn36360@gmail.com",
+    "issues": "https://github.com/IBurn36360/Twitch_Interface/issues",
+    "irc": "irc://freenode.org/iburn36360",
+    "source": "https://github.com/IBurn36360/Twitch_Interface/blob/master/Twitch%20Interface/twitch_interface.php"
+  },
+  "require": {
+    "php": ">= 4.0.0",
+    "lib-curl": "*",
+    "ext-json": "*"
+  }
+}
