@@ -44,7 +44,7 @@ For any information about the interface, please look in the module list below (Y
 9. Checks on all authenticated calls (Will go as far as to validate that a token has the required scope for the call before attempting it)
 10. Complete function walkthrough output and error output (See [Output](https://github.com/IBurn36360/Twitch_Interface/blob/master/Modules/output.md))
 11. Built on base calls for dependencies (cURL and JSON Utilities), allowing base versions to be used.
-12. Easy to [install](https://github.com/IBurn36360/Twitch_Interface/blob/master/installation.md) (Composer compatibility will be built in once first port is completed)
+12. Easy to [install](https://github.com/IBurn36360/Twitch_Interface/blob/master/installation.md)
 
 # Module Directory
 
