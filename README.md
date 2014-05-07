@@ -8,7 +8,7 @@ Currently this interface supports all V3 API calls.
 
 # News
 
-<code>5-06-2014:</code> I have has a project come up that will require my full attention, so if the API updates any time over the next few days or so, I may miss it and be a little late to support the changes.  I can also confirm that the video calls to a channel where you are trying to get the past broadcasts does not work.  This isn't something on my end, as it does not work properly on either V2 or V3 with the documented param.  I will also be removing the GNU-GPL license on the interface and writing a custom one to better define the terms of using the interface as well as completely covering what is and isn't allowed with it. (See the TL`DR, that is the gist of it.  I do not care about revenue, only about making sure that the interface is grabbed from here so support can be given and so that the new users can know it is safe)
+<code>5-06-2014:</code> I have had a project come up that will require my full attention, so if the API updates any time over the next few days or so, I may miss it and be a little late to support the changes.  I can also confirm that the video calls to a channel where you are trying to get the past broadcasts does not work.  This isn't something on my end, as it does not work properly on either V2 or V3 with the documented param.  I will also be removing the GNU-GPL license on the interface and writing a custom one to better define the terms of using the interface as well as completely covering what is and isn't allowed with it. (See the TL`DR, that is the gist of it.  I do not care about revenue, only about making sure that the interface is grabbed from here so support can be given and so that the new users can know it is safe)
 
 #License
 
