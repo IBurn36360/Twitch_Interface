@@ -3046,7 +3046,7 @@ class twitch
         $returningTotal = (($limit != -1) || ($offset != 0)) ? $returnTotal : false;
         
         // Build our cURL query and store the array
-        $streamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'streams', null, $hls, null, $channels, $embedable, $client_id, null, null, null, $returningTotal);
+        $streamsObject = $this->get_iterated($functionName, $url, $options, $limit, $offset, 'streams', null, $hls, null, $channels, $embedable, $client_id, null, null, $game, $returningTotal);
         
         // Include the total if we were asked to return it (In limitless cases))
         if ($returnTotal && ($limit == -1) && ($offset == 0))
@@ -4078,7 +4078,7 @@ class twitch
             $authKey = $auth['token'];
         }
         
-        $url = 'https://api.twitch.tv/kraken/users/' . $user;
+        $url = 'https://api.twitch.tv/kraken/user';
         $options = array();
         $get = array('oauth_token' => $authKey);
         
