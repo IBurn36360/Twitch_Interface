@@ -105,7 +105,7 @@ If service was unavailable or an error occured:
 
 ***  
 
-## `getFollowers()`  
+## `getFollows()`  
 
 Grabs a list of the channels followed by a specified user.
 
