@@ -194,7 +194,7 @@ false
 
 Checks to see if a user is subscribed to a specified channel from the user side
 
-<code>Authenticated: </code> user_subscriptions
+<code>Authenticated: </code> channel_check_subscription
 
 ### Parameters  
 
