@@ -3808,7 +3808,7 @@ class twitch
      */ 
     public function checkUserSubscription($user, $chan, $authKey, $code)
     {
-        $requiredAuth = 'user_subscriptions';
+        $requiredAuth = 'channel_check_subscription';
         $functionName = 'CHECK_USER_SUBSCRIPTION';
         
         $this->generateOutput($functionName, 'Checking to see if user ' . $user . ' is subscribed to channel ' . $chan, 1);
