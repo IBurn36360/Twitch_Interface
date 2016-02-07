@@ -2639,6 +2639,43 @@ class twitch
     }
     
     /**
+     * Checks To see if the provided user is currently following the channel
+     * 
+     * @param $targetChannel - [string] The target channel to check the relationship against
+     * @param $user          - [string] The user to check the relationship for
+     * 
+     * @return $following - [mixed] False if the user is not following or the user object if the user is
+     */ 
+    public function checkUserFollowsChannel($targetChannel, $user)
+    {
+        $targetChannel = strval($targetChannel);
+        $user          = strval($user);
+        
+        $functionName = 'CHECK_USER_FOLLOWS_CHANNEL';
+        $this->generateOutput($functionName, "Checking to see if [$user] is following channel [$targetChannel]", 1);
+        
+        // Init some vars
+        $url = "https://api.twitch.tv/kraken/users/$user/follows/channels/$targetChannel";
+            
+        // Build our cURL query and store the array
+        $relationShipObject = $this->cURL_get($url);
+        
+        $this->generateOutput($functionName, 'Raw return: ' . json_encode($relationShipObject), 4);
+        
+        // If the user was not found or is not following, return false
+        if (isset($relationShipObject['status']) && ($relationShipObject['status'] == 404)) {
+            return false;
+        }
+        
+        // Clean up
+        $this->generateOutput($functionName, 'Cleaning memory', 3);
+        unset($targetChannel, $user, $functionName, $url);
+        
+        // Return out our unkeyed array
+        return $relationShipObject;        
+    }
+    
+    /**
      * Adds a channel to a user's following list
      * 
      * @param $user - [string] Username of the account to add the channel to
