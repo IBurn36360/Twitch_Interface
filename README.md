@@ -8,8 +8,8 @@ Currently this interface supports all V3 API calls.
 
 # News
 
-<code>10-13-2015:</code> Well...It has been a long while since I did anything on this repo.  Anyone who knows me will know this, but I think it is time it is written somewhere so no one thinks this is entirely abandoned.  Last year In November I got a full time job and that has been eating a good 80% of my time.  The reamining time I have spent with either the people I care about or my latest project, which will be a complete CMS build of my own site for fun (Anyone who knows how to go about what I'm doing know that it is a frustratingly slow build, but still a blast to build a CMS from the ground up.  The only thing I won't be building is the template language and any service addons like Google ReCAPTCHA).  Once I get my site to a point where it actually does something more than create a naked session and allow you to see a few statically routed pages, I may host the examples and complete uses of my other GIT projects and a complete rebuild of this interface (The next update WILL be compatability breaking.  I'm sorry about that, but as I have learned and grown, I found many better ways to do what I do in the interface, as well as continue work on the new socket transfer layer to speed up requests significantly).  The current version of the interface will likely be the last singleton version of the interface I make, and it will, as always, remain free to use in whatever way, shape or form you see fit as long as it abides by Twitch's ToS.  I'm not responsible for anything beyond providing the abstraction layer for you to query the API.  Lastly, the dev buildout of the new interface will likely involve proper composer and PSR-4 autoloading support to come in line with Packagist so it can be officially listed under IBurn36360/Twitch-Interface for you composer users out there.
-Thank you guys for the starts, fork and even the PR I got.  It means a lot that people actually use this on and off. - Anthony "IBurn36360" Diaz
+<code>02-06-2017:</code> Hey everyone.  I do know about the V5 changes and will be making an updated version of the interface when I have the time/will to.  The next version WILL be a breaking change, meaning existing implementations will break.  The reason for this is to make several dozen quality of life improvements to the interfaces, such as a better, more maintainable structure, better options for making speedy calls, better parameter handling, better error handling, better configuration, actual composer support (I botched it pretty bad the first time) and more.  All of this comes from what I have learned over the last 2 years and how differently I write my code after the experience I have gained.  I have absolutely no timeline for the update, but do plan on getting this out before the V5 cutover happens.
+Thank you guys for the stars, fork and even the PR I got.  It means a lot that people actually use this on and off. - Anthony "IBurn36360" Diaz
 
 #License
 
@@ -30,13 +30,13 @@ Thank you guys for the starts, fork and even the PR I got.  It means a lot that 
 
 You can do whatever you want with this piece of software, including modifying it and using it in any way, shape or form.  The only requirement is that you keep the credit and the license in the header of the file itself and that you not, in any circumstances redistribute the file in question for the safety of any people who wish to use this software.  If you wish to have other people use this software, it is best that you give them the link to this particular git for the latest version of this software and to allow them to find all of the information relating to this piece of software.
 
-For any information about the interface, please look in the module list below (Yes, I know PHP does not actually have a module system, it is just easier to sort them by this).
+For any information about the interface, please look in the module list below.
 
 # Advantages
 
 1. Encompass all currently documented API endpoints available in [Twitch's kraken V3](https://github.com/justintv/Twitch-API/tree/master/v3_resources)
 2. Very simple calls: <code>$editors = $interface->getEditors('test_channel_1', -1, 0, 'Your OAuth Token', 'Your Access Code');</code>
-3. Able to grab theoretically unlimited information
+3. Able to grab theoretically unlimited information (Barring limitations from Twitch)
 4. Automatically adds your client-id into the header of every call to avoid rate limits (Don't abuse twitch though, they still reserve the right to rate limit you or even deny your application access.  I take no responsibility for any actions Twitch may or may not take in order to stop abuse of the API)
 5. Automatically uses a defined certificate for true HTTPS (Has a workaround in case a certificate is not provided to allow calls to go through properly)
 6. Extremely configurable (See [configuration](https://github.com/IBurn36360/Twitch_Interface/blob/master/configuration.md))
