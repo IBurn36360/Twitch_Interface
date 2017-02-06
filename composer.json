@@ -1,10 +1,10 @@
 {
-  "name": "IBurn36360/Twitch_Interface",
-  "description": "A complete library used to interact with all of twitch.tv's Kraken API",
-  "version" : "1.0.0",
+  "name": "iburn36360/twitch-interface",
+  "description": "A complete library used to interact with all of twitch.tv's Kraken API [V5]",
+  "version" : "2.0.0",
   "type": "library",
   "homepage": "https://github.com/IBurn36360/Twitch_Interface",
-  "time": "2014-04-17",
+  "time": "2014-02-06",
   "license": "GPL-3.0",
   "authors": [
     {
@@ -21,8 +21,13 @@
     "source": "https://github.com/IBurn36360/Twitch_Interface/blob/master/Twitch%20Interface/twitch_interface.php"
   },
   "require": {
-    "php": ">= 4.0.0",
+    "php": ">= 5.6.0",
     "lib-curl": "*",
     "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "IBurn36360\\TwitchInterface\\" : "src/"
+    }
   }
 }
