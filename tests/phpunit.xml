@@ -1,0 +1,6 @@
+<phpunit bootstrap="bootstrap.php" colors="true" testdox="true" beStrictAboutChangesToGlobalState="true" beStrictAboutOutputDuringTests="true">
+    <php>
+        <const name="HTTP_TWITCH_HOSTNAME" value="https://api.twitch.tv" />
+        <const name="HTTP_TWITCH_HOSTNAME_INVALID" value="api.twitch.tv" />
+    </php>
+</phpunit>
