@@ -8,7 +8,7 @@ class ModuleBase {
     public function handleCall($endpoint, $parameters, $configuration, $token = null) {
         $endpoint = 'run' . ucfirst($endpoint);
 
-        if (method_exists($this, $endpoint)) {
+        if (method_exists(get_class(), $endpoint)) {
             return $this->{$endpoint}($parameters, $configuration, $token);
         }
 
