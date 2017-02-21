@@ -11,8 +11,6 @@ use IBurn36360\TwitchInterface\Exception as TIException;
 class ExceptionTest extends PHPUnit_Framework_TestCase {
     private $exceptionClasses = array(
         'CallFailureException',
-        'HTTPHostNotValidException',
-        'HTTPRequestExceptionException',
         'IncompleteConfigurationException',
         'InvalidParameterException',
         'UnknownEndpointException',

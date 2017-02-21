@@ -11,6 +11,8 @@ use IBurn36360\TwitchInterface\Configuration;
  */
 class TwitchTest extends PHPUnit_Framework_TestCase {
     public function testNamespaceAutoload() {
-        new Twitch(new Configuration());
+        new Twitch(new Configuration(array(
+            'clientID' => TWITCH_TEST_CLIENT_ID
+        )));
     }
 }

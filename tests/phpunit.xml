@@ -2,5 +2,7 @@
     <php>
         <const name="HTTP_TWITCH_HOSTNAME" value="https://api.twitch.tv" />
         <const name="HTTP_TWITCH_HOSTNAME_INVALID" value="api.twitch.tv" />
+        <const name="TWITCH_TEST_CLIENT_ID" value="I'm not foolish enough to put them here" />
+        <const name="TWITCH_TEST_CLIENT_SECRET" value="I'm not foolish enough to put them here" />
     </php>
 </phpunit>
