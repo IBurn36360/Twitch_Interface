@@ -4,7 +4,7 @@ namespace IBurn36360\TwitchInterface\Modules;
 
 use \IBurn36360\TwitchInterface\Configuration;
 use \GuzzleHttp\Client;
-use IBurn36360\TwitchInterface\Exception\APIRequestFailureException;
+use \IBurn36360\TwitchInterface\Exception\APIRequestFailureException;
 use \IBurn36360\TwitchInterface\Twitch;
 
 /**
@@ -22,7 +22,7 @@ class Ingests
      * @return mixed
      * @throws APIRequestFailureException
      */
-    public static function runGetIngestServers($parameters, Configuration $configuration, Client $client = null) {
+    public static function getIngestServers($parameters, Configuration $configuration, Client $client = null) {
         if (is_null($client)) {
             $client = new Client([
                 'base_uri' => $configuration->twitchAPIHost,
