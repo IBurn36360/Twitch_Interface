@@ -2,8 +2,6 @@
 
 namespace IBurn36360\TwitchInterface\Exception;
 
-use Exception;
-
 /**
  * Defines a cannot write to configuration exception
  *

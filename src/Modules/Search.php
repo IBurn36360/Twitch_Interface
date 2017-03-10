@@ -27,7 +27,7 @@ class Search
      * @throws APIRequestFailureException
      * @throws InvalidParameterException
      */
-    public function channels($parameters, Configuration $configuration, Client $client = null) {
+    public static function channels($parameters, Configuration $configuration, Client $client = null) {
         if (!($parameters['query'] = trim($parameters['query']))) {
             throw new InvalidParameterException('You must provide a query in order to perform a search');
         }
@@ -36,11 +36,11 @@ class Search
             'query' => $parameters['query'],
         ];
 
-        if ($parameters['limit'] = intval($parameters['limit'])) {
+        if (isset($parameters['limit']) && ($parameters['limit'] = intval($parameters['limit']))) {
             $cleanedParams['limit'] = $parameters['limit'];
         }
 
-        if ($parameters['offset'] = intval($parameters['offset'])) {
+        if (isset($parameters['offset']) && ($parameters['offset'] = intval($parameters['offset']))) {
             $cleanedParams['offset'] = $parameters['offset'];
         }
 
@@ -79,7 +79,7 @@ class Search
      * @throws APIRequestFailureException
      * @throws InvalidParameterException
      */
-    public function games($parameters, Configuration $configuration, Client $client = null) {
+    public static function games($parameters, Configuration $configuration, Client $client = null) {
         if (!($parameters['query'] = trim($parameters['query']))) {
             throw new InvalidParameterException('You must provide a query in order to perform a search');
         }
@@ -88,11 +88,11 @@ class Search
             'query' => $parameters['query'],
         ];
 
-        if ($parameters['limit'] = intval($parameters['limit'])) {
+        if (isset($parameters['limit']) && ($parameters['limit'] = intval($parameters['limit']))) {
             $cleanedParams['limit'] = $parameters['limit'];
         }
 
-        if ($parameters['offset'] = intval($parameters['offset'])) {
+        if (isset($parameters['offset']) && ($parameters['offset'] = intval($parameters['offset']))) {
             $cleanedParams['offset'] = $parameters['offset'];
         }
 
@@ -131,7 +131,7 @@ class Search
      * @throws APIRequestFailureException
      * @throws InvalidParameterException
      */
-    public function streams($parameters, Configuration $configuration, Client $client = null) {
+    public static function streams($parameters, Configuration $configuration, Client $client = null) {
         if (!($parameters['query'] = trim($parameters['query']))) {
             throw new InvalidParameterException('You must provide a query in order to perform a search');
         }
@@ -140,11 +140,11 @@ class Search
             'query' => $parameters['query'],
         ];
 
-        if ($parameters['limit'] = intval($parameters['limit'])) {
+        if (isset($parameters['limit']) && ($parameters['limit'] = intval($parameters['limit']))) {
             $cleanedParams['limit'] = $parameters['limit'];
         }
 
-        if ($parameters['offset'] = intval($parameters['offset'])) {
+        if (isset($parameters['offset']) && ($parameters['offset'] = intval($parameters['offset']))) {
             $cleanedParams['offset'] = $parameters['offset'];
         }
 
