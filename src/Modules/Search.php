@@ -2,17 +2,173 @@
 
 namespace IBurn36360\TwitchInterface\Modules;
 
+use \IBurn36360\TwitchInterface\Configuration;
+use \IBurn36360\TwitchInterface\Exception\APIRequestFailureException;
+use \IBurn36360\TwitchInterface\Exception\Exception;
+use \IBurn36360\TwitchInterface\Exception\InvalidParameterException;
+use \IBurn36360\TwitchInterface\Twitch;
+use \GuzzleHttp\Client;
+
+/**
+ * Class Search
+ *
+ * @package IBurn36360\TwitchInterface\Modules
+ */
 class Search
     extends ModuleBase {
-    public function runChannels($parameters) {
+    /**
+     * Searches for channels based on the provided query
+     *
+     * @param               $parameters
+     * @param Configuration $configuration
+     * @param Client|null   $client
+     *
+     * @return mixed
+     * @throws APIRequestFailureException
+     * @throws InvalidParameterException
+     */
+    public function channels($parameters, Configuration $configuration, Client $client = null) {
+        if (!($parameters['query'] = trim($parameters['query']))) {
+            throw new InvalidParameterException('You must provide a query in order to perform a search');
+        }
 
+        $cleanedParams = [
+            'query' => $parameters['query'],
+        ];
+
+        if ($parameters['limit'] = intval($parameters['limit'])) {
+            $cleanedParams['limit'] = $parameters['limit'];
+        }
+
+        if ($parameters['offset'] = intval($parameters['offset'])) {
+            $cleanedParams['offset'] = $parameters['offset'];
+        }
+
+        // Make the call now
+        if (is_null($client)) {
+            $client = new Client([
+                'base_uri' => $configuration->twitchAPIHost,
+            ]);
+        }
+
+        try {
+            $response = $client->request('GET', '/kraken/search/channels', [
+                'headers' => Twitch::buildRequestHeaders($configuration),
+                'verify'  => (($configuration->useCABundle) ? __DIR__ . '/../../CABundle.pem' : true),
+                'query'   => $cleanedParams,
+            ]);
+
+            if ($responseBody = $response->getBody()) {
+                return json_decode($responseBody, $configuration->returnType);
+            }
+
+            throw new APIRequestFailureException('The API response did not contain a body!');
+        } catch (\Exception $exception) {
+            throw new APIRequestFailureException('The API request failed', Exception::REQUEST_FAILURE, $exception);
+        }
     }
 
-    public function runStreams($parameters) {
+    /**
+     * Searches for channels based on the provided query
+     *
+     * @param               $parameters
+     * @param Configuration $configuration
+     * @param Client|null   $client
+     *
+     * @return mixed
+     * @throws APIRequestFailureException
+     * @throws InvalidParameterException
+     */
+    public function games($parameters, Configuration $configuration, Client $client = null) {
+        if (!($parameters['query'] = trim($parameters['query']))) {
+            throw new InvalidParameterException('You must provide a query in order to perform a search');
+        }
 
+        $cleanedParams = [
+            'query' => $parameters['query'],
+        ];
+
+        if ($parameters['limit'] = intval($parameters['limit'])) {
+            $cleanedParams['limit'] = $parameters['limit'];
+        }
+
+        if ($parameters['offset'] = intval($parameters['offset'])) {
+            $cleanedParams['offset'] = $parameters['offset'];
+        }
+
+        // Make the call now
+        if (is_null($client)) {
+            $client = new Client([
+                'base_uri' => $configuration->twitchAPIHost,
+            ]);
+        }
+
+        try {
+            $response = $client->request('GET', '/kraken/search/games', [
+                'headers' => Twitch::buildRequestHeaders($configuration),
+                'verify'  => (($configuration->useCABundle) ? __DIR__ . '/../../CABundle.pem' : true),
+                'query'   => $cleanedParams,
+            ]);
+
+            if ($responseBody = $response->getBody()) {
+                return json_decode($responseBody, $configuration->returnType);
+            }
+
+            throw new APIRequestFailureException('The API response did not contain a body!');
+        } catch (\Exception $exception) {
+            throw new APIRequestFailureException('The API request failed', Exception::REQUEST_FAILURE, $exception);
+        }
     }
 
-    public function runGames($parameters) {
+    /**
+     * Searches for channels based on the provided query
+     *
+     * @param               $parameters
+     * @param Configuration $configuration
+     * @param Client|null   $client
+     *
+     * @return mixed
+     * @throws APIRequestFailureException
+     * @throws InvalidParameterException
+     */
+    public function streams($parameters, Configuration $configuration, Client $client = null) {
+        if (!($parameters['query'] = trim($parameters['query']))) {
+            throw new InvalidParameterException('You must provide a query in order to perform a search');
+        }
 
+        $cleanedParams = [
+            'query' => $parameters['query'],
+        ];
+
+        if ($parameters['limit'] = intval($parameters['limit'])) {
+            $cleanedParams['limit'] = $parameters['limit'];
+        }
+
+        if ($parameters['offset'] = intval($parameters['offset'])) {
+            $cleanedParams['offset'] = $parameters['offset'];
+        }
+
+        // Make the call now
+        if (is_null($client)) {
+            $client = new Client([
+                'base_uri' => $configuration->twitchAPIHost,
+            ]);
+        }
+
+        try {
+            $response = $client->request('GET', '/kraken/search/streams', [
+                'headers' => Twitch::buildRequestHeaders($configuration),
+                'verify'  => (($configuration->useCABundle) ? __DIR__ . '/../../CABundle.pem' : true),
+                'query'   => $cleanedParams,
+            ]);
+
+            if ($responseBody = $response->getBody()) {
+                return json_decode($responseBody, $configuration->returnType);
+            }
+
+            throw new APIRequestFailureException('The API response did not contain a body!');
+        } catch (\Exception $exception) {
+            throw new APIRequestFailureException('The API request failed', Exception::REQUEST_FAILURE, $exception);
+        }
     }
 }

@@ -7,7 +7,7 @@ use \IBurn36360\TwitchInterface\Exception\IncompleteConfigurationException;
 use \IBurn36360\TwitchInterface\Exception\UnknownPropertyException;
 
 /**
- * Class Configuration
+ * Constructs a new Twitch Interface configuration instance
  *
  * @package IBurn36360\TwitchInterface
  */
@@ -56,7 +56,7 @@ final class Configuration {
         }
 
         if (isset($configurationOptions['returnType']) && !empty($configurationOptions['returnType'])) {
-            $this->returnType = ((!!$configurationOptions['clientSecret']) ? self::RETURN_TYPE_ASSOC_ARRAY : self::RETURN_TYPE_OBJECT);
+            $this->returnType = ((!!$configurationOptions['returnArray']) ? self::RETURN_TYPE_ASSOC_ARRAY : self::RETURN_TYPE_OBJECT);
         }
     }
 

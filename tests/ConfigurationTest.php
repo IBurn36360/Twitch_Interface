@@ -1,6 +1,6 @@
 <?php
 
-use IBurn36360\TwitchInterface\Configuration;
+use \IBurn36360\TwitchInterface\Configuration;
 
 class ConfigurationTest extends PHPUnit_Framework_TestCase {
     /**
@@ -37,9 +37,9 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
      * @small
      */
     public function testConfigurationIsReadable() {
-        $configuration = new Configuration(array(
+        $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
-        ));
+        ]);
 
         foreach ([
             'TIBuild',
@@ -63,9 +63,9 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
      * @small
      */
     public function testConfigurationIsNotWritable() {
-        $configuration = new Configuration(array(
+        $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
-        ));
+        ]);
 
         $configuration->clientID = false;
     }
@@ -80,9 +80,9 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
      * @small
      */
     public function testFetchingInvalidPropertiesThrows() {
-        $configuration = new Configuration(array(
+        $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
-        ));
+        ]);
 
         $configuration->invalidProperty;
     }

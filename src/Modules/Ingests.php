@@ -3,12 +3,13 @@
 namespace IBurn36360\TwitchInterface\Modules;
 
 use \IBurn36360\TwitchInterface\Configuration;
-use \GuzzleHttp\Client;
 use \IBurn36360\TwitchInterface\Exception\APIRequestFailureException;
+use \IBurn36360\TwitchInterface\Exception\Exception;
 use \IBurn36360\TwitchInterface\Twitch;
+use \GuzzleHttp\Client;
 
 /**
- * Class Ingests
+ * Handles ingest server status requests
  *
  * @package IBurn36360\TwitchInterface\Modules
  */
@@ -36,10 +37,12 @@ class Ingests
             ]);
 
             if ($responseBody = $response->getBody()) {
-                return json_decode($responseBody);
+                return json_decode($responseBody, $configuration->returnType);
             }
-        } catch (\Exception $exception) { }
 
-        throw new APIRequestFailureException();
+            throw new APIRequestFailureException('The API response did not contain a body!');
+        } catch (\Exception $exception) {
+            throw new APIRequestFailureException('The API request failed', Exception::REQUEST_FAILURE, $exception);
+        }
     }
 }

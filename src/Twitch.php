@@ -6,7 +6,7 @@ use \IBurn36360\TwitchInterface\Exception;
 use \GuzzleHttp\Client;
 
 /**
- * Class Twitch
+ * An API wrapper designed to make querying Twitch's V5 Kraken API simple
  *
  * @package IBurn36360\TwitchInterface
  */
@@ -15,10 +15,10 @@ final class Twitch {
 
     private $instancedModules = array();
 
-    private $pathToModuleAliases = array(
+    public static $pathToModuleAliases = [
         // Ingests
         '/ingests' => ['Ingests', 'GetIngestServers']
-    );
+    ];
 
     private $client;
 
@@ -58,8 +58,8 @@ final class Twitch {
      * @throws Exception\UnknownModuleException
      */
     public function api($requestPath, $parameters = array()) {
-        if (array_key_exists($requestPath, $this->pathToModuleAliases)) {
-            return $this->instancedModules[$this->pathToModuleAliases[$requestPath][0]]->handleCall($this->pathToModuleAliases[$requestPath][1], $parameters, $this->configuration);
+        if (array_key_exists($requestPath, self::$pathToModuleAliases)) {
+            return $this->instancedModules[self::$pathToModuleAliases[$requestPath][0]]->handleCall(self::$pathToModuleAliases[$requestPath][1], $parameters, $this->configuration);
         }
 
         throw new Exception\UnknownModuleException();

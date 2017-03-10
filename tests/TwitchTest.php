@@ -1,7 +1,7 @@
 <?php
 
-use IBurn36360\TwitchInterface\Twitch;
-use IBurn36360\TwitchInterface\Configuration;
+use \IBurn36360\TwitchInterface\Twitch;
+use \IBurn36360\TwitchInterface\Configuration;
 
 /**
  * Created by PhpStorm.
@@ -11,8 +11,8 @@ use IBurn36360\TwitchInterface\Configuration;
  */
 class TwitchTest extends PHPUnit_Framework_TestCase {
     public function testNamespaceAutoload() {
-        new Twitch(new Configuration(array(
+        new Twitch(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
-        )));
+        ]));
     }
 }

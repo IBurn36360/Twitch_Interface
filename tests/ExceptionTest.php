@@ -1,6 +1,6 @@
 <?php
 
-use IBurn36360\TwitchInterface\Exception as TIException;
+use \IBurn36360\TwitchInterface\Exception as TIException;
 
 /**
  * Created by PhpStorm.
@@ -9,14 +9,14 @@ use IBurn36360\TwitchInterface\Exception as TIException;
  * Time: 11:17 PM
  */
 class ExceptionTest extends PHPUnit_Framework_TestCase {
-    private $exceptionClasses = array(
+    private $exceptionClasses = [
         'CallFailureException',
         'IncompleteConfigurationException',
         'InvalidParameterException',
         'UnknownEndpointException',
         'UnknownModuleException',
         'UnknownPropertyException'
-    );
+    ];
 
     private $exceptionNamespace = 'IBurn36360\\TwitchInterface\\Exception\\';
 

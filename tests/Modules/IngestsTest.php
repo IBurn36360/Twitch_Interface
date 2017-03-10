@@ -29,10 +29,10 @@ class IngestsTest extends \PHPUnit_Framework_TestCase {
      * @small
      */
     public function testCanBeUsedThroughAPIMethod() {
-        $twitchClient = new Twitch(new Configuration(array(
+        $twitchClient = new Twitch(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
-        )));
+        ]));
 
         $this->assertTrue(is_object($twitchClient->api('/ingests')));
     }
@@ -43,9 +43,9 @@ class IngestsTest extends \PHPUnit_Framework_TestCase {
      * @small
      */
     public function testCanBeUsedStatically() {
-        $this->assertTrue(is_object(Ingests::getIngestServers(array(), new Configuration(array(
+        $this->assertTrue(is_object(Ingests::getIngestServers([], new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
-        )))));
+        ]))));
     }
 }
