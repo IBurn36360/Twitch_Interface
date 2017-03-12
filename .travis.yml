@@ -13,7 +13,7 @@ matrix:
 before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
-script: phpunit --configuration tests/phpunit.xml
+script: phpunit
 notifications:
   on_success: never
   on_failure: always
