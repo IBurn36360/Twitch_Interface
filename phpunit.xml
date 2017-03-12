@@ -6,7 +6,7 @@
         </testsuite>
     </testsuites>
     <php>
-        <const name="TWITCH_TEST_CLIENT_ID" value="c4deadog0gs9ncu4waewgh0rp94iuew" />
-        <const name="TWITCH_TEST_CLIENT_SECRET" value="g7ebxsdo7rspw5n26v8sl0d0sw4ouo" />
+        <const name="TWITCH_TEST_CLIENT_ID" value="I revoked the ones in the other commit" />
+        <const name="TWITCH_TEST_CLIENT_SECRET" value="I revoked the ones in the other commit" />
     </php>
 </phpunit>
