@@ -3,7 +3,7 @@
 date_default_timezone_set('UTC');
 
 // Run the composer autoload
-require_once(__DIR__ . '/../../../autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 // Set our constants to the global env for travis if env exists
 if (getenv('TWITCH_TEST_CLIENT_ID') !== false) {
