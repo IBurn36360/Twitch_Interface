@@ -1,6 +1,0 @@
-<phpunit bootstrap="bootstrap.php" colors="true" testdox="true" beStrictAboutChangesToGlobalState="true" beStrictAboutOutputDuringTests="true">
-    <php>
-        <const name="TWITCH_TEST_CLIENT_ID" value="I'm not foolish enough to put them here" />
-        <const name="TWITCH_TEST_CLIENT_SECRET" value="I'm not foolish enough to put them here" />
-    </php>
-</phpunit>

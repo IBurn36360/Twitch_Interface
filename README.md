@@ -1,6 +1,6 @@
 #[UNSTABLE] Twitch Interface V2
 
-[![Build Status](https://travis-ci.org/IBurn36360/Twitch_Interface.svg?branch=master)](https://github.com/IBurn36360/Twitch_Interface)
+[![Build Status](https://travis-ci.org/IBurn36360/Twitch_Interface.svg?branch=master)](https://travis-ci.org/IBurn36360/Twitch_Interface)
 
 ##[PHP] Twitch Interface
 
