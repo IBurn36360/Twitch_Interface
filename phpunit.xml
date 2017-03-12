@@ -5,8 +5,4 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
-    <php>
-        <const name="TWITCH_TEST_CLIENT_ID" value="I revoked the ones in the other commit" />
-        <const name="TWITCH_TEST_CLIENT_SECRET" value="I revoked the ones in the other commit" />
-    </php>
 </phpunit>
