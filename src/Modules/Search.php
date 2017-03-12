@@ -14,7 +14,7 @@ use \GuzzleHttp\Client;
  *
  * @package IBurn36360\TwitchInterface\Modules
  */
-class Search
+final class Search
     extends ModuleBase {
     /**
      * Searches for channels based on the provided query

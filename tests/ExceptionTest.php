@@ -2,18 +2,17 @@
 
 use \IBurn36360\TwitchInterface\Exception as TIException;
 
-/**
- * Created by PhpStorm.
- * User: Anthony
- * Date: 2/18/2017
- * Time: 11:17 PM
- */
+
 class ExceptionTest extends PHPUnit_Framework_TestCase {
     private $exceptionClasses = [];
 
     private $exceptionNamespace = 'IBurn36360\\TwitchInterface\\Exception\\';
 
+    /**
+     * Sets up the testing environment
+     */
     public function setUp() {
+        // Resolves all exceptions which are not the container
         foreach (glob(($fileDirPath = realpath(__DIR__ . '/../') . '/src/Exception/') . '*') as $filename) {
             if (($filename = str_replace([$fileDirPath, '.php'], '', $filename)) !== 'Exception') {
                 $this->exceptionClasses[] = $filename;
@@ -21,14 +20,32 @@ class ExceptionTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testNamespaceAutoload() {
+    /**
+     * Tests namespace autoloading for all exceptions that are not the container (Which autoloads as a result of the child exceptions)
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
+     * @test
+     *
+     * @small
+     */
+    public function namespaceAutoload() {
         foreach ($this->exceptionClasses as $className) {
             $className = "{$this->exceptionNamespace}$className";
             new $className();
         }
     }
 
-    public function testExceptionContainerInheritance() {
+    /**
+     * Tests that all exceptions are an instance of the container
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
+     * @test
+     *
+     * @small
+     */
+    public function exceptionContainerInheritance() {
         foreach ($this->exceptionClasses as $className) {
             $className = "IBurn36360\\TwitchInterface\\Exception\\$className";
 
@@ -39,7 +56,16 @@ class ExceptionTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testExceptionContainerIsException() {
+    /**
+     * Tests that all exceptions are an eventual instance of the root exception (Will need to be throwable some day)
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
+     * @test
+     *
+     * @small
+     */
+    public function exceptionContainerIsException() {
         $this->assertInstanceOf(
             \Exception::class,
             new TIException\Exception()

@@ -2,7 +2,7 @@
 
 namespace IBurn36360\TwitchInterface\Modules;
 
-class Users
+final class Users
     extends ModuleBase {
     public function runGetUser($parameters) {
 

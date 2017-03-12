@@ -2,7 +2,7 @@
 
 namespace IBurn36360\TwitchInterface\Modules;
 
-class Streams
+final class Streams
     extends ModuleBase {
     public function runGetStreamsByChannel($parameters) {
 

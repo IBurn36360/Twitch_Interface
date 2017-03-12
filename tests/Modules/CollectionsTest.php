@@ -2,9 +2,9 @@
 
 namespace Modules;
 
-use IBurn36360\TwitchInterface\Modules\Chat;
+use IBurn36360\TwitchInterface\Modules\Collections;
 
-class ChatTest extends \PHPUnit_Framework_TestCase {
+class CollectionsTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests namespace autoloading for the module
      *
@@ -13,6 +13,6 @@ class ChatTest extends \PHPUnit_Framework_TestCase {
      * @test
      */
     public function namespaceAutoload() {
-        new Chat();
+        new Collections();
     }
 }

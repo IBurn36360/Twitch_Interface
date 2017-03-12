@@ -2,7 +2,7 @@
 
 namespace IBurn36360\TwitchInterface\Modules;
 
-class Channel
+final class Channel
     extends ModuleBase {
     public static function runGetChannel($parameters, $configuration, $client) {
 

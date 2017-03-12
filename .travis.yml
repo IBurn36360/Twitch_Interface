@@ -1,0 +1,23 @@
+language: php
+php:
+  - 5.6
+  - 7.0
+  - hhvm
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: 7.0
+    - php: hhvm
+before_script:
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+sudo: false
+script: vendor/bin/phpunit --configuration tests/phpunit.xml
+notifications:
+  on_success: never
+  on_failure: always
+  email: iburn36360@gmail.com
+TWITCH_TEST_CLIENT_ID:
+  secure: fgQ/qFYjuTxyziNLCLi5sqcqaT6RQErnbYokQvgFQGE5VOPIVwX0yHn+iutgCy9CaKdEsXsJK4rhiXxCivvRTnMgJsnLqcxh9Zk6WyE6Jnawn9qPmO2IA9mbpKrsNQ7o6s9xRv3axE7u/0ERcpeSHgZkUUyDpiv5imyE0mlua+twPA7m0FMQ/f3nephZ8Q68wJ7RmuaxPumhq1mo2fFQFPU4TryGlxtCQNTUfKshR0+Z5ZwqpGnKiaJHh8x6J1WfJt9lNwLJJp7iLcr36vCTRtquDT7cdq3mCUiwinGEQO+/QQQ8XXSs8E8fTOyf0XhR3k0y0t/8J4d7tX909kOsBmW1H2fGtIHs/5FEK8rr0TuouF7aiZ63PisaaH6dTP0QmzLEVP1kcm/ZSipIv0rALSqkOFpZiW5I53LLgRj6WCDf5McIsobL//448r8E3AYJN5sh+ECm46YQqTkADYdEFCXViklDSv5PbU6W8Ozq4WQgL/LZmFE8k29AJDSOEc9hzvkPodFRrbhpYjhSC6mIL0FTpWidnxo1JDhku2AsPEyONMUgFqS09UG2yd2/acQMWSNnH8tNGmiOdkkfZkGSB6a4fmGaEiqdoeRezIp7GcEADnUdURBcJtdBQlylEEd4CopAPOVN7M1PaoXThayJm3fJCcqrDQImAd3gInu9XVE=
+TWITCH_TEST_CLIENT_SECRET:
+  secure: aA5CAxA4puGigSmnG7vYaPlqgYwI0XrZy47h6p+P+gtFgraHE5r/8IVi725jLJXuZVUJWCeBLSUXJD1aQtwyD+JxcjLmV6Fy+Pus0XngSSQtN5hlkqHhKHpQhScIt3MrRr1qfpP9rj+wK3Mv45m8Z5IW5Yu2+ds9nGLZC9aj4heMCGmBwSYNSTD0PPZllNlmO1GiMznToHPY9pyyse7OFZoWhMRcN0ts0Mj5G2S1FnTU2AxN3pPUOVBWnlaN7hmZTHb7S1NZemSwl0dLl13cRPABKfZUK5SFshgappBPBdYviGlsV8nAi2Mw9KFJfqgCTlmd3HD4gPs4ipxM+CLS3Q7ha5gE2sCuxNRYlXI9qCulEL6FXm5Jhk7SeZL9YVpEE/+CPLU0oBxYzTiFt4CTnZmVW8LXlejUuAkH76N/S+OjrVxz2A1rp9MOPb0+D4dU6Su+hjMC85rToWyJQ8/8w7dwZN4QAT0uVdokcJEYsES3S/Xgh1xojAMIhxwFIsvnTT+/IpI4Ca1w84qzScVxCv/vrMW+NcvfzTYuzr4t50nholfWy3TVA5XdsWqrRbBh7o6R9N6iW0K1Ck6zX46IKDCSGpczZGwYQ4/wx81b5+48K088coGqedrMt81Zd2TDy2CX4bsLyoWka9hDjTfZ4ph0gpUL2d3b9vcJn4BXMiQ=

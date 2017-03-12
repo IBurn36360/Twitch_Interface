@@ -2,7 +2,7 @@
 
 namespace IBurn36360\TwitchInterface\Modules;
 
-class Chat
+final class Chat
     extends ModuleBase {
     public static function runGetChatBadgesByChannel($parameters) {
 

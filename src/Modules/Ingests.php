@@ -13,7 +13,7 @@ use \GuzzleHttp\Client;
  *
  * @package IBurn36360\TwitchInterface\Modules
  */
-class Ingests
+final class Ingests
     extends ModuleBase {
     /**
      * @param               $parameters

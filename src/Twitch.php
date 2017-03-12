@@ -17,7 +17,12 @@ final class Twitch {
 
     public static $pathToModuleAliases = [
         // Ingests
-        '/ingests' => ['Ingests', 'GetIngestServers']
+        '/ingests' => ['Ingests', 'GetIngestServers'],
+
+        // Search
+        '/search/channels' => ['Search', 'channels'],
+        '/search/games'    => ['Search', 'games'],
+        '/search/streams'  => ['Search', 'streams'],
     ];
 
     private $client;

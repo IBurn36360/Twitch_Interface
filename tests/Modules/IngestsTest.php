@@ -11,24 +11,28 @@ use \IBurn36360\TwitchInterface\Modules\Ingests;
  *
  * Class IngestsTest
  *
- * @package Modules
+ * @package Ingests
  */
 class IngestsTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests namespace autoloading for the module
      *
+     * @test
+     *
      * @small
      */
-    public function testNamespaceAutoload() {
+    public function namespaceAutoload() {
         new Ingests();
     }
 
     /**
      * Validates that the getIngests API endpoint may be used through the API instance
      *
+     * @test
+     *
      * @small
      */
-    public function testCanBeUsedThroughAPIMethod() {
+    public function canBeUsedThroughAPIMethod() {
         $twitchClient = new Twitch(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
@@ -40,9 +44,11 @@ class IngestsTest extends \PHPUnit_Framework_TestCase {
     /**
      * Validates that the getIngests API endpoint may be used statically
      *
+     * @test
+     *
      * @small
      */
-    public function testCanBeUsedStatically() {
+    public function canBeUsedStatically() {
         $this->assertTrue(is_object(Ingests::getIngestServers([], new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,

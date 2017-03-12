@@ -10,7 +10,7 @@ use \GuzzleHttp\Client;
  *
  * @package IBurn36360\TwitchInterface
  */
-class RequestIterator {
+final class RequestIterator {
     /**
      * Iterates over an API request for simply grabbing very large requests
      *

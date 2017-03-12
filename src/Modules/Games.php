@@ -2,7 +2,7 @@
 
 namespace IBurn36360\TwitchInterface\Modules;
 
-class Games
+final class Games
     extends ModuleBase {
     public function runGetTopGames($parameters) {
 

@@ -8,9 +8,11 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
      *
      * @author Anthony 'IBurn36360' Diaz
      *
+     * @test
+     *
      * @small
      */
-    public function testNamespaceAutoload() {
+    public function namespaceAutoload() {
         new Configuration(array(
             'clientID' => TWITCH_TEST_CLIENT_ID
         ));
@@ -21,11 +23,13 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
      *
      * @author Anthony 'IBurn36360' Diaz
      *
+     * @test
+     *
      * @expectedException IBurn36360\TwitchInterface\Exception\IncompleteConfigurationException
      *
      * @small
      */
-    public function testRequiresClientID() {
+    public function requiresClientID() {
         new Configuration(array());
     }
 
@@ -34,9 +38,11 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
      *
      * @author Anthony 'IBurn36360' Diaz
      *
+     * @test
+     *
      * @small
      */
-    public function testConfigurationIsReadable() {
+    public function configurationIsReadable() {
         $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
         ]);
@@ -58,11 +64,13 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
      *
      * @author Anthony 'IBurn36360' Diaz
      *
+     * @test
+     *
      * @expectedException IBurn36360\TwitchInterface\Exception\CannotWriteToConfigurationException
      *
      * @small
      */
-    public function testConfigurationIsNotWritable() {
+    public function configurationIsNotWritable() {
         $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
         ]);
@@ -75,11 +83,13 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase {
      *
      * @author Anthony 'IBurn36360' Diaz
      *
+     * @test
+     *
      * @expectedException IBurn36360\TwitchInterface\Exception\UnknownPropertyException
      *
      * @small
      */
-    public function testFetchingInvalidPropertiesThrows() {
+    public function fetchingInvalidPropertiesThrows() {
         $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
         ]);

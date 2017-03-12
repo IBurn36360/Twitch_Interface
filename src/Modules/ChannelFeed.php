@@ -2,7 +2,7 @@
 
 namespace IBurn36360\TwitchInterface\Modules;
 
-class ChannelFeed
+final class ChannelFeed
     extends ModuleBase {
     public function runGetFeedPosts($parameters) {
 

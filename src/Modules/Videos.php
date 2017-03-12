@@ -2,7 +2,7 @@
 
 namespace IBurn36360\TwitchInterface\Modules;
 
-class Videos
+final class Videos
     extends ModuleBase {
     public function runGetVideo($parameters) {
 
