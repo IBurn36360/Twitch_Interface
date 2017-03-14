@@ -1,20 +1,20 @@
-#Ingests
+# Ingests
 
 Function | API Alias | Description
 -------- | --------- | -----------
 [`Ingests::getIngestServers`](#user-content-getIngestServers) | [`/ingests`](#user-content-getIngestServers) | Gets the current status of all publicly available ingest servers
 
 
-##Ingests::getIngestServers
+## Ingests::getIngestServers
 Gets the current status of all publicly available ingest servers.
 
-###APIAliases
+### APIAliases
 `/ingests`
 
-###Parameters
+### Parameters
 No parameters are supported by this endpoint.
 
-###Usage
+### Usage
 Static
 ```php
 use \IBurn36360\TwitchInterface\Configuration;
