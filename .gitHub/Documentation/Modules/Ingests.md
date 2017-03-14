@@ -2,7 +2,7 @@
 
 Function | API Alias | Description
 -------- | --------- | -----------
-[`Ingests::getIngestServers`](#user-content-getIngestServers) | [`/ingests`](#user-content-getIngestServers) | Gets the current status of all publicly available ingest servers
+[`Ingests::getIngestServers`](#ingestsgetingestservers) | [`/ingests`](#ingestsgetingestservers) | Gets the current status of all publicly available ingest servers
 
 
 ## Ingests::getIngestServers
