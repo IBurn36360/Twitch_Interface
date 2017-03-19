@@ -17,6 +17,8 @@ class IngestsTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests namespace autoloading for the module
      *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @test
      *
      * @small
@@ -27,6 +29,8 @@ class IngestsTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Validates that the getIngests API endpoint may be used through the API instance
+     *
+     * @author Anthony 'IBurn36360' Diaz
      *
      * @test
      *
@@ -44,12 +48,14 @@ class IngestsTest extends \PHPUnit_Framework_TestCase {
     /**
      * Validates that the getIngests API endpoint may be used statically
      *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @test
      *
      * @small
      */
     public function canBeUsedStatically() {
-        $this->assertTrue(is_object(Ingests::getIngestServers([], new Configuration([
+        $this->assertTrue(is_object(Ingests::getIngestServers(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
         ]))));

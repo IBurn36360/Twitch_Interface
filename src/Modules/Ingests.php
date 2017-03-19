@@ -16,14 +16,14 @@ use \GuzzleHttp\Client;
 final class Ingests
     extends ModuleBase {
     /**
-     * @param               $parameters
      * @param Configuration $configuration
+     * @param array         $parameters
      * @param Client|null   $client
      *
      * @return mixed
      * @throws APIRequestFailureException
      */
-    public static function getIngestServers($parameters, Configuration $configuration, Client $client = null) {
+    public static function getIngestServers(Configuration $configuration, $parameters = [], Client $client = null) {
         if (is_null($client)) {
             $client = new Client([
                 'base_uri' => $configuration->twitchAPIHost,

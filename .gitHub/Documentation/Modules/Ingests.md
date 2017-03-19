@@ -8,7 +8,7 @@ Function | API Alias | Description
 ## Ingests::getIngestServers
 Gets the current status of all publicly available ingest servers.
 
-### APIAliases
+### API Aliases
 `/ingests`
 
 ### Parameters
@@ -20,7 +20,7 @@ Static
 use \IBurn36360\TwitchInterface\Configuration;
 use \IBurn36360\TwitchInterface\Modules\Ingests;
 
-$ingestServers = Ingests::getIngestServers([], new Configuration([
+$ingestServers = Ingests::getIngestServers(new Configuration([
     'clientID' => 'Your Twitch ClientID'
 ]));
 ```
@@ -29,7 +29,6 @@ Object
 ```php
 use \IBurn36360\TwitchInterface\Twitch;
 use \IBurn36360\TwitchInterface\Configuration;
-use \IBurn36360\TwitchInterface\Modules\Ingests;
 
 $twitchClient = new Twitch(new Configuration([
     'clientID' => 'Your Twitch ClientID',

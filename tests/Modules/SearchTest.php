@@ -17,6 +17,8 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests namespace autoloading for the module
      *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @small
      *
      * @test
@@ -26,48 +28,64 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Tests that channels search can be used statically
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @small
      *
      * @test
      */
     public function channelsSearchCanBeUsedStatically() {
-        $this->assertTrue(is_object(search::channels([
-            'query' => 'minecraft'
-        ], new Configuration([
+        $this->assertTrue(is_object(search::channels(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
-        ]))));
+        ]), [
+            'query' => 'minecraft'
+        ])));
     }
 
     /**
+     * Tests that games search can be used statically
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @small
      *
      * @test
      */
     public function gamesSearchCanBeUsedStatically() {
-        $this->assertTrue(is_object(search::games([
-            'query' => 'minecraft'
-        ], new Configuration([
+        $this->assertTrue(is_object(search::games(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
-        ]))));
+        ]), [
+            'query' => 'minecraft'
+        ])));
     }
 
     /**
+     * Tests that streams search can be used statically
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @small
      *
      * @test
      */
     public function streamsSearchCanBeUsedStatically() {
-        $this->assertTrue(is_object(search::streams([
-            'query' => 'minecraft'
-        ], new Configuration([
+        $this->assertTrue(is_object(search::streams(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
-        ]))));
+        ]), [
+            'query' => 'minecraft'
+        ])));
     }
 
     /**
+     * Tests that channels search can be used through the API method
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @small
      *
      * @test
@@ -84,6 +102,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Tests the games search can be used through the API method
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @small
      *
      * @test
@@ -100,6 +122,10 @@ class SearchTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Tests that streams search can be used through the API method
+     *
+     * @author Anthony 'IBurn36360' Diaz
+     *
      * @small
      *
      * @test

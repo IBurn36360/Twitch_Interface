@@ -19,15 +19,15 @@ final class Search
     /**
      * Searches for channels based on the provided query
      *
-     * @param               $parameters
      * @param Configuration $configuration
+     * @param array         $parameters
      * @param Client|null   $client
      *
      * @return mixed
      * @throws APIRequestFailureException
      * @throws InvalidParameterException
      */
-    public static function channels($parameters, Configuration $configuration, Client $client = null) {
+    public static function channels(Configuration $configuration, $parameters = [], Client $client = null) {
         if (!($parameters['query'] = trim($parameters['query']))) {
             throw new InvalidParameterException('You must provide a query in order to perform a search');
         }
@@ -71,15 +71,15 @@ final class Search
     /**
      * Searches for channels based on the provided query
      *
-     * @param               $parameters
      * @param Configuration $configuration
+     * @param array         $parameters
      * @param Client|null   $client
      *
      * @return mixed
      * @throws APIRequestFailureException
      * @throws InvalidParameterException
      */
-    public static function games($parameters, Configuration $configuration, Client $client = null) {
+    public static function games(Configuration $configuration, $parameters = [], Client $client = null) {
         if (!($parameters['query'] = trim($parameters['query']))) {
             throw new InvalidParameterException('You must provide a query in order to perform a search');
         }
@@ -123,15 +123,15 @@ final class Search
     /**
      * Searches for channels based on the provided query
      *
-     * @param               $parameters
      * @param Configuration $configuration
+     * @param array         $parameters
      * @param Client|null   $client
      *
      * @return mixed
      * @throws APIRequestFailureException
      * @throws InvalidParameterException
      */
-    public static function streams($parameters, Configuration $configuration, Client $client = null) {
+    public static function streams(Configuration $configuration, $parameters = [], Client $client = null) {
         if (!($parameters['query'] = trim($parameters['query']))) {
             throw new InvalidParameterException('You must provide a query in order to perform a search');
         }

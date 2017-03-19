@@ -26,7 +26,7 @@ class ModuleBase {
         $endpoint = $functionName;
 
         if (method_exists($this, $endpoint)) {
-            return $this::{$endpoint}($parameters, $configuration);
+            return $this::{$endpoint}($configuration, $parameters);
         }
 
         throw new ModuleException\UnknownEndpointException();
