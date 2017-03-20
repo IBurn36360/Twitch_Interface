@@ -10,6 +10,9 @@ Function | API Alias | Description
 ## Search::channels
 Searches for all live streams that match your query comparing on the channel name.
 
+### Authentication Scopes
+No authentication scopes needed
+
 ### API Aliases
 `/search/channels`
 
@@ -84,6 +87,9 @@ $streams = $twitchClient->api('/search/channels', [
 ## Search::games
 Searches for all live streams that match your query comparing on the game being streamed.
 
+### Authentication Scopes
+No authentication scopes needed
+
 ### API Aliases
 `/search/games`
 
@@ -157,6 +163,9 @@ $streams = $twitchClient->api('/search/games', [
 
 ## Search::streams
 Searches for all live streams that match your query comparing on the stream title.
+
+### Authentication Scopes
+No authentication scopes needed
 
 ### API Aliases
 `/search/streams`

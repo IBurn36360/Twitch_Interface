@@ -8,6 +8,9 @@ Function | API Alias | Description
 ## Ingests::getIngestServers
 Gets the current status of all publicly available ingest servers.
 
+### Authentication Scopes
+No authentication scopes needed
+
 ### API Aliases
 `/ingests`
 

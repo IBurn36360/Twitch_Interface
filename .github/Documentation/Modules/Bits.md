@@ -8,6 +8,9 @@ Function | API Alias | Description
 ## Bits::getCheermotes
 Gets the cheermotes for a channel, or the default list of cheermotes if no channel ID is provided.
 
+### Authentication Scopes
+No authentication scopes needed
+
 ### API Aliases
 `/bits/cheermotes`
 
