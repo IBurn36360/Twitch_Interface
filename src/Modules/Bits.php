@@ -8,6 +8,11 @@ use \IBurn36360\TwitchInterface\Exception\Exception;
 use \IBurn36360\TwitchInterface\Twitch;
 use \GuzzleHttp\Client;
 
+/**
+ * Handles bits related API requests
+ *
+ * @package IBurn36360\TwitchInterface\Modules
+ */
 final class Bits
     extends ModuleBase {
     /**
@@ -27,10 +32,18 @@ final class Bits
             ]);
         }
 
+        $cleanedParams = [];
+
+        if (isset($parameters['channelID'])) {
+            // String casting will be done later, so no need for sanitization for the request
+            $cleanedParams = $parameters['channelID'];
+        }
+
         try {
             $response = $client->request('GET', '/kraken/bits/actions', [
                 'headers' => Twitch::buildRequestHeaders($configuration),
                 'verify'  => (($configuration->useCABundle) ? __DIR__ . '/../../CABundle.pem' : true),
+                'query'   => $cleanedParams,
             ]);
 
             if ($responseBody = $response->getBody()) {

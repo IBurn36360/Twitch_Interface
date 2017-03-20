@@ -15,7 +15,7 @@ Gets the cheermotes for a channel, or the default list of cheermotes if no chann
 ### Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-`channelID`|string|Yes|The string channel ID to pull cheermotes for
+`channelID`|string|No|The string channel ID to pull cheermotes for
 
 ### Usage
 Static
