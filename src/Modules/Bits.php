@@ -8,15 +8,10 @@ use \IBurn36360\TwitchInterface\Exception\Exception;
 use \IBurn36360\TwitchInterface\Twitch;
 use \GuzzleHttp\Client;
 
-/**
- * Handles ingest server status requests
- *
- * @package IBurn36360\TwitchInterface\Modules
- */
-final class Ingests
+final class Bits
     extends ModuleBase {
     /**
-     * Fetches the ingest server availability
+     * Fetches the cheermotes for a channel, or the default cheermotes if no channel is provided
      *
      * @param Configuration $configuration
      * @param array         $parameters
@@ -25,7 +20,7 @@ final class Ingests
      * @return mixed
      * @throws APIRequestFailureException
      */
-    public static function getIngestServers(Configuration $configuration, $parameters = [], Client $client = null) {
+    public static function getCheermotes(Configuration $configuration, $parameters = [], Client $client = null) {
         if (is_null($client)) {
             $client = new Client([
                 'base_uri' => $configuration->twitchAPIHost,
@@ -33,7 +28,7 @@ final class Ingests
         }
 
         try {
-            $response = $client->request('GET', '/kraken/ingests', [
+            $response = $client->request('GET', '/kraken/bits/actions', [
                 'headers' => Twitch::buildRequestHeaders($configuration),
                 'verify'  => (($configuration->useCABundle) ? __DIR__ . '/../../CABundle.pem' : true),
             ]);

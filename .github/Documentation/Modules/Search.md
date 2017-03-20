@@ -14,11 +14,11 @@ Searches for all live streams that match your query comparing on the channel nam
 `/search/channels`
 
 ### Parameters
-Parameter|Type|Description
----------|----|-----------
-`query`|string|The string query to search channels against
-`limit`|integer|The integer limit of streams to pull.  Accepts any number, but Twitch only accepts a maximum of `100`
-`offset`|integer|The integer offset for the query cursor.  Accepts any number within the limitations imposed by Twitch
+Parameter|Type|Required|Description
+---------|----|--------|-----------
+`query`|string|Yes|The string query to search channels against
+`limit`|integer|No|The integer limit of streams to pull.  Accepts any number, but Twitch only accepts a maximum of `100`
+`offset`|integer|Yes|The integer offset for the query cursor.  Accepts any number within the limitations imposed by Twitch
 
 
 ### Usage
@@ -88,11 +88,11 @@ Searches for all live streams that match your query comparing on the game being 
 `/search/games`
 
 ### Parameters
-Parameter|Type|Description
----------|----|-----------
-`query`|string|The string query to search games against
-`limit`|integer|The integer limit of streams to pull.  Accepts any number, but Twitch only accepts a maximum of `100`
-`offset`|integer|The integer offset for the query cursor.  Accepts any number within the limitations imposed by Twitch
+Parameter|Type|Required|Description
+---------|----|--------|-----------
+`query`|string|Yes|The string query to search games against
+`limit`|integer|No|The integer limit of streams to pull.  Accepts any number, but Twitch only accepts a maximum of `100`
+`offset`|integer|No|The integer offset for the query cursor.  Accepts any number within the limitations imposed by Twitch
 
 
 ### Usage
@@ -162,11 +162,11 @@ Searches for all live streams that match your query comparing on the stream titl
 `/search/streams`
 
 ### Parameters
-Parameter|Type|Description
----------|----|-----------
-`query`|string|The string query to search stream titles against
-`limit`|integer|The integer limit of streams to pull.  Accepts any number, but Twitch only accepts a maximum of `100`
-`offset`|integer|The integer offset for the query cursor.  Accepts any number within the limitations imposed by Twitch
+Parameter|Type|Required|Description
+---------|----|--------|-----------
+`query`|string|Yes|The string query to search stream titles against
+`limit`|integer|No|The integer limit of streams to pull.  Accepts any number, but Twitch only accepts a maximum of `100`
+`offset`|integer|No|The integer offset for the query cursor.  Accepts any number within the limitations imposed by Twitch
 
 
 ### Usage

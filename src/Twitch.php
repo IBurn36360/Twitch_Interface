@@ -16,8 +16,11 @@ final class Twitch {
     private $instancedModules = array();
 
     public static $pathToModuleAliases = [
+        // Bits
+        '/bits/cheermotes' => ['Bits', 'getCheermotes'],
+
         // Ingests
-        '/ingests' => ['Ingests', 'GetIngestServers'],
+        '/ingests' => ['Ingests', 'getIngestServers'],
 
         // Search
         '/search/channels' => ['Search', 'channels'],
