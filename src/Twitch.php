@@ -15,9 +15,14 @@ final class Twitch {
 
     private $instancedModules = array();
 
+    private $tokenStorage = array();
+
     public static $pathToModuleAliases = [
         // Bits
         '/bits/cheermotes' => ['Bits', 'getCheermotes'],
+
+        // Games
+        '/games/top' => ['Games', 'getTopGames'],
 
         // Ingests
         '/ingests' => ['Ingests', 'getIngestServers'],
@@ -86,6 +91,10 @@ final class Twitch {
             'Client-ID' => $configuration->applicationClientID,
             'User-Agent' => 'PHP - \\IBurn36360\\Twitch-Interface v' . $configuration->TIBuild,
         ];
+    }
+
+    public static function generateOAuthToken() {
+
     }
 
     public static function handleCursorIteration() {
