@@ -1,9 +1,14 @@
 <?php
 
 use \IBurn36360\TwitchInterface\Exception as TIException;
+use \PHPUnit\Framework\TestCase;
 
-
-class ExceptionTest extends PHPUnit_Framework_TestCase {
+/**
+ * Test runner for the interface exceptions
+ *
+ * @package Modules
+ */
+class ExceptionTest extends TestCase {
     private $exceptionClasses = [];
 
     private $exceptionNamespace = 'IBurn36360\\TwitchInterface\\Exception\\';

@@ -5,6 +5,7 @@ namespace Modules;
 use \IBurn36360\TwitchInterface\Twitch;
 use \IBurn36360\TwitchInterface\Configuration;
 use \IBurn36360\TwitchInterface\Modules\Bits;
+use \PHPUnit\Framework\TestCase;
 
 /**
  * Test runner for the bits API module
@@ -13,7 +14,7 @@ use \IBurn36360\TwitchInterface\Modules\Bits;
  *
  * @package Ingests
  */
-class BitsTest extends \PHPUnit_Framework_TestCase {
+class BitsTest extends TestCase {
     /**
      * Tests namespace autoloading for the module
      *

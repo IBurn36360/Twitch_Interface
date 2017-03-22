@@ -5,13 +5,14 @@ namespace Modules;
 use \IBurn36360\TwitchInterface\Twitch;
 use \IBurn36360\TwitchInterface\Configuration;
 use \IBurn36360\TwitchInterface\Modules\Games;
+use \PHPUnit\Framework\TestCase;
 
 /**
  * Test runner for the games API module
  *
  * @package Modules
  */
-class GamesTest extends \PHPUnit_Framework_TestCase {
+class GamesTest extends TestCase {
     /**
      * Tests namespace autoloading for the module
      *

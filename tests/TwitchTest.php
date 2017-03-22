@@ -2,8 +2,14 @@
 
 use \IBurn36360\TwitchInterface\Twitch;
 use \IBurn36360\TwitchInterface\Configuration;
+use \PHPUnit\Framework\TestCase;
 
-class TwitchTest extends PHPUnit_Framework_TestCase {
+/**
+ * Test runner for the main Twitch class
+ *
+ * @package Modules
+ */
+class TwitchTest extends TestCase {
     /**
      * Tests namespace autoloading for the main API class
      *

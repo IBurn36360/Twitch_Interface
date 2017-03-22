@@ -5,6 +5,7 @@ namespace Modules;
 use \IBurn36360\TwitchInterface\Twitch;
 use \IBurn36360\TwitchInterface\Configuration;
 use \IBurn36360\TwitchInterface\Modules\Ingests;
+use \PHPUnit\Framework\TestCase;
 
 /**
  * Test runner for the ingests API module
@@ -13,7 +14,7 @@ use \IBurn36360\TwitchInterface\Modules\Ingests;
  *
  * @package Ingests
  */
-class IngestsTest extends \PHPUnit_Framework_TestCase {
+class IngestsTest extends TestCase {
     /**
      * Tests namespace autoloading for the module
      *

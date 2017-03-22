@@ -1,8 +1,14 @@
 <?php
 
 use \IBurn36360\TwitchInterface\Configuration;
+use \PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends PHPUnit_Framework_TestCase {
+/**
+ * Test runner for the Configuration class
+ *
+ * @package Modules
+ */
+class ConfigurationTest extends TestCase {
     /**
      * Tests namespace autoloading for the configuration
      *
