@@ -29,7 +29,7 @@ For any information about the interface, please look in the module list below.
 You may either download the library, or use Composer.  Composer is the preferred method of installation for current and dev versions of the library.
 
 ## Composer
-If you do not already have Composer installed, please [install composer using the instructions here]().
+If you do not already have Composer installed, please install composer using the instructions for your platform: ([Linux/MacOS](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) | [Windows](https://getcomposer.org/doc/00-intro.md#installation-windows)).
 
 Once composer is installed, you can install the following package using whatever your composer implementation demands.
 
@@ -39,8 +39,22 @@ If you are using composer from the command line, go to your sources directory an
 
 <pre>php composer.phar require iburn36360/twitch-interface</pre>
 
-Once the package is installed, be sure to include the composer autoloader in your runtime and you'll have access to the interface.
+Once the package is installed, be sure to include the autoloader from composer into your runtime in your scripts like shown below (Directory location may vary).
+```php
+<?php
 
-# Examples
+require_once(__DIR__ . '/vendor/autoloader.php');
 
-# Documentation
+// Though optional, makes the code cleaner.  I suggest the use statement where it makes sense
+use \IBurn36360\TwitchInterface\Modules\Search;
+use \IBurn36360\TwitchInterface\Configuration;
+
+$minecraftStreams = Search::streams(new Configuration([
+    'clientID' => 'Your Twitch Client ID',
+]), [
+    'query' => 'minecraft'
+])
+```
+
+# Documentation/Examples
+[Module documentation and example usage can be found here](./.github/Documentation/Modules/README.md)

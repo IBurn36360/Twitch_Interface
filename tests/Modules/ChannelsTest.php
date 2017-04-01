@@ -2,9 +2,9 @@
 
 namespace Modules;
 
-use IBurn36360\TwitchInterface\Modules\Channel;
+use IBurn36360\TwitchInterface\Modules\Channels;
 
-class ChannelTest extends \PHPUnit_Framework_TestCase {
+class ChannelsTest extends \PHPUnit_Framework_TestCase {
     /**
      * Tests namespace autoloading for the module
      *
@@ -13,6 +13,6 @@ class ChannelTest extends \PHPUnit_Framework_TestCase {
      * @test
      */
     public function namespaceAutoload() {
-        new Channel();
+        new Channels();
     }
 }

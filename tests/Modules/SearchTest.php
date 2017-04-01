@@ -38,7 +38,7 @@ class SearchTest extends TestCase {
      * @test
      */
     public function channelsSearchCanBeUsedStatically() {
-        $this->assertTrue(is_object(search::channels(new Configuration([
+        $this->assertTrue(is_object(Search::channels(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
         ]), [
@@ -56,7 +56,7 @@ class SearchTest extends TestCase {
      * @test
      */
     public function gamesSearchCanBeUsedStatically() {
-        $this->assertTrue(is_object(search::games(new Configuration([
+        $this->assertTrue(is_object(Search::games(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
         ]), [
@@ -74,7 +74,7 @@ class SearchTest extends TestCase {
      * @test
      */
     public function streamsSearchCanBeUsedStatically() {
-        $this->assertTrue(is_object(search::streams(new Configuration([
+        $this->assertTrue(is_object(Search::streams(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID,
             'useCABundle' => true,
         ]), [

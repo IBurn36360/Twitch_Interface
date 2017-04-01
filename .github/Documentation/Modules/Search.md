@@ -21,7 +21,7 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 `query`|string|Yes|The string query to search channels against
 `limit`|integer|No|The integer limit of streams to pull.  Accepts any number, but Twitch only accepts a maximum of `100`
-`offset`|integer|Yes|The integer offset for the query cursor.  Accepts any number within the limitations imposed by Twitch
+`offset`|integer|No|The integer offset for the query cursor.  Accepts any number within the limitations imposed by Twitch
 
 
 ### Usage

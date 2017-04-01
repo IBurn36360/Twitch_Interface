@@ -27,6 +27,10 @@ final class Twitch {
         // Ingests
         '/ingests' => ['Ingests', 'getIngestServers'],
 
+        // Ingests
+        '/team' =>  ['Teams', 'getTeam'],
+        '/teams' => ['Teams', 'getTeams'],
+
         // Search
         '/search/channels' => ['Search', 'channels'],
         '/search/games'    => ['Search', 'games'],

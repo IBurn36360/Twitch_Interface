@@ -23,6 +23,14 @@ Function | API Alias | Description
 [`Ingests::getIngestServers`](./Ingests.md#ingestsgetingestservers) | [`/ingests`](./Ingests.md#ingestsgetingestservers) | Gets the current status of all publicly available ingest servers
 
 
+# Teams
+[Full module documentation](./Teams.md)
+
+Function | API Alias | Description
+-------- | --------- | -----------
+[`Teams::getTeams`](./Teams.md#teamsgetteams) | [`/teams`](./Teams.md#teamsgetteams) | Gets all active teams based on the limit and offset you provide
+[`Teams::getTeam`](./Teams.md#teamsgetteam) | [`/team`](./Teams.md#teamsgetteam) | Gets the specific team object by the requested team name
+
 ## Search
 [Full module documentation](./Search.md)
 
