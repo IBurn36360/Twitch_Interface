@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/IBurn36360/Twitch_Interface.svg?branch=master)](https://travis-ci.org/IBurn36360/Twitch_Interface)
 
+## NOTES
+
+The updates for a little while are going to slow down, as I'm in the middle of now writing the authentication layer for calls.  I expect the next update may take a month or more depending on how much I feel like working on the project and how much time I can honestly dedicate to it.  Once the authentication layer is completed, the remaining endpoints will be completed in a similar manner to the currently completed modules.
+
 ## [PHP] Twitch Interface
 
 This is a universal PHP interface designed specifically to connect to and interact with the twitch.tv Kraken API servers.  It was designed with the intention of being very controlled, safe and light for both the user server and the Kraken API servers.  Almost, if not all capable calls are coded directly into the interface, allowing the interface to perform almost, if not all functions that the API allows.  Any functions that you believe need to be added or improved can be done via a pull request or opening up an issue.
