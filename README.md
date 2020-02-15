@@ -1,10 +1,6 @@
 # [UNSTABLE] Twitch Interface V2
 
-[![Build Status](https://travis-ci.org/IBurn36360/Twitch_Interface.svg?branch=master)](https://travis-ci.org/IBurn36360/Twitch_Interface)
-
-## NOTES
-
-The updates for a little while are going to slow down, as I'm in the middle of now writing the authentication layer for calls.  I expect the next update may take a month or more depending on how much I feel like working on the project and how much time I can honestly dedicate to it.  Once the authentication layer is completed, the remaining endpoints will be completed in a similar manner to the currently completed modules.
+### TODO: Build status!
 
 ## [PHP] Twitch Interface
 
