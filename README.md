@@ -1,7 +1,7 @@
 # [UNSTABLE] Twitch Interface V2
 
 ## Build status
-![](https://github.com/actions/hello-world/workflows/Greet%20Everyone/badge.svg)
+![](https://github.com/IBurn36360/Twitch_Interface/workflows/TestRunner/badge.svg)
 
 ## [PHP] Twitch Interface
 
