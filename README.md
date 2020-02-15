@@ -1,7 +1,7 @@
 # [UNSTABLE] Twitch Interface V2
 
 ## Build status
-![](https://github.com/IBurn36360/Twitch_Interface/workflows/TestRunner/badge.svg)
+![](https://github.com/IBurn36360/Twitch_Interface/workflows/PHP%20Tests/badge.svg)
 
 ## [PHP] Twitch Interface
 
