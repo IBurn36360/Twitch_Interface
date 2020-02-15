@@ -1,4 +1,4 @@
-name: TestRunner
+name: PHP Tests
 
 on: 
   push:
