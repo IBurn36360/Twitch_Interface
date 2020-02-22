@@ -1,6 +1,6 @@
 <?php
 
-namespace IBurn36360\TwitchInterface\Modules;
+namespace IBurn36360\TwitchInterface\API\Kraken5;
 
 use \IBurn36360\TwitchInterface\Configuration;
 use \IBurn36360\TwitchInterface\Exception\APIRequestFailureException;
@@ -14,7 +14,7 @@ use \GuzzleHttp\Client;
  * @package IBurn36360\TwitchInterface\Modules
  */
 final class Teams
-    extends ModuleBase {
+    extends APIGroup {
     /**
      * Fetches a list of active teams from the API
      *

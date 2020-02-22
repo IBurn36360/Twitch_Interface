@@ -1,6 +1,6 @@
 <?php
 
-namespace IBurn36360\TwitchInterface\Modules;
+namespace IBurn36360\TwitchInterface\API\Kraken5;
 
 use \IBurn36360\TwitchInterface\Configuration;
 use \IBurn36360\TwitchInterface\Exception\APIRequestFailureException;
@@ -15,7 +15,7 @@ use \GuzzleHttp\Client;
  * @package IBurn36360\TwitchInterface\Modules
  */
 final class Search
-    extends ModuleBase {
+    extends APIGroup {
     /**
      * Searches for channels based on the provided query
      *

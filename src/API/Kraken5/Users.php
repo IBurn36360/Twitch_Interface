@@ -1,9 +1,9 @@
 <?php
 
-namespace IBurn36360\TwitchInterface\Modules;
+namespace IBurn36360\TwitchInterface\API\Kraken5;
 
 final class Users
-    extends ModuleBase {
+    extends APIGroup {
     public function runGetUser($parameters) {
 
     }

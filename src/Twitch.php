@@ -2,8 +2,9 @@
 
 namespace IBurn36360\TwitchInterface;
 
-use \IBurn36360\TwitchInterface\Exception;
 use \GuzzleHttp\Client;
+use \IBurn36360\TwitchInterface\Exception;
+use \IBurn36360\TwitchInterface\Modules\APIGroup;
 
 /**
  * An API wrapper designed to make querying Twitch's V5 Kraken API simple
@@ -13,9 +14,10 @@ use \GuzzleHttp\Client;
 final class Twitch {
     private $configuration;
 
-    private $instancedModules = array();
-
-    private $tokenStorage = array();
+    /**
+     * @var APIGroup[]
+     */
+    private $instancedModules = [];
 
     public static $pathToModuleAliases = [
         // Bits
@@ -68,15 +70,22 @@ final class Twitch {
     }
 
     /**
+     * Runs an API call by its path alias
+     *
      * @param       $requestPath
      * @param array $parameters
      *
      * @return mixed
+     *
      * @throws Exception\UnknownModuleException
      */
-    public function api($requestPath, $parameters = array()) {
+    public function api(string $requestPath, array $parameters = []) {
         if (array_key_exists($requestPath, self::$pathToModuleAliases)) {
-            return $this->instancedModules[self::$pathToModuleAliases[$requestPath][0]]->handleCall(self::$pathToModuleAliases[$requestPath][1], $parameters, $this->configuration);
+            return $this->instancedModules[self::$pathToModuleAliases[$requestPath][0]]->handleCall(
+                self::$pathToModuleAliases[$requestPath][1],
+                $parameters,
+                $this->configuration
+            );
         }
 
         throw new Exception\UnknownModuleException();
@@ -89,11 +98,11 @@ final class Twitch {
      *
      * @return array $headers - The array of headers to work with or pass to Guzzle
      */
-    public static function buildRequestHeaders(Configuration $configuration) {
+    public static function buildRequestHeaders(Configuration $configuration):array {
         return [
             'Accept' => $configuration->twitchAPIAcceptHeader,
             'Client-ID' => $configuration->applicationClientID,
-            'User-Agent' => 'PHP - \\IBurn36360\\Twitch-Interface v' . $configuration->TIBuild,
+            'User-Agent' => 'PHP ' . PHP_VERSION . " - \\IBurn36360\\Twitch-Interface v{$configuration->TIBuild}",
         ];
     }
 

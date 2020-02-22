@@ -11,7 +11,7 @@ use \IBurn36360\TwitchInterface\Exception as ModuleException;
  *
  * @package IBurn36360\TwitchInterface\Modules
  */
-class ModuleBase {
+class APIGroup {
     /**
      * Handles running a call request from the API wrapper instance
      *

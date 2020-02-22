@@ -1,5 +1,8 @@
 <?php
 
+use \IBurn36360\TwitchInterface\Exception\CannotFetchUnknownPropertyException;
+use \IBurn36360\TwitchInterface\Exception\CannotSetImmutablePropertyException;
+use \IBurn36360\TwitchInterface\Exception\IncompleteConfigurationException;
 use \IBurn36360\TwitchInterface\Configuration;
 use \PHPUnit\Framework\TestCase;
 
@@ -18,10 +21,12 @@ class ConfigurationTest extends TestCase {
      *
      * @small
      */
-    public function namespaceAutoload() {
+    public function namespaceAutoload():void {
         new Configuration(array(
             'clientID' => TWITCH_TEST_CLIENT_ID
         ));
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -31,11 +36,11 @@ class ConfigurationTest extends TestCase {
      *
      * @test
      *
-     * @expectedException IBurn36360\TwitchInterface\Exception\IncompleteConfigurationException
-     *
      * @small
      */
-    public function requiresClientID() {
+    public function requiresClientID():void {
+        $this->expectException(IncompleteConfigurationException::class);
+
         new Configuration(array());
     }
 
@@ -48,7 +53,7 @@ class ConfigurationTest extends TestCase {
      *
      * @small
      */
-    public function configurationIsReadable() {
+    public function configurationIsReadable():void {
         $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
         ]);
@@ -57,12 +62,14 @@ class ConfigurationTest extends TestCase {
             'TIBuild',
             'twitchAPIHost',
             'twitchAPIAcceptHeader',
+            'returnType',
             'applicationClientID',
             'applicationClientSecret',
-            'useCABundle',
         ] as $propertyName) {
             $configuration->{$propertyName};
         }
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -72,11 +79,11 @@ class ConfigurationTest extends TestCase {
      *
      * @test
      *
-     * @expectedException IBurn36360\TwitchInterface\Exception\CannotWriteToConfigurationException
-     *
      * @small
      */
     public function configurationIsNotWritable() {
+        $this->expectException(CannotSetImmutablePropertyException::class);
+
         $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
         ]);
@@ -91,11 +98,11 @@ class ConfigurationTest extends TestCase {
      *
      * @test
      *
-     * @expectedException IBurn36360\TwitchInterface\Exception\UnknownPropertyException
-     *
      * @small
      */
     public function fetchingInvalidPropertiesThrows() {
+        $this->expectException(CannotFetchUnknownPropertyException::class);
+
         $configuration = new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
         ]);

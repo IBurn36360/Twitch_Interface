@@ -1,2 +1,7 @@
 # IntelliJ IDE's
 .idea/
+
+# Composer files for local development don't need to be tracked
+vendor
+composer.lock
+composer.phar

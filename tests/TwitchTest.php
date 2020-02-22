@@ -19,10 +19,12 @@ class TwitchTest extends TestCase {
      *
      * @small
      */
-    public function namespaceAutoload() {
+    public function namespaceAutoload():void {
         new Twitch(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
         ]));
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -34,7 +36,7 @@ class TwitchTest extends TestCase {
      *
      * @small
      */
-    public function apiMethodDefined() {
+    public function apiMethodDefined():void {
         $twitch = new Twitch(new Configuration([
             'clientID' => TWITCH_TEST_CLIENT_ID
         ]));
@@ -51,7 +53,7 @@ class TwitchTest extends TestCase {
      *
      * @small
      */
-    public function staticHeaderBuilderDefined() {
+    public function staticHeaderBuilderDefined():void {
         $this->assertTrue(method_exists(Twitch::class, 'buildRequestHeaders'));
     }
 
@@ -64,7 +66,7 @@ class TwitchTest extends TestCase {
      *
      * @small
      */
-    public function staticIteratorHelperDefined() {
+    public function staticIteratorHelperDefined():void {
         $this->assertTrue(method_exists(Twitch::class, 'handleCursorIteration'));
     }
 }

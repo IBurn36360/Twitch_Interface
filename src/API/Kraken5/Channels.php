@@ -1,9 +1,9 @@
 <?php
 
-namespace IBurn36360\TwitchInterface\Modules;
+namespace IBurn36360\TwitchInterface\API\Kraken5;
 
 final class Channels
-    extends ModuleBase {
+    extends APIGroup {
     public static function runGetChannel($parameters, $configuration, $client) {
 
     }

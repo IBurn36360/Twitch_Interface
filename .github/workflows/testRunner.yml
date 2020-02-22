@@ -24,4 +24,4 @@ jobs:
     - name: Run Tests
       uses: php-actions/phpunit@v1
       with:
-        config: tests/phpunit.xml
+        config: phpunit.xml

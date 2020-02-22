@@ -16,7 +16,7 @@ class ExceptionTest extends TestCase {
     /**
      * Sets up the testing environment
      */
-    public function setUp() {
+    public function setUp():void {
         // Resolves all exceptions which are not the container
         foreach (glob(($fileDirPath = realpath(__DIR__ . '/../') . '/src/Exception/') . '*') as $filename) {
             if (($filename = str_replace([$fileDirPath, '.php'], '', $filename)) !== 'Exception') {
@@ -34,11 +34,13 @@ class ExceptionTest extends TestCase {
      *
      * @small
      */
-    public function namespaceAutoload() {
+    public function namespaceAutoload():void {
         foreach ($this->exceptionClasses as $className) {
             $className = "{$this->exceptionNamespace}$className";
             new $className();
         }
+
+        $this->assertTrue(true);
     }
 
     /**
@@ -50,7 +52,7 @@ class ExceptionTest extends TestCase {
      *
      * @small
      */
-    public function exceptionContainerInheritance() {
+    public function exceptionContainerInheritance():void {
         foreach ($this->exceptionClasses as $className) {
             $className = "IBurn36360\\TwitchInterface\\Exception\\$className";
 
@@ -70,7 +72,7 @@ class ExceptionTest extends TestCase {
      *
      * @small
      */
-    public function exceptionContainerIsException() {
+    public function exceptionContainerIsException():void {
         $this->assertInstanceOf(
             \Exception::class,
             new TIException\Exception()
