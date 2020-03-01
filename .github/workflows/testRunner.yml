@@ -1,6 +1,6 @@
 name: PHP Tests
 
-on: 
+on:
   push:
     branches:
       - master
@@ -11,17 +11,24 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+    name: Testing PHP Versions [${{ matrix.php-versions }}]
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Run Tests
-      uses: php-actions/phpunit@v1
-      with:
-        config: phpunit.xml
+      - name: Run Tests
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: xdebug
+          coverage: xdebug
+          tools: phpunit
